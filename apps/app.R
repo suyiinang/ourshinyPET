@@ -150,12 +150,14 @@ ui <- dashboardPage(
                                              ),
                                              conditionalPanel(
                                                  condition = "input.chart_type == 'Boxplot'",
-                                                 textOutput('test_method_2ttest'),
+                                                 uiOutput('test_method_2ttest'),
+                                                 uiOutput('test_method_anova'),
                                                  h5("Hypothesis:"),
                                                  textOutput('null_hypo_2ttest'),
                                                  textOutput('alt_hypo_2ttest'),
                                                  h5('p-value:'),
-                                                 textOutput('pvalue_2ttest'),
+                                                 uiOutput('pvalue_2ttest'),
+                                                 uiOutput('pvalue_anova'),
                                                  p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
                                              ),
                                              conditionalPanel(
@@ -656,7 +658,7 @@ server <- function(input, output) {
         vals <- ttestout()
         vals$method
     })
-
+    
     output$pvalue <- renderText({
         vals <- ttestout()
         round(vals$p.value,5)
@@ -705,15 +707,19 @@ server <- function(input, output) {
     boxttest <- reactive({
         x <- unlist(final_listings[,input$select_x])
         y <- unlist(final_listings[,input$select_y0])
-        two <- t.test(y ~ x, final_listings, var.equal = FALSE)
-        two
+        if(Rselected_varx() %in% c('host_is_superhost','host_identity_verified','instant_bookable')){
+            t.test(y ~ x, final_listings, var.equal = FALSE)
+        }
+        
     })
     
     anovatest <- reactive({
         x <- unlist(final_listings[,input$select_x])
         y <- unlist(final_listings[,input$select_y0])
-        res.aov <- aov(y ~ x, data = final_listings)
-        res.aov
+        if(Rselected_varx() %in% c('host_response_time','neighbourhood_cleansed','neighbourhood_group_cleansed',
+                                   'property_type','room_type','bathroom_type')){
+            aov(y ~ x, data = final_listings)
+        }
         
     })
     
@@ -725,35 +731,37 @@ server <- function(input, output) {
         paste("Alternative hypothesis: There is a difference between the average", input$select_x, 'for the levels within', input$select_y0)
     })
     
-    cat_level <-reactive({
-        if(input$select_x == 'host_is_superhost'){2}
-        else if(input$select_x == 'host_identify_verified'){2}
-        else if(input$select_x == 'instant_bookable'){2}
-        else {0}
+    output$test_method_2ttest <- renderUI({
+        vals <- boxttest()
+        twolevels <- paste(vals$method)
+        
+        if(Rselected_varx() == 'host_is_superhost'){twolevels}
+        else if(Rselected_varx() == 'host_identity_verified'){twolevels}
+        else if( Rselected_varx() == 'instant_bookable'){twolevels}
+        
     })
     
-    
-    output$test_method_2ttest <- renderText({
-        vals <- boxttest()
-        aov <- anovatest()
-        twolevels <- vals$method
+    output$test_method_anova <- renderUI({
         more_two <- "Anova test"
-        
-        if (cat_level() == 2){twolevels}
-        else if (cat_level() == 0){more_two}
+        if(Rselected_varx() %in% c('host_response_time','neighbourhood_cleansed','neighbourhood_group_cleansed',
+                                   'property_type','room_type','bathroom_type')){more_two}
     })
     
-    output$pvalue_2ttest <- renderText({
+    output$pvalue_2ttest <- renderUI({
+        x <- unlist(final_listings[,input$select_x])
         vals <- boxttest()
-        aov <- anovatest()
-        sum_aov <- unlist(summary(aov))
-        twolevels <- vals$p.value
-        more_two <- sum_aov[["Pr(>F)1"]]
-        
-        if (cat_level() == 2){twolevels}
-        else if (cat_level() == 0){more_two}
+        twolevels <- paste(vals$p.value)
+        if(Rselected_varx() %in% c('host_is_superhost','host_identity_verified','instant_bookable')){
+            twolevels} 
     })      
     
+    output$pvalue_anova <- renderUI({
+        x <- unlist(final_listings[,input$select_x])
+        aov <- anovatest()
+        sum_aov <- unlist(summary(aov))
+        if(Rselected_varx() %in% c('host_response_time','neighbourhood_cleansed','neighbourhood_group_cleansed',
+                                   'property_type','room_type','bathroom_type')){paste(sum_aov[["Pr(>F)1"]])}
+    })      
     ## correlation test - scatter
     
     cor_out <- reactive({
