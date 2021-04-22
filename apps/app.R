@@ -39,6 +39,7 @@ library(igraph)
 library(ggraph)
 library(highcharter)
 library(wordcloud)
+library(widyr)
 
 #########
 var_remove <- c("minimum_minimum_nights", "maximum_minimum_nights",
@@ -107,7 +108,7 @@ data$price <- str_remove(string=data$price,pattern='\\$') %>%
 data$host_response_rate <- gsub("%","",data$host_response_rate) 
 data$amenities <- gsub('\"', "", data$amenities, fixed = TRUE)
 data <- subset(data,host_location=="Singapore" | host_location=="Singapore, Singapore" | host_location=="SG")
-new_stopwords <- c("NA","michelle's","elizabeth","yuan","felix","anita","susan","eddie","eddie's","edwin","belinda","besan","nargis","antonio","sharm","tim","kathleen","stteven","jerome","freddy","eunice","eunice's","vivian","jerome's","mi's","freddy's","joey","tay","michelle","noor","anthony","tay's","carrie","jauhara","susan","karen","jenny","lena","leonard","kingsley","freda","jialin","matthew","fran","na")
+new_stopwords <- c("NA","michelle's","elizabeth","yuan","felix","anita","susan","eddie","eddie's","edwin","belinda","besan","nargis","antonio","sharm","tim","kathleen","stteven","jerome","freddy","eunice","eunice's","vivian","jerome's","mi's","freddy's","joey","tay","michelle","noor","anthony","tay's","carrie","jauhara","susan","karen","jenny","lena","leonard","kingsley","freda","jialin","matthew","fran","na","joey")
 all_stopwords <- c(new_stopwords,stop_words)
 data_comments <- data %>% 
     dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
@@ -877,6 +878,79 @@ server <- function(input, output) {
         
         
     })
+    
+    
+####  bigram_graph ####
+
+    output$network_plot1 <- renderPlot({
+        progress <- shiny::Progress$new()
+        progress$set(message = "Bi Directional Graph", value = 0.2)
+        on.exit(progress$close())
+        progress$set(detail = "Creating Bitokens..", value = 0.6)
+        
+        progress$set(detail = "Plotting..", value = 0.8)
+        bigram_graph <- head(bigram_data_count %>% arrange(desc(n)),150) %>% graph_from_data_frame()
+        
+        
+        #bigram_graph
+        #library(ggraph)
+        set.seed(2020)
+        # ggraph(bigram_graph, layout = "fr") +
+        #   geom_edge_link() +
+        #   geom_node_point() +
+        #   geom_node_text(aes(label = name), vjust = 1, hjust = 1)
+        
+        a <- grid::arrow(type = "closed", length = unit(.08, "inches"))
+        ggraph(bigram_graph, layout = "fr") +
+            geom_edge_link() +
+            geom_node_point(color = "#FF5A5F", size = 1) +
+            geom_node_text(aes(label = name), vjust = 1, hjust = 1, size=2) +
+            theme_void()
+        
+        
+    })
+    
+    output$network_plot2 <- renderPlot({
+        progress <- shiny::Progress$new()
+        progress$set(message = "Correlation Plot", value = 0.2)
+        on.exit(progress$close())
+        progress$set(message = "Creating Pairwise words", value = 0.4)
+        
+        #x <- data.frame(text = sapply(docs(), as.character), stringsAsFactors = FALSE)
+        #x$tweet_nbr <- 1:nrow(x)
+        #tweet_word <- x %>% unnest_tokens(word, text)
+        
+        word_corr <- data_count %>% 
+            filter(frequency >= 300) %>% 
+            pairwise_cor(word, frequency, sort = TRUE)
+        
+        #progress$set(detail = "Plotting..", value = 0.8)
+        set.seed(1234)
+        word_corr %>%
+            filter(correlation > .5) %>%
+            graph_from_data_frame() %>%
+            ggraph(layout = "fr") +
+            geom_edge_link(aes(edge_alpha = correlation, edge_width = correlation), edge_colour = "#FF5A5F") +
+            geom_node_point(size = 2) +
+            geom_node_text(aes(label = name), repel = TRUE,
+                           point.padding = unit(0.2, "lines")) +
+            theme_void()
+        
+        
+    })
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     ## t-test
     
