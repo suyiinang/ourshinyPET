@@ -1,0 +1,111 @@
+---
+title: "**ShinyPET**: A Predictive, Exploratory and Text RShiny Application using Airbnb data"
+poster_width: "23.39in"
+poster_height: "33.11in"
+font_family: 'Rasa'
+title_text_fontfamily: 'Rasa'
+author:
+  - name: Ang Su Yiin
+  - name: Joey Chua
+  - name: Kevin Gunawan Albindo
+  - name: Dr. Kam Tin Seong
+    affil: 1
+affiliation:
+  - num: 1
+    address: School of Computing and Information Systems, Singapore Management University
+column_numbers: 3
+# colour
+primary_colour: '#FF5A60'
+secondary_colour: '#FF5A60'
+accent_colour: '#00A699'
+# title body
+logoleft_name: images/SMU_logo.jpg
+logoright_name: images/airbnb.jpg
+titlebox_bordercol:	"#0b4545"	#Colour of the title box border.
+titlebox_borderwidth:	"0cm"	#Width of the title box border.
+title_textcol: "#ffffff"
+title_textsize: "60pt"
+author_textcol: "#ffffff" 
+author_textsize: '35pt'
+affiliation_textsize: '25pt'
+# poster body
+body_textsize: "30px"
+body_textcol: "#000000" #colour
+column_margins: "0.5in"
+columnline_col:	"#008080"	#Colour of the column line dividers.
+columnline_width:	"1mm"	#Width of line between each column.
+columnline_style:	dashed	#Style of the column line seperator.
+sectitle_textcol:	"#ffffff"	#Colour of the poster section titles.
+sectitle_textsize:	"40t"	#Text size of the section titles (H1).
+sectitle2_textsize:	"30pt"	#Text size of the section titles (H2).
+sectitle_bgcol:	"#00A699"	#Colour of the section title box.
+sectitle_bordercol:	"#00A699"	#Colour of the border around the section title box.
+sectitle_borderwidth:	"2mm"	#Thicknes of the section title box border.
+sectitle_boxshape:	"4mm 0mm"	#Changes the shape of the section title box.
+sectitle2_textcol:	"#00A699"	#Color of 2nd level header text.
+link_col:	"#00A699"	#Colour of other links within the poster.
+output: 
+  posterdown::posterdown_html:
+    self_contained: false
+bibliography: packages.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Introduction
+
+A clear statement of the issues or/and problems your project addresses.
+
+# Motivation
+
+An explanation of why the issues and/or problems are interesting and what make them difficult to solve.
+
+# Approach
+
+A description of the techniques or algorithms you used to solve the problem.
+
+## Exploratory
+
+## Text
+
+## Predictive
+
+# Results
+
+Screenshots and a working demo of the system you built.
+
+```{r mytable, out.width='80%'}
+knitr::kable(iris[1:10, 1:4], caption = 'Table caption.',align = 'c',"html")
+```
+
+Or with figures: Figure \@ref(fig:standard-plot), or Figure \@ref(fig:morefigs).
+
+```{r standard-plot, out.width='80%', fig.align='center', fig.cap='Great figure!', fig.height=5}
+plot(mtcars[1:2])
+```
+
+```{r morefigs, out.width='80%', echo=TRUE, fig.cap='Amazing, right?!', fig.height=5}
+data <- iris
+
+plot(x = data$Sepal.Length, 
+     y = data$Sepal.Width, 
+     col = data$Species,
+     pch = 19, 
+     xlab = "Sepal Length (cm)",
+     ylab = "Sepal Width (cm)")
+
+```
+
+# Further work
+
+An explanation of how the work could be extended.
+
+
+
+
+```{r, include=FALSE}
+knitr::write_bib(c('knitr','rmarkdown','posterdown','pagedown'), 'packages.bib')
+```
+
