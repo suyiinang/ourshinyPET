@@ -140,7 +140,6 @@ afinn_sentiments <- data_comments %>%
 #%>% 
     #comparison.cloud()
 
-
 afinn_count <- data_comments %>% 
     #group_by(listing_id) %>% 
     inner_join(afinn) %>% 
@@ -153,9 +152,6 @@ afinn_count <- data_comments %>%
     #ggplot(aes(word,(n)))+
     #geom_col()+
     #coord_flip()
-
-
-
     
 bing <- get_sentiments("bing")
 bing_sentiments <- data_comments %>% 
@@ -164,7 +160,6 @@ bing_sentiments <- data_comments %>%
     acast(word~sentiment,value.var="n",fill=0) 
 #%>% 
     #comparison.cloud(colors = c("#FF5A5F", "#00A699"))
-
 
 bing_count <- data_comments %>% 
     inner_join(bing) %>% 
@@ -178,7 +173,6 @@ bing_count <- data_comments %>%
     #geom_col()+
     #coord_flip()
 bing_count
-
 
 nrc <- get_sentiments("nrc")
 nrc_sentiments <- data_comments %>% 
@@ -202,6 +196,35 @@ nrc_count <- data_comments %>%
     #coord_flip()
 nrc_count
 
+
+mpsz_nosea <- st_read(dsn = "data/geospatial", 
+                layer = "MP14_SUBZONE_NO_SEA_PL")%>%
+    group_by(PLN_AREA_N) %>%
+    summarise(geometry = sf::st_union(geometry))
+
+region_data <-data_comments %>% 
+    group_by(neighbourhood_group_cleansed) %>% 
+    inner_join(afinn) %>% 
+    count(word,value) %>% 
+    mutate(score=value*n) %>%
+    group_by(neighbourhood_group_cleansed) %>% 
+    summarise(mean_score=mean(score))
+
+subregion_data <-data_comments %>% 
+    group_by(neighbourhood_cleansed) %>% 
+    inner_join(afinn) %>% 
+    count(word,value) %>% 
+    mutate(score=value*n) %>%
+    group_by(neighbourhood_cleansed) %>% 
+    summarise(mean_score=mean(score))
+airbnb_clean_region <- right_join(mpsz_nosea,region_data, c("PLN_AREA_N" = "neighbourhood_group_cleansed" ))
+
+airbnb_clean_subregion <- right_join(mpsz_nosea,subregion_data, c("PLN_AREA_N" = "neighbourhood_cleansed" ))
+
+map <- tm_shape(mpsz_nosea)+
+    tm_fill("PLN_AREA_N",title="Region",palette = "Reds")+
+    tm_borders()+
+    tm_layout(legend.outside=TRUE, legend.outside.position="right")
 
 ########
 
@@ -414,6 +437,14 @@ ui <- dashboardPage(
                                      )
                                  )
                         ),
+                        tabPanel("Spatial Analysis",
+                                 fluidRow(
+                                     box(width=12, height=500, solidHeader = F,
+                                         radioButtons("spatial_plot",NULL, c("Region","Sub Region"), selected = "Sub Region", inline = T),
+                                         )
+                                     )
+                                 )
+                        )),
             tabItem("PA",
                     tabsetPanel(
                         tabPanel("Data splitting",
@@ -428,11 +459,10 @@ ui <- dashboardPage(
                         tabPanel("Model training",
                         ),
                         tabPanel("Model evaluation")
-                    )
             )
         )
     )
-)))
+))
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
@@ -939,9 +969,17 @@ server <- function(input, output) {
         
     })
     
+    #### SPATIAL PLOT ####
     
-    
-    
+    output$chart <- renderHighchart({
+        highchart(type = "map") %>% 
+                                        hc_add_series_map(data=mpsz_nosea, df=region_data(),value = "PLN_AREA_N", joinBy = "mean_score") %>% 
+                                        hc_colorAxis(stops = color_stops()) %>% 
+                                        hc_tooltip(useHTML=TRUE,headerFormat='',pointFormat = paste0(subregion_data$mean_score,'  {point.neighbourhood_cleansed} Sales : {point.mean_score} ')) %>% 
+                                        #hc_title(text = 'Global Sales') %>% 
+                                        #hc_subtitle(text = paste0('Year: ',input$yearid)) %>% 
+                                        hc_exporting(enabled = TRUE,filename = 'custom')
+    })   
     
     
     
