@@ -25,6 +25,20 @@ library(shinythemes)
 library(rgdal)
 library(sf)
 library(tmap)
+library(wordcloud2)
+library(NLP)
+library(tm) # text mining
+library(stringr)
+library(SnowballC) # text stemming
+library(RColorBrewer) # Color Palettes
+library(topicmodels)
+library(tidytext)
+library(slam)
+library(tidyr)
+library(igraph)
+library(ggraph)
+library(highcharter)
+library(wordcloud)
 
 #########
 var_remove <- c("minimum_minimum_nights", "maximum_minimum_nights",
@@ -76,6 +90,117 @@ themes <- list('Gray' = theme_gray(),
                'Classic' = theme_classic(),
                'Void' = theme_void(),
                'Test' = theme_test())
+
+
+reviews <- read_csv("data/reviews.csv")%>% 
+    dplyr::select(listing_id,comments)
+listings <- read_csv("C:/Users/joeyc/blog/_posts/2021-03-29-assignment/data/listings.csv")  %>% 
+    rename(listing_id=id) %>% 
+    dplyr::select(-c(listing_url, scrape_id, last_scraped, name, picture_url,host_url, host_about,host_thumbnail_url, host_picture_url, host_listings_count, host_verifications,calendar_updated,first_review,last_review,license,neighborhood_overview,description,host_total_listings_count,host_has_profile_pic,availability_30,availability_60,availability_90,availability_365,calculated_host_listings_count,calculated_host_listings_count_entire_homes,calculated_host_listings_count_private_rooms,calculated_host_listings_count_shared_rooms,reviews_per_month,minimum_nights,maximum_nights,minimum_minimum_nights,maximum_minimum_nights,minimum_maximum_nights,maximum_maximum_nights,number_of_reviews_ltm,number_of_reviews_l30d,minimum_nights_avg_ntm,maximum_nights_avg_ntm,calendar_last_scraped,has_availability,instant_bookable))
+data <- right_join(reviews,listings,by="listing_id")
+data$comments <- gsub("^[alpha:][:space:]'\"]", " ",data$comments) %>% 
+    tolower()
+data$comments <- gsub("[^a-zA-Z]", " ",data$comments)
+data$comments <- iconv(data$comments,to="UTF-8")
+data$price <- str_remove(string=data$price,pattern='\\$') %>% 
+    as.numeric()
+data$host_response_rate <- gsub("%","",data$host_response_rate) 
+data$amenities <- gsub('\"', "", data$amenities, fixed = TRUE)
+data <- subset(data,host_location=="Singapore" | host_location=="Singapore, Singapore" | host_location=="SG")
+new_stopwords <- c("NA","michelle's","elizabeth","yuan","felix","anita","susan","eddie","eddie's","edwin","belinda","besan","nargis","antonio","sharm","tim","kathleen","stteven","jerome","freddy","eunice","eunice's","vivian","jerome's","mi's","freddy's","joey","tay","michelle","noor","anthony","tay's","carrie","jauhara","susan","karen","jenny","lena","leonard","kingsley","freda","jialin","matthew","fran","na")
+all_stopwords <- c(new_stopwords,stop_words)
+data_comments <- data %>% 
+    dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
+    unnest_tokens(word,comments) %>% 
+    group_by(listing_id) %>% 
+    ungroup() %>% 
+    anti_join(stop_words)
+data_count <- data_comments %>% 
+    group_by(word) %>% 
+    summarise(frequency=n()) %>% 
+    arrange(desc(frequency))
+bigram_data_count <- data %>% 
+    dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
+    unnest_tokens(word,comments,token="ngrams",n=2) %>% 
+    separate(word,c("word1","word2"),sep=" ") %>% 
+    filter(!word1 %in% stop_words$word) %>%
+    filter(!word2 %in% stop_words$word) %>% 
+    unite(word,word1, word2, sep = " ") %>% 
+    #ungroup() %>% 
+    count(word,sort=TRUE) %>% 
+    slice(-c(1))
+
+    
+afinn <- get_sentiments("afinn") 
+afinn_sentiments <- data_comments %>% 
+    inner_join(afinn) %>% 
+    count(word,value,sort=TRUE) %>% 
+    acast(word~value,value.var="n",fill=0) 
+#%>% 
+    #comparison.cloud()
+
+
+afinn_count <- data_comments %>% 
+    #group_by(listing_id) %>% 
+    inner_join(afinn) %>% 
+    count(word,value) %>% 
+    filter(n>500) %>% 
+    #mutate(n=ifelse(sentiment=="negative",-n,n)) %>% 
+    mutate(word=reorder(word,n)) %>% 
+    arrange(desc(n))
+#%>% 
+    #ggplot(aes(word,(n)))+
+    #geom_col()+
+    #coord_flip()
+
+
+
+    
+bing <- get_sentiments("bing")
+bing_sentiments <- data_comments %>% 
+    inner_join(bing) %>% 
+    count(word,sentiment,sort=TRUE) %>% 
+    acast(word~sentiment,value.var="n",fill=0) 
+#%>% 
+    #comparison.cloud(colors = c("#FF5A5F", "#00A699"))
+
+
+bing_count <- data_comments %>% 
+    inner_join(bing) %>% 
+    count(word,sentiment) %>% 
+    filter(n>500) %>% 
+    mutate(n=ifelse(sentiment=="negative",-n,n)) %>% 
+    mutate(word=reorder(word,n))%>% 
+    arrange(desc(n))
+#%>% 
+    #ggplot(aes(word,n,fill=sentiment))+
+    #geom_col()+
+    #coord_flip()
+bing_count
+
+
+nrc <- get_sentiments("nrc")
+nrc_sentiments <- data_comments %>% 
+    inner_join(nrc) %>% 
+    count(word,sentiment,sort=TRUE) %>% 
+    acast(word~sentiment,value.var="n",fill=0) 
+#%>% 
+    #comparison.cloud()
+
+nrc_count <- data_comments %>% 
+    inner_join(nrc) %>% 
+    count(word,sentiment,sort=TRUE) %>% 
+    filter(n>1500) %>% 
+    mutate(n=ifelse(sentiment=="negative",-n,n))%>% 
+    mutate(word=reorder(word,n)) %>% 
+    arrange(desc(n))
+    #%>% 
+    #ggplot(aes(word,n))+
+    #facet_grid(~sentiment)+
+    #geom_col()+
+    #coord_flip()
+nrc_count
+
 
 ########
 
@@ -237,19 +362,57 @@ ui <- dashboardPage(
             tabItem("TA",
                     tabsetPanel(
                         tabPanel("Token frequency",
-                                 #put ui here
+                                 fluidPage(
+                                     fluidRow(
+                                         column(7, id = "col_word_cloud",
+                                                box(width=12, height=550, solidHeader = F, title = strong("The Word Cloud"),
+                                                    radioButtons("word_cloud_gram",NULL, c("Uni-gram","Bi-gram"), selected = "Uni-gram", inline = T),
+                                                    #plotOutput("word_cloud_plot",height = "300px")
+                                                    wordcloud2Output("word_cloud_plot",height = "470px"))
+                                         ),
+                                         column(5, id = "col_freq",
+                                                box(width=12, height=550, solidHeader = F, title = strong("Word Frequency"),
+                                                highchartOutput("word_freq_plot", height=500)
+                                                )
+                                                
+                                         )
+                                     )
+                                 )
+                                 
                         ),
                         tabPanel("Sentiment analysis",
-                                 #put ui here
+                                 fluidPage(
+                                     fluidRow(
+                                         column(7, id = "col_polarity_cloud",
+                                                box(width=12, height=550, solidHeader = F, title = strong("Polarity"),
+                                                    radioButtons("word_polarity_plot",NULL, c("AFINN","BING","NRC"), selected = "BING", inline = T),
+                                                    #plotOutput("word_cloud_plot",height = "300px")
+                                                    wordcloud2Output("polarity_cloud_plot",height = "470px"))
+                                         ),
+                                         column(5, id = "col_polarity_freq",
+                                                box(width=12, height=550, solidHeader = F, title = strong("Word Frequency"),
+                                                    highchartOutput("polarity_freq_plot", height=500)
+                                                )
+                                                )
+                                         )
+                                     )
                         ),
                         tabPanel("Topic modeling",
                                  #put ui here
                         ),
                         tabPanel("Network analysis",
-                                 #put ui here
-                        )
-                    )
-            ),
+                                 fluidRow(
+                                     box(width=12, height=500, solidHeader = F,
+                                         tabsetPanel(type = 'pills',
+                                                     id = 'network_panel',
+                                                     tabPanel("Bi Directional Network", 
+                                                              #sliderInput("bi_freq", "Min Frequency of Bi-grams:",min = 10, max = 200,value = 100, width = '20%'),
+                                                              plotOutput("network_plot1")),
+                                                     tabPanel("Correlation Network", plotOutput("network_plot2"))
+                                         )
+                                     )
+                                 )
+                        ),
             tabItem("PA",
                     tabsetPanel(
                         tabPanel("Data splitting",
@@ -268,7 +431,7 @@ ui <- dashboardPage(
             )
         )
     )
-)
+)))
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
@@ -603,15 +766,116 @@ server <- function(input, output) {
         
     })
     
-    ## conf level
     
-    output$conf_lev <- renderUI({
-        if(plot_type() %in% c(-1,2)){
-            sliderInput(inputId = 'conf',
-                        label = 'Select confidence interval',
-                        min = 0,
-                        max = 1,
-                        value = 0.95)}
+    #### Word Freq plot ####
+
+    output$word_freq_plot  <- renderHighchart(
+        hc <- highchart() %>%
+            #hc_title(text = "Incremental Revenue and Total Cost by Offer Group") %>%
+            hc_chart(type = "bar") %>%
+            #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
+            hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
+                       formatter = JS(paste0("function() {
+                                       //console.log(this);
+                                       //console.log(this.point.y);
+                                       var result='';
+                                       result='<br/><span style=\\'color:'+this.series.color+'\\'>'+this.x.name+'</span>:<b> '
+                                       +Math.round(this.point.y.toFixed(0)/100)/10 + 'K' + '</b>';
+                                       return result;
+      }"))) %>%
+            hc_xAxis(categories = data_count[1:100,]$word,
+                     #labels = list(rotation = 0, step=1), title =list(text="Brand")
+                     labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
+            )    %>%
+            hc_add_series(name="Word", data = data_count[1:100,]$frequency, type ="column",
+                          #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
+                          color = "#FF5A5F", showInLegend= F)
+        #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
+    )
+    
+    
+    #### Wordcloud plot ####
+    output$word_cloud_plot <- renderWordcloud2({
+        
+        if(input$word_cloud_gram == "Uni-gram"){
+            
+            set.seed(1234)
+            # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
+            #           max.words=100, random.order=FALSE, rot.per=0.35, 
+            #           colors=brewer.pal(8, "Dark2"))
+            d1 <- (data_count %>% filter(frequency>1) %>% arrange(desc(frequency)))[1:100,]
+            wordcloud2(data = data_count, size=0.8, minSize = 0.0, fontWeight = 'bold', 
+                       ellipticity = 0.65)
+            
+        } else if(input$word_cloud_gram == "Bi-gram"){
+            
+            set.seed(1234)
+            # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
+            #           max.words=100, random.order=FALSE, rot.per=0.35, 
+            #           colors=brewer.pal(8, "Dark2"))
+            d2 <- (bigram_data_count %>% filter(n>1) %>% arrange(desc(n)))[1:100,]
+            wordcloud2(data = bigram_data_count, size=0.8, minSize = 0.0, fontWeight = 'bold', 
+                       ellipticity = 0.65)
+            
+            
+        }
+        
+    })
+    
+    
+    #### POLARITY Sentiment Analysis ####
+    
+    output$polarity_freq_plot <- renderHighchart(
+            hc <- highchart() %>%
+                hc_chart(type = "bar") %>%
+                #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
+                hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
+                           formatter = JS(paste0("function() {
+                                       //console.log(this);
+                                       //console.log(this.point.y);
+                                       var result='';
+                                       result='<br/><span style=\\'color:'+this.series.color+'\\'>'+this.x.name+'</span>:<b> '
+                                       +Math.round(this.point.y.toFixed(0)/100)/10 + 'K' + '</b>';
+                                       return result;
+      }"))) %>%
+                hc_xAxis(categories = afinn_count[1:100,]$word,
+                         #labels = list(rotation = 0, step=1), title =list(text="Brand")
+                         labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
+                )    %>%
+                hc_add_series(name="Word", data = afinn_count[1:100,]$n, type ="column",
+                              #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
+                              color = "#FF5A5F", showInLegend= F) 
+            #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
+            )
+    
+    #### POLARITY Wordcloud plot ####
+    output$polarity_cloud_plot <- renderPlot({
+        
+        if(input$polarity_cloud_plot == "AFINN"){
+            
+            set.seed(1234)
+            # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
+            #           max.words=100, random.order=FALSE, rot.per=0.35, 
+            #           colors=brewer.pal(8, "Dark2"))
+            c1 <- (afinn_count %>% filter(frequency>1) %>% arrange(desc(n)))[1:100,]
+            comparison.cloud(data = afinn_sentiments, size=0.8, minSize = 0.0, fontWeight = 'bold', 
+                             ellipticity = 0.65)
+            
+        } else if (input$polarity_cloud_plot == "BING"){
+            
+            set.seed(1234)
+            # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
+            #           max.words=100, random.order=FALSE, rot.per=0.35, 
+            #           colors=brewer.pal(8, "Dark2"))
+            c2 <- (bing_count %>% filter(n>1) %>% arrange(desc(n)))[1:100,]
+            comparison.cloud(data = bing_sentiments, size=0.8, minSize = 0.0, fontWeight = 'bold', 
+                       ellipticity = 0.65)
+            
+            
+            
+        }
+        
+        
     })
     
     ## t-test
