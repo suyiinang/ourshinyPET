@@ -11,14 +11,20 @@ library(funModeling)
 library(crosstalk)
 library(data.table)
 library(ggplot2)
-library(tidytext)
 library(ggfittext)
 library(tidymodels)
+library(glmnet)
+library(ranger)
+library(xgboost)
+library(rpart)
+library(visNetwork)
+library(sparkline)
 library(ggcorrplot)
 library(vip)
 library(Boruta)
 library(reshape2)
 library(shinycssloaders)
+library(shinyalert)
 library(ranger)
 library(skimr)
 library(shinythemes)
@@ -46,7 +52,7 @@ var_remove <- c("minimum_minimum_nights", "maximum_minimum_nights",
                 "minimum_maximum_nights", "maximum_maximum_nights",
                 "minimum_nights_avg_ntm", "maximum_nights_avg_ntm")
 
-final_listings <- read_csv("./data/listing_processed.csv") %>%
+final_listings <- read_csv("data/listing_processed.csv") %>%
     select(-all_of(var_remove)) %>%
     mutate(across(where(is.character), as.factor)) %>%
     mutate(across(where(is.logical), as.factor)) %>%
@@ -95,7 +101,7 @@ themes <- list('Gray' = theme_gray(),
 
 reviews <- read_csv("data/reviews.csv")%>% 
     dplyr::select(listing_id,comments)
-listings <- read_csv("C:/Users/joeyc/blog/_posts/2021-03-29-assignment/data/listings.csv")  %>% 
+listings <- read_csv("data/listings.csv")  %>% 
     rename(listing_id=id) %>% 
     dplyr::select(-c(listing_url, scrape_id, last_scraped, name, picture_url,host_url, host_about,host_thumbnail_url, host_picture_url, host_listings_count, host_verifications,calendar_updated,first_review,last_review,license,neighborhood_overview,description,host_total_listings_count,host_has_profile_pic,availability_30,availability_60,availability_90,availability_365,calculated_host_listings_count,calculated_host_listings_count_entire_homes,calculated_host_listings_count_private_rooms,calculated_host_listings_count_shared_rooms,reviews_per_month,minimum_nights,maximum_nights,minimum_minimum_nights,maximum_minimum_nights,minimum_maximum_nights,maximum_maximum_nights,number_of_reviews_ltm,number_of_reviews_l30d,minimum_nights_avg_ntm,maximum_nights_avg_ntm,calendar_last_scraped,has_availability,instant_bookable))
 data <- right_join(reviews,listings,by="listing_id")
@@ -129,7 +135,7 @@ bigram_data_count <- data %>%
     unite(word,word1, word2, sep = " ") %>% 
     #ungroup() %>% 
     count(word,sort=TRUE) %>% 
-    slice(-c(1))
+    dplyr::slice(-c(1))
 
     
 afinn <- get_sentiments("afinn") 
@@ -457,8 +463,11 @@ ui <- dashboardPage(
                                  data_transformUI("dtf")
                         ),
                         tabPanel("Model training",
+                                 model_trainUI("mdlt")
                         ),
-                        tabPanel("Model evaluation")
+                        tabPanel("Model evaluation",
+                                 model_evalUI("mdle")
+                        )
             )
         )
     )
@@ -1307,8 +1316,14 @@ server <- function(input, output) {
     
     ########### predictive server file ###########
     return_val1 <- data_splittingServer("ds", final_listings)
-    feat_selectServer("fs", final_listings, return_val1)
-    data_transformServer("dtf", final_listings, return_val1)
+    feat_selectServer("fs", final_listings, return_val1,
+                      return_val1$triggerReset)
+    return_trf <- data_transformServer("dtf", final_listings, return_val1,
+                                       return_val1$triggerReset)
+    return_train <- model_trainServer("mdlt", return_trf, return_val1$targetvar,
+                                      return_val1$triggerReset)
+    model_evalServer("mdle", return_train, return_trf$selected_var,
+                     return_val1$targetvar, return_val1$triggerReset)
     ############################################
     
 }

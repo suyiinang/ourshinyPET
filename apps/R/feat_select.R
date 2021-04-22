@@ -9,8 +9,20 @@ feat_selectUI <- function(id){
   tabsetPanel(
     tabPanel("Correlation matrix",
              fluidPage(
+               br(),
                fluidRow(
+                 column(9,
+                        multiInput(
+                          inputId = NS(id, "Inum_vars_corr"),
+                          label = "Choose from numeric variables :",
+                          choices = character(0),
+                          width = "900px"),
+                        actionButton(NS(id, "btn_all_num"), "Select all"),
+                        actionButton(NS(id, "btn_des_all_num"), "Deselect all")
+                 ),
                  column(3,
+                        circleButton(inputId = NS(id, "Iquestion"), icon = icon("question"),
+                                     status = "info", size = "xs"),
                         radioButtons(
                           inputId = NS(id, "Icorr_type"),
                           label = "Correlation type:",
@@ -21,19 +33,10 @@ feat_selectUI <- function(id){
                           choices = c("0.01", "0.05", "0.1"),
                           selected = "0.05"),
                         actionButton(NS(id, "btn_corrplot"), "Plot correlation matrix")
+                 )
                  ),
-                 column(9,
-                        multiInput(
-                          inputId = NS(id, "Inum_vars_corr"),
-                          label = "Choose from numeric variables :",
-                          choices = character(0),
-                          width = "900px"),
-                        actionButton(NS(id, "btn_all_num"), "Select all"),
-                        actionButton(NS(id, "btn_des_all_num"), "Deselect all")
-                 )),
-               
                plotlyOutput(NS(id, "Oplot_corrmat"), height = "auto") %>%
-                 withSpinner(color="#5b7d7c")
+                 withSpinner(color="#FF5A5F")
                )
              ),
     tabPanel("Feature importance",
@@ -41,42 +44,46 @@ feat_selectUI <- function(id){
                h4("Feature importance using Random forest and Boruta method"),
                p("For feature importance, we use `random forest` method (from",
                em("ranger"), "package) and `Boruta` method (from", em("Boruta"),
-               "package as comparison for feature importance analysis.
+               "package) as comparison for feature importance analysis.
                The features will be sorted according to the
-                 importance score."),
-               em("The importance value is different for the two
-                 different methods and they are not to be compared"),
+                 importance score.",
+               tags$a(href="https://www.datacamp.com/community/tutorials/feature-selection-R-boruta",
+                      em("Boruta"))),
+               em("The absolute importance score from the two different methods
+               are not in the same range and therefore are not to be compared."),
                br(),
                br(),
                actionButton(NS(id, "btn_get_ftimp"), "Calculate feature importance"),
                br(),
-               verbatimTextOutput(NS(id, "Otext_debug")),
-               br(),
                fixedRow(
                  column(6, plotlyOutput(NS(id, "Oplot_ftimp_rf"), height = 700) %>%
-                          withSpinner(color="#5b7d7c")),
+                          withSpinner(color="#FF5A5F")),
                  column(6, plotlyOutput(NS(id, "Oplot_ftimp_b"), height = 700) %>%
-                          withSpinner(color="#5b7d7c"))
+                          withSpinner(color="#FF5A5F"))
                )
              )
              )
   )
 }
 
-feat_selectServer <- function(id, final_listings, return_val1){
+feat_selectServer <- function(id, final_listings, return_val1, trigger_reset){
   moduleServer(id, function(input, output, session){
-    set.seed(1234)
     
+    Rreset <- reactiveVal(0)
+    observeEvent(trigger_reset(),{
+      if (trigger_reset() != Rreset()){
+        Rreset(trigger_reset())
+        output$Oplot_corrmat <- renderPlotly(NULL)
+        output$Oplot_ftimp_b <- renderPlotly(NULL)
+        output$Oplot_ftimp_rf <- renderPlotly(NULL)
+      }
+    })
+    
+    set.seed(1234)
     var_list_num <- final_listings %>%
       keep(is.numeric) %>%
       names() %>%
       str_sort()
-    
-    # # for debugging, this will print out in console
-    # observe({
-    #   msg <- sprintf(var_list_num)
-    #   cat(msg, "\n")
-    # })
     
     observe({
       updateMultiInput(
@@ -116,13 +123,10 @@ feat_selectServer <- function(id, final_listings, return_val1){
                   use = "pairwise.complete.obs",
                   method = tolower(input$Icorr_type))
       
-      msg <- sprintf(as.character(dim(corM)))
-      cat(msg, "\n")
-      
       p_mat <- cor_pmat(listing_prep2_num)
       
-      corM[upper.tri(corM)] <- NA
-      p_mat[upper.tri(p_mat)] <- NA
+      corM[lower.tri(corM)] <- NA
+      p_mat[lower.tri(p_mat)] <- NA
       
       mlt_cor <- melt(corM, value.name = "Correlation")
       mlt_p <- melt(p_mat, value.name = "pValue")
@@ -130,12 +134,12 @@ feat_selectServer <- function(id, final_listings, return_val1){
       
       mlt_df_x <- mlt_df %>%
         na.omit() %>%
-        filter(pValue > input$Isig_lvl_corr)
+        filter(pValue > as.numeric(input$Isig_lvl_corr))
       
       gheat <- ggplot(NULL, aes(Var1, Var2, fill = Correlation,
                                 text = paste0(Var1," - ", Var2, "\n",
                                               "Correlation: ", round(Correlation, 3),
-                                              "\nP-val: ", round(pValue, 3)))) +
+                                              "\nP-val: ", round(pValue, 5)))) +
         geom_tile(data = mlt_df) + 
         scale_fill_gradient2(low = "blue", high = "red", mid = "white",
                              midpoint = 0, limit = c(-1,1),
@@ -180,7 +184,7 @@ feat_selectServer <- function(id, final_listings, return_val1){
         na.omit() %>%
         select(-id)
 
-      f <- as.formula(paste(return_val1$targetvar(), "~ ."))
+      f <- as.formula(paste(isolate(return_val1$targetvar()), "~ ."))
 
       # output$Otext_debug <- renderText(f)
       
@@ -223,13 +227,18 @@ feat_selectServer <- function(id, final_listings, return_val1){
         ylab("Importance") +
         theme(plot.title = element_text(size = 10),
               axis.title.y = element_blank())
-      ggplotly(boruta_p)
 
-      output$Oplot_ftimp_b <- renderPlotly(
-        ggplotly(boruta_p))
+      output$Oplot_ftimp_b <- renderPlotly({
+        ggplotly(boruta_p)})
 
     })
     
     ############################################
+    observeEvent(input$Iquestion,{
+      text_item <- paste0("Select variables from the list, choose correlation type, ",
+                 "and p-value threshold to plot a correlation matrix.")
+      shinyalert(text=text_item,
+                 type="info")
+    })
     })
 }
