@@ -9,11 +9,11 @@
 
 observeUI <- function(id){
   fluidPage(
+    titlePanel('Observe variables'),
     tags$style(
       type = 'text/css', 
       '.bg-orange {background-color: #FF5A5F!important; }'
     ),
-    titlePanel("Variables overview"),
     fluidRow(
       infoBoxOutput(NS(id,'variableBox'), width = 3),
       infoBoxOutput(NS(id,'obBox'), width = 3),
@@ -21,11 +21,12 @@ observeUI <- function(id){
       infoBoxOutput(NS(id,'numericBox'), width = 3)
     ),
     fluidRow(
-      box(width = 6,
-          title = 'Summary of factor variables',
-          DT::dataTableOutput(NS(id,'categorical'))),
-      box(width = 6,
-          title = 'Summary of numerical variables',
+      h3('Summary of factor variables'),
+      column(12,
+          DT::dataTableOutput(NS(id,'categorical')))),
+    fluidRow(
+      h3('Summary of numerical variables'),
+      column(12,
           DT::dataTableOutput(NS(id,'numeric')))
     )
   )
@@ -87,7 +88,9 @@ observeServer <- function(id, final_listings){
           arrange(-n_missing) %>%
           mutate_if(is.numeric, round, digit = 2)}
       
-      sum_n
+      DT::datatable(sum_n, filter = 'top', 
+                    options=list(pageLength = 5, 
+                                 autoWidth=TRUE))
     })
     
     output$categorical <- DT::renderDataTable({
@@ -101,7 +104,7 @@ observeServer <- function(id, final_listings){
           arrange(-n_missing) %>%
           mutate_if(is.numeric, round, digit = 2)}
       
-      sum_f
+      DT::datatable(sum_f, filter = 'top', options=list(pageLength = 5, autoWidth=TRUE))
     })
   })
 }

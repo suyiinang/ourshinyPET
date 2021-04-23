@@ -257,7 +257,7 @@ ui <- dashboardPage(
                                      )
                               ),
                               column(width = 6,
-                                     tags$img(src = 'nav.png',width = 750, height = 600))
+                                     tags$img(src = 'nav.png',width = 500, height = 400))
                             )
                   )
           ),
@@ -268,7 +268,7 @@ ui <- dashboardPage(
                         ),
                         tabPanel("Explore variables",
                                  fluidPage(
-                                   titlePanel("Exploring Singapore Airbnbs"),
+                                   titlePanel("Explore variables"),
                                    sidebarLayout(
                                      sidebarPanel(
                                        selectInput(inputId = 'chart_type',
@@ -293,11 +293,11 @@ ui <- dashboardPage(
                                          uiOutput('input_ttest')
                                        ),
                                        uiOutput('conf_lev'),
-                                       width = 2
+                                       width = 3
                                      ),
                                      mainPanel(
                                        
-                                       h3("Statistical test result"),
+                                       h4("Statistical test result (x and y variable only)"),
                                        conditionalPanel(
                                          condition = "input.chart_type == 'Distribution'",
                                          withSpinner(textOutput('test_method'),type =7, color = "#FF5A5F", size = 1),
@@ -370,10 +370,9 @@ ui <- dashboardPage(
                                  )),
                         tabPanel("Map",
                                  fluidPage(
-                                   titlePanel("Mapping Airbnb Singapore"),
                                    sidebarLayout(
+                                     titlePanel("Mapping Airbnbs"),
                                      sidebarPanel(
-                                       
                                        selectInput(inputId = 'map_type',
                                                    label = 'Select map type',
                                                    choices = c('Point Symbol map',
@@ -381,10 +380,10 @@ ui <- dashboardPage(
                                                    selected = 'Point Symbol map'),
                                        uiOutput('point_view'),
                                        uiOutput('show_data'),
-                                       width = 2
+                                       width = 3
                                      ),
                                      mainPanel(
-                                       withSpinner(leafletOutput('leaf_map', height = 600),type = 6, color = "#FF5A5F", size = 2),
+                                       withSpinner(leafletOutput('leaf_map', height = 450),type = 6, color = "#FF5A5F", size = 2),
                                        conditionalPanel(
                                          condition = "input.map_type == 'Choropleth map'",
                                          DT::dataTableOutput('szTable')
@@ -617,7 +616,7 @@ server <- function(input, output) {
               axis.ticks.y=element_blank(),
               axis.text.x = element_text(angle = 45))
       
-      ggplotly(hist, height = 600, width = 1200)
+      ggplotly(hist,  height = 450, width = 800)
     }
     
     ###barplot for categorical##
@@ -634,7 +633,7 @@ server <- function(input, output) {
               axis.ticks.y=element_blank(),
               axis.text.x = element_text(angle = 45))
       
-      ggplotly(bar, height = 600, width = 1200)
+      ggplotly(bar,  height = 450, width = 800)
       
     }
     
@@ -710,7 +709,7 @@ server <- function(input, output) {
       bbox
     }  
     
-    boxly <- ggplotly(flip_chart, height = 600, width = 1200) %>% layout(boxmode = "group")
+    boxly <- ggplotly(flip_chart, height = 450, width = 800) %>% layout(boxmode = "group")
     
     boxly
   })
@@ -748,7 +747,7 @@ server <- function(input, output) {
     plt_m <- if(input$facet == "None"){m}
     else if (input$facet != "None"){m_facet}
     
-    ggplotly(plt_m, height = 600, width = 1200)
+    ggplotly(plt_m,  height = 450, width = 800)
     
   })
   
@@ -801,7 +800,7 @@ server <- function(input, output) {
       plt_scatter
     }  
     
-    ggplotly(flip_chart, height = 600, width = 1200)
+    ggplotly(flip_chart,  height = 450, width = 800)
     
     
   })
