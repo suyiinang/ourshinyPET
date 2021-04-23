@@ -52,37 +52,14 @@ var_remove <- c("minimum_minimum_nights", "maximum_minimum_nights",
                 "minimum_nights_avg_ntm", "maximum_nights_avg_ntm")
 
 final_listings <- read_csv("data/listing_processed.csv") %>%
-    select(-all_of(var_remove)) %>%
-    mutate(across(where(is.character), as.factor)) %>%
-    mutate(across(where(is.logical), as.factor)) %>%
-    mutate(price_per_pax = price/accommodates) %>%
-    drop_na(host_is_superhost)
-
-subzone <- readOGR(dsn = "data/spatial", layer="MP14_SUBZONE_WEB_PL")
-airbnb <- select(final_listings, host_is_superhost, review_scores_rating, 
-                 neighbourhood_cleansed, room_type, price_per_pax, latitude, longitude)
-airbnb <- subset(airbnb, !is.na(host_is_superhost))
-airbnb_sf <- st_as_sf(airbnb, coords = c("longitude", "latitude"), crs = 4326)
-
-mpsz2 <- st_read(dsn = 'data/spatial',
-                 layer = 'MP14_SUBZONE_WEB_PL', 
-                 quiet = TRUE) %>%
-    group_by(PLN_AREA_N) %>%
-    summarise(geometry = sf::st_union(geometry))
-
-airbnb_map <- right_join(mpsz2,listing_summary, c("PLN_AREA_N" = 'neighbourhood_cleansed'))
-
-listing_summary <- final_listings %>% 
-    group_by(neighbourhood_cleansed) %>%
-    summarise(avg_price_pp = round(mean(price_per_pax),0),
-              min_price_pp = round(min(price_per_pax),0),
-              max_price_pp = round(max(price_per_pax),0)) %>%
-    mutate_at(.vars = vars(neighbourhood_cleansed), .funs= funs(toupper))
-
+  select(-all_of(var_remove)) %>%
+  mutate(across(where(is.character), as.factor)) %>%
+  mutate(across(where(is.logical), as.factor)) %>%
+  mutate(price_per_pax = price/accommodates) %>%
+  drop_na(host_is_superhost)
 
 cat_var <-final_listings %>% select(where(is.factor))
 num_var <- final_listings %>% select(where(is.numeric))
-
 
 facet_var <- final_listings %>% select(host_response_time, host_is_superhost, host_identity_verified, neighbourhood_group_cleansed,
                                        room_type,instant_bookable,bathroom_type)
@@ -99,137 +76,150 @@ themes <- list('Gray' = theme_gray(),
 
 
 reviews <- read_csv("data/reviews.csv")%>% 
-    dplyr::select(listing_id,comments)
+  dplyr::select(listing_id,comments)
 listings <- read_csv("data/listings.csv")  %>% 
-    rename(listing_id=id) %>% 
-    dplyr::select(-c(listing_url, scrape_id, last_scraped, name, picture_url,host_url, host_about,host_thumbnail_url, host_picture_url, host_listings_count, host_verifications,calendar_updated,first_review,last_review,license,neighborhood_overview,description,host_total_listings_count,host_has_profile_pic,availability_30,availability_60,availability_90,availability_365,calculated_host_listings_count,calculated_host_listings_count_entire_homes,calculated_host_listings_count_private_rooms,calculated_host_listings_count_shared_rooms,reviews_per_month,minimum_nights,maximum_nights,minimum_minimum_nights,maximum_minimum_nights,minimum_maximum_nights,maximum_maximum_nights,number_of_reviews_ltm,number_of_reviews_l30d,minimum_nights_avg_ntm,maximum_nights_avg_ntm,calendar_last_scraped,has_availability,instant_bookable))
+  rename(listing_id=id) %>% 
+  dplyr::select(-c(listing_url, scrape_id, last_scraped, name, picture_url,host_url, host_about,host_thumbnail_url, host_picture_url, host_listings_count, host_verifications,calendar_updated,first_review,last_review,license,neighborhood_overview,description,host_total_listings_count,host_has_profile_pic,availability_30,availability_60,availability_90,availability_365,calculated_host_listings_count,calculated_host_listings_count_entire_homes,calculated_host_listings_count_private_rooms,calculated_host_listings_count_shared_rooms,reviews_per_month,minimum_nights,maximum_nights,minimum_minimum_nights,maximum_minimum_nights,minimum_maximum_nights,maximum_maximum_nights,number_of_reviews_ltm,number_of_reviews_l30d,minimum_nights_avg_ntm,maximum_nights_avg_ntm,calendar_last_scraped,has_availability,instant_bookable))
 data <- right_join(reviews,listings,by="listing_id")
 data$comments <- gsub("^[alpha:][:space:]'\"]", " ",data$comments) %>% 
-    tolower()
+  tolower()
 data$comments <- gsub("[^a-zA-Z]", " ",data$comments)
 data$comments <- iconv(data$comments,to="UTF-8")
 data$price <- str_remove(string=data$price,pattern='\\$') %>% 
-    as.numeric()
+  as.numeric()
 data$host_response_rate <- gsub("%","",data$host_response_rate) 
 data$amenities <- gsub('\"', "", data$amenities, fixed = TRUE)
 data <- subset(data,host_location=="Singapore" | host_location=="Singapore, Singapore" | host_location=="SG")
 new_stopwords <- c("NA","michelle's","elizabeth","yuan","felix","anita","susan","eddie","eddie's","edwin","belinda","besan","nargis","antonio","sharm","tim","kathleen","stteven","jerome","freddy","eunice","eunice's","vivian","jerome's","mi's","freddy's","joey","tay","michelle","noor","anthony","tay's","carrie","jauhara","susan","karen","jenny","lena","leonard","kingsley","freda","jialin","matthew","fran","na","joey")
 all_stopwords <- c(new_stopwords,stop_words)
 data_comments <- data %>% 
-    dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
-    unnest_tokens(word,comments) %>% 
-    group_by(listing_id) %>% 
-    ungroup() %>% 
-    anti_join(stop_words)
+  dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
+  unnest_tokens(word,comments) %>% 
+  group_by(listing_id) %>% 
+  ungroup() %>% 
+  anti_join(stop_words)
 data_count <- data_comments %>% 
-    group_by(word) %>% 
-    summarise(frequency=n()) %>% 
-    arrange(desc(frequency))
+  group_by(word) %>% 
+  summarise(frequency=n()) %>% 
+  arrange(desc(frequency))
 bigram_data_count <- data %>% 
-    dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
-    unnest_tokens(word,comments,token="ngrams",n=2) %>% 
-    separate(word,c("word1","word2"),sep=" ") %>% 
-    filter(!word1 %in% stop_words$word) %>%
-    filter(!word2 %in% stop_words$word) %>% 
-    unite(word,word1, word2, sep = " ") %>% 
-    #ungroup() %>% 
-    count(word,sort=TRUE) %>% 
-    dplyr::slice(-c(1))
+  dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
+  unnest_tokens(word,comments,token="ngrams",n=2) %>% 
+  separate(word,c("word1","word2"),sep=" ") %>% 
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>% 
+  unite(word,word1, word2, sep = " ") %>% 
+  #ungroup() %>% 
+  count(word,sort=TRUE) %>% 
+  dplyr::slice(-c(1))
 
-    
+
 afinn <- get_sentiments("afinn") 
 afinn_sentiments <- data_comments %>% 
-    inner_join(afinn) %>% 
-    count(word,value,sort=TRUE) %>% 
-    acast(word~value,value.var="n",fill=0) 
+  inner_join(afinn) %>% 
+  count(word,value,sort=TRUE) %>% 
+  acast(word~value,value.var="n",fill=0) 
 #%>% 
-    #comparison.cloud()
+#comparison.cloud()
 
 afinn_count <- data_comments %>% 
-    #group_by(listing_id) %>% 
-    inner_join(afinn) %>% 
-    count(word,value) %>% 
-    filter(n>500) %>% 
-    #mutate(n=ifelse(sentiment=="negative",-n,n)) %>% 
-    mutate(word=reorder(word,n)) %>% 
-    arrange(desc(n))
+  #group_by(listing_id) %>% 
+  inner_join(afinn) %>% 
+  count(word,value) %>% 
+  filter(n>500) %>% 
+  #mutate(n=ifelse(sentiment=="negative",-n,n)) %>% 
+  mutate(word=reorder(word,n)) %>% 
+  arrange(desc(n))
 #%>% 
-    #ggplot(aes(word,(n)))+
-    #geom_col()+
-    #coord_flip()
-    
+#ggplot(aes(word,(n)))+
+#geom_col()+
+#coord_flip()
+
 bing <- get_sentiments("bing")
 bing_sentiments <- data_comments %>% 
-    inner_join(bing) %>% 
-    count(word,sentiment,sort=TRUE) %>% 
-    acast(word~sentiment,value.var="n",fill=0) 
+  inner_join(bing) %>% 
+  count(word,sentiment,sort=TRUE) %>% 
+  acast(word~sentiment,value.var="n",fill=0) 
 #%>% 
-    #comparison.cloud(colors = c("#FF5A5F", "#00A699"))
+#comparison.cloud(colors = c("#FF5A5F", "#00A699"))
 
 bing_count <- data_comments %>% 
-    inner_join(bing) %>% 
-    count(word,sentiment) %>% 
-    filter(n>500) %>% 
-    mutate(n=ifelse(sentiment=="negative",-n,n)) %>% 
-    mutate(word=reorder(word,n))%>% 
-    arrange(desc(n))
+  inner_join(bing) %>% 
+  count(word,sentiment) %>% 
+  filter(n>500) %>% 
+  mutate(n=ifelse(sentiment=="negative",-n,n)) %>% 
+  mutate(word=reorder(word,n))%>% 
+  arrange(desc(n))
 #%>% 
-    #ggplot(aes(word,n,fill=sentiment))+
-    #geom_col()+
-    #coord_flip()
+#ggplot(aes(word,n,fill=sentiment))+
+#geom_col()+
+#coord_flip()
 bing_count
 
 nrc <- get_sentiments("nrc")
 nrc_sentiments <- data_comments %>% 
-    inner_join(nrc) %>% 
-    count(word,sentiment,sort=TRUE) %>% 
-    acast(word~sentiment,value.var="n",fill=0) 
+  inner_join(nrc) %>% 
+  count(word,sentiment,sort=TRUE) %>% 
+  acast(word~sentiment,value.var="n",fill=0) 
 #%>% 
-    #comparison.cloud()
+#comparison.cloud()
 
 nrc_count <- data_comments %>% 
-    inner_join(nrc) %>% 
-    count(word,sentiment,sort=TRUE) %>% 
-    filter(n>1500) %>% 
-    mutate(n=ifelse(sentiment=="negative",-n,n))%>% 
-    mutate(word=reorder(word,n)) %>% 
-    arrange(desc(n))
-    #%>% 
-    #ggplot(aes(word,n))+
-    #facet_grid(~sentiment)+
-    #geom_col()+
-    #coord_flip()
+  inner_join(nrc) %>% 
+  count(word,sentiment,sort=TRUE) %>% 
+  filter(n>1500) %>% 
+  mutate(n=ifelse(sentiment=="negative",-n,n))%>% 
+  mutate(word=reorder(word,n)) %>% 
+  arrange(desc(n))
+#%>% 
+#ggplot(aes(word,n))+
+#facet_grid(~sentiment)+
+#geom_col()+
+#coord_flip()
 nrc_count
 
-
-mpsz_nosea <- st_read(dsn = "data/geospatial", 
-                layer = "MP14_SUBZONE_NO_SEA_PL")%>%
-    group_by(PLN_AREA_N) %>%
-    summarise(geometry = sf::st_union(geometry))
-
 region_data <-data_comments %>% 
-    group_by(neighbourhood_group_cleansed) %>% 
-    inner_join(afinn) %>% 
-    count(word,value) %>% 
-    mutate(score=value*n) %>%
-    group_by(neighbourhood_group_cleansed) %>% 
-    summarise(mean_score=mean(score))
+  group_by(neighbourhood_group_cleansed) %>% 
+  inner_join(afinn) %>% 
+  count(word,value) %>% 
+  mutate(score=value*n) %>%
+  group_by(neighbourhood_group_cleansed) %>% 
+  summarise(mean_score=mean(score))
+
+subzone <- readOGR(dsn = "data/spatial", layer="MP14_SUBZONE_WEB_PL")
+
+airbnb <- select(final_listings, host_is_superhost, review_scores_rating, 
+                 neighbourhood_cleansed, room_type, price_per_pax, latitude, longitude)
+airbnb <- subset(airbnb, !is.na(host_is_superhost))
+
+airbnb_sf <- st_as_sf(airbnb, coords = c("longitude", "latitude"), crs = 4326)
+
+mpsz2 <- st_read(dsn = 'data/spatial',
+                 layer = 'MP14_SUBZONE_WEB_PL', 
+                 quiet = TRUE) %>%
+  group_by(PLN_AREA_N) %>%
+  summarise(geometry = sf::st_union(geometry))
+
+
+listing_summary <- final_listings %>% 
+  group_by(neighbourhood_cleansed) %>%
+  summarise(avg_price_pp = round(mean(price_per_pax),0),
+            min_price_pp = round(min(price_per_pax),0),
+            max_price_pp = round(max(price_per_pax),0)) %>%
+  mutate_at(.vars = vars(neighbourhood_cleansed), .funs= funs(toupper))
 
 subregion_data <-data_comments %>% 
-    group_by(neighbourhood_cleansed) %>% 
-    inner_join(afinn) %>% 
-    count(word,value) %>% 
-    mutate(score=value*n) %>%
-    group_by(neighbourhood_cleansed) %>% 
-    summarise(mean_score=mean(score))
-airbnb_clean_region <- right_join(mpsz_nosea,region_data, c("PLN_AREA_N" = "neighbourhood_group_cleansed" ))
+  group_by(neighbourhood_cleansed) %>% 
+  inner_join(afinn) %>% 
+  count(word,value) %>% 
+  mutate(score=value*n) %>%
+  group_by(neighbourhood_cleansed) %>% 
+  summarise(avg_sentiment_score=round(mean(score),0)) %>%
+  mutate_at(.vars = vars(neighbourhood_cleansed), .funs= funs(toupper))
 
-airbnb_clean_subregion <- right_join(mpsz_nosea,subregion_data, c("PLN_AREA_N" = "neighbourhood_cleansed" ))
+listing_summary <- right_join(subregion_data,listing_summary, c("neighbourhood_cleansed" = "neighbourhood_cleansed" ))
 
-map <- tm_shape(mpsz_nosea)+
-    tm_fill("PLN_AREA_N",title="Region",palette = "Reds")+
-    tm_borders()+
-    tm_layout(legend.outside=TRUE, legend.outside.position="right")
+airbnb_map <- right_join(mpsz2,listing_summary, c("PLN_AREA_N" = 'neighbourhood_cleansed'))
 
 ########
 
@@ -249,10 +239,28 @@ ui <- dashboardPage(
     
     dashboardBody(
         tabItems(
-            tabItem("Intro",
-                    fluidPage(theme = shinytheme('journal')) #https://rstudio.github.io/shinythemes/
-                    #for intro page
-            ),
+          tabItem("Intro",
+                  fluidPage(theme = shinytheme('journal'), #https://rstudio.github.io/shinythemes/
+                            #for intro page
+                            titlePanel("About ShinyPET"),
+                            fluidRow(
+                              column(width = 6,
+                                     p("This application is a user-friendly application that will enable users to make data-driven decisions without the need to understand programming languages or have extensive statistical knowledge. We have used Airbnb data as our baseline for this project - data generated is rich in information, which consists of structured, unstructured (textual), and location data."),
+                                     p("As seen in the figure on the right, this application has 3 modules – exploratory, text and predictive"),
+                                     p('The Exploratory module allows users to perform exploratory and confirmatory analysis on selected variables to identify interesting patterns.'),
+                                     p('The Text module allows users to analyse textual data from reviews to generate more quantitative insights.'),
+                                     p('The predictive module enables users to prepare and build a variety of prediction models'),
+                                     tags$div(
+                                       'For more information on this project, please visit our',
+                                       tags$a(href="https://ourshinypet.netlify.app/", 
+                                              "website")
+                                     )
+                              ),
+                              column(width = 6,
+                                     tags$img(src = 'nav.png',width = 750, height = 600))
+                            )
+                  )
+          ),
             tabItem("EDA",
                     tabsetPanel(
                         tabPanel("Observe variables",
@@ -260,130 +268,130 @@ ui <- dashboardPage(
                         ),
                         tabPanel("Explore variables",
                                  fluidPage(
-                                     titlePanel("Exploring Singapore Airbnbs"),
-                                     sidebarLayout(
-                                         sidebarPanel(
-                                             selectInput(inputId = 'chart_type',
-                                                         label = 'Select chart type',
-                                                         choices = sort(c('Distribution',
-                                                                          "Boxplot",
-                                                                          "Mosaic",
-                                                                          "Scatter")),
-                                                         selected = "Distribution"),
-                                             uiOutput('x_ui'),
-                                             uiOutput('y_ui'),
-                                             uiOutput('colour'),
-                                             uiOutput('flip'),
-                                             uiOutput('facet'),
-                                             uiOutput('bins'),
-                                             selectInput(inputId = 'theme',
-                                                         label = 'Change theme',
-                                                         choices = names(themes),
-                                                         selected = 'Gray'),
-                                             conditionalPanel(
-                                                 condition = "input.chart_type == 'Distribution'",
-                                                 uiOutput('input_ttest')
-                                             ),
-                                             uiOutput('conf_lev'),
-                                             width = 2
-                                         ),
-                                         mainPanel(
-                                             
-                                             h3("Statistical test result"),
-                                             conditionalPanel(
-                                                 condition = "input.chart_type == 'Distribution'",
-                                                 textOutput('test_method'),
-                                                 h5("Hypothesis:"),
-                                                 textOutput('null_hypo_ttest'),
-                                                 textOutput('alt_hypo_ttest'),
-                                                 h5('Confident interval:'),
-                                                 textOutput('ci'),
-                                                 h5('p-value:'),
-                                                 textOutput('pvalue'),
-                                                 p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
-                                             ),
-                                             conditionalPanel(
-                                                 condition = "input.chart_type == 'Boxplot'",
-                                                 uiOutput('test_method_2ttest'),
-                                                 uiOutput('test_method_anova'),
-                                                 h5("Hypothesis:"),
-                                                 textOutput('null_hypo_2ttest'),
-                                                 textOutput('alt_hypo_2ttest'),
-                                                 h5('p-value:'),
-                                                 uiOutput('pvalue_2ttest'),
-                                                 uiOutput('pvalue_anova'),
-                                                 p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
-                                             ),
-                                             conditionalPanel(
-                                                 condition = "input.chart_type == 'Mosaic'",
-                                                 textOutput('test_method_chisq'),
-                                                 h5("Hypothesis:"),
-                                                 textOutput('null_hypo_chisq'),
-                                                 textOutput('alt_hypo_chisq'),
-                                                 h5('p-value:'),
-                                                 textOutput('pvalue_chisq'),
-                                                 p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
-                                                 
-                                             ),
-                                             conditionalPanel(
-                                                 condition = "input.chart_type == 'Scatter'",
-                                                 textOutput('test_method_cortest'),
-                                                 h5("Hypothesis:"),
-                                                 textOutput('null_hypo_cortest'),
-                                                 textOutput('alt_hypo_cortest'),
-                                                 h5('p-value:'),
-                                                 textOutput('pvalue_cortest'),
-                                                 p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
-                                                 
-                                                 
-                                             ),
-                                             conditionalPanel(
-                                                 condition = "input.chart_type == 'Distribution'",
-                                                 plotlyOutput('dist')
-                                             ),
-                                             conditionalPanel(
-                                                 condition = "input.chart_type == 'Boxplot'",
-                                                 plotlyOutput('bbox')
-                                             ),
-                                             conditionalPanel(
-                                                 condition = "input.chart_type == 'Mosaic'",
-                                                 plotlyOutput('mosaic')
-                                             ),
-                                             conditionalPanel(
-                                                 condition = "input.chart_type == 'Scatter'",
-                                                 plotlyOutput('scatter')
-                                             ),
-                                             
-                                             
-                                         )
+                                   titlePanel("Exploring Singapore Airbnbs"),
+                                   sidebarLayout(
+                                     sidebarPanel(
+                                       selectInput(inputId = 'chart_type',
+                                                   label = 'Select chart type',
+                                                   choices = sort(c('Distribution',
+                                                                    "Boxplot",
+                                                                    "Mosaic",
+                                                                    "Scatter")),
+                                                   selected = "Distribution"),
+                                       uiOutput('x_ui'),
+                                       uiOutput('y_ui'),
+                                       uiOutput('colour'),
+                                       uiOutput('flip'),
+                                       uiOutput('facet'),
+                                       uiOutput('bins'),
+                                       selectInput(inputId = 'theme',
+                                                   label = 'Change theme',
+                                                   choices = names(themes),
+                                                   selected = 'Gray'),
+                                       conditionalPanel(
+                                         condition = "input.chart_type == 'Distribution'",
+                                         uiOutput('input_ttest')
+                                       ),
+                                       uiOutput('conf_lev'),
+                                       width = 2
+                                     ),
+                                     mainPanel(
+                                       
+                                       h3("Statistical test result"),
+                                       conditionalPanel(
+                                         condition = "input.chart_type == 'Distribution'",
+                                         withSpinner(textOutput('test_method'),type =7, color = "#FF5A5F", size = 1),
+                                         h5("Hypothesis:"),
+                                         withSpinner(textOutput('null_hypo_ttest'),type =7, color = "#FF5A5F", size = 1),
+                                         withSpinner( textOutput('alt_hypo_ttest'),type =7, color = "#FF5A5F", size = 1),
+                                         h5('Confident interval:'),
+                                         withSpinner(textOutput('ci'),type =7, color = "#FF5A5F", size = 1),
+                                         h5('p-value:'),
+                                         withSpinner(textOutput('pvalue'),type =7, color = "#FF5A5F", size = 1),
+                                         p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
+                                       ),
+                                       conditionalPanel(
+                                         condition = "input.chart_type == 'Boxplot'",
+                                         withSpinner(uiOutput('test_method_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                         withSpinner(uiOutput('test_method_anova'),type =7, color = "#FF5A5F", size = 1),
+                                         h5("Hypothesis:"),
+                                         withSpinner(textOutput('null_hypo_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                         withSpinner(textOutput('alt_hypo_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                         h5('p-value:'),
+                                         withSpinner(uiOutput('pvalue_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                         withSpinner(uiOutput('pvalue_anova'),type =7, color = "#FF5A5F", size = 1),
+                                         p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
+                                       ),
+                                       conditionalPanel(
+                                         condition = "input.chart_type == 'Mosaic'",
+                                         withSpinner(textOutput('test_method_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                         h5("Hypothesis:"),
+                                         withSpinner(textOutput('null_hypo_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                         withSpinner(textOutput('alt_hypo_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                         h5('p-value:'),
+                                         withSpinner(textOutput('pvalue_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                         p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
+                                         
+                                       ),
+                                       conditionalPanel(
+                                         condition = "input.chart_type == 'Scatter'",
+                                         withSpinner(textOutput('test_method_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                         h5("Hypothesis:"),
+                                         withSpinner(textOutput('null_hypo_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                         withSpinner(textOutput('alt_hypo_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                         h5('p-value:'),
+                                         withSpinner(textOutput('pvalue_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                         p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
+                                         
+                                         
+                                       ),
+                                       conditionalPanel(
+                                         condition = "input.chart_type == 'Distribution'",
+                                         withSpinner(plotlyOutput('dist'),type =7, color = "#FF5A5F", size = 1)
+                                       ),
+                                       conditionalPanel(
+                                         condition = "input.chart_type == 'Boxplot'",
+                                         withSpinner(plotlyOutput('bbox'),type =7, color = "#FF5A5F", size = 1)
+                                       ),
+                                       conditionalPanel(
+                                         condition = "input.chart_type == 'Mosaic'",
+                                         withSpinner(plotlyOutput('mosaic'),type =7, color = "#FF5A5F", size = 1)
+                                       ),
+                                       conditionalPanel(
+                                         condition = "input.chart_type == 'Scatter'",
+                                         withSpinner(plotlyOutput('scatter'),type =7, color = "#FF5A5F", size = 1)
+                                       ),
+                                       
+                                       
                                      )
-                                     
-                                     
+                                   )
+                                   
+                                   
                                  )),
                         tabPanel("Map",
                                  fluidPage(
-                                     titlePanel("Mapping Airbnb Singapore"),
-                                     sidebarLayout(
-                                         sidebarPanel(
-                                             
-                                             selectInput(inputId = 'map_type',
-                                                         label = 'Select map type',
-                                                         choices = c('Point Symbol map',
-                                                                     'Choropleth map'),
-                                                         selected = 'Point Symbol map'),
-                                             uiOutput('point_view'),
-                                             uiOutput('show_data'),
-                                             width = 2
-                                         ),
-                                         mainPanel(
-                                             leafletOutput('leaf_map', height = 800),
-                                             conditionalPanel(
-                                                 condition = "input.map_type == 'Choropleth map'",
-                                                 DT::dataTableOutput('szTable')
-                                             )
-                                             
-                                         )
+                                   titlePanel("Mapping Airbnb Singapore"),
+                                   sidebarLayout(
+                                     sidebarPanel(
+                                       
+                                       selectInput(inputId = 'map_type',
+                                                   label = 'Select map type',
+                                                   choices = c('Point Symbol map',
+                                                               'Choropleth map'),
+                                                   selected = 'Point Symbol map'),
+                                       uiOutput('point_view'),
+                                       uiOutput('show_data'),
+                                       width = 2
+                                     ),
+                                     mainPanel(
+                                       withSpinner(leafletOutput('leaf_map', height = 600),type = 6, color = "#FF5A5F", size = 2),
+                                       conditionalPanel(
+                                         condition = "input.map_type == 'Choropleth map'",
+                                         DT::dataTableOutput('szTable')
+                                       )
+                                       
                                      )
+                                   )
                                  )
                         )
                     ),
@@ -441,14 +449,7 @@ ui <- dashboardPage(
                                          )
                                      )
                                  )
-                        ),
-                        tabPanel("Spatial Analysis",
-                                 fluidRow(
-                                     box(width=12, height=500, solidHeader = F,
-                                         radioButtons("spatial_plot",NULL, c("Region","Sub Region"), selected = "Sub Region", inline = T),
-                                         )
-                                     )
-                                 )
+                        )
                         )),
             tabItem("PA",
                     tabsetPanel(
@@ -616,7 +617,7 @@ server <- function(input, output) {
               axis.ticks.y=element_blank(),
               axis.text.x = element_text(angle = 45))
       
-      ggplotly(hist, height = 600, width = 1500)
+      ggplotly(hist, height = 600, width = 1200)
     }
     
     ###barplot for categorical##
@@ -633,7 +634,7 @@ server <- function(input, output) {
               axis.ticks.y=element_blank(),
               axis.text.x = element_text(angle = 45))
       
-      ggplotly(bar, height = 600, width = 1500)
+      ggplotly(bar, height = 600, width = 1200)
       
     }
     
@@ -709,7 +710,7 @@ server <- function(input, output) {
       bbox
     }  
     
-    boxly <- ggplotly(flip_chart, height = 600, width = 1500) %>% layout(boxmode = "group")
+    boxly <- ggplotly(flip_chart, height = 600, width = 1200) %>% layout(boxmode = "group")
     
     boxly
   })
@@ -747,7 +748,7 @@ server <- function(input, output) {
     plt_m <- if(input$facet == "None"){m}
     else if (input$facet != "None"){m_facet}
     
-    ggplotly(plt_m, height = 600, width = 1500)
+    ggplotly(plt_m, height = 600, width = 1200)
     
   })
   
@@ -800,7 +801,7 @@ server <- function(input, output) {
       plt_scatter
     }  
     
-    ggplotly(flip_chart, height = 600, width = 1500)
+    ggplotly(flip_chart, height = 600, width = 1200)
     
     
   })
@@ -994,137 +995,163 @@ server <- function(input, output) {
     vals$p.value
   })
   
-    ############
-    # map tab
-    ###########
-    output$point_view <- renderUI({
-      if (input$map_type == "Point Symbol map") {
-        selectInput(inputId = 'filter_point',
-                    label = 'View by',
-                    choices = c('Superhost' = 'superhost',
-                                'Room type' = 'room_type'),
-                    selected = 'Host status')} })
+  ############
+  # map tab
+  ###########
+  output$point_view <- renderUI({
+    if (input$map_type == "Point Symbol map") {
+      selectInput(inputId = 'filter_point',
+                  label = 'View by',
+                  choices = c('Superhost' = 'superhost',
+                              'Room type' = 'room_type'),
+                  selected = 'Host status')} 
     
-    output$show_data <- renderUI({
-      if(input$map_type == "Choropleth map"){
-        checkboxInput(inputId = 'show_data',
-                      label = "Show data table",
-                      value = FALSE)
-      }
-    })
+    else if (input$map_type == "Choropleth map") {
+      selectInput(inputId = 'filter_point',
+                  label = 'View map by',
+                  choices = c('Average price' = 'avg_price',
+                              'Average Sentiment score' = 'avg_sentiment_score'),
+                  selected = 'Average price')}
     
-    output$leaf_map <- renderLeaflet({
-      
-      superhost <- leaflet(airbnb_sf) %>%
-        addTiles() %>%
-        addProviderTiles('OneMapSG.Original', group = 'Original') %>%
-        addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
-        addProviderTiles('OneMapSG.Night', group = 'Night') %>%
-        addCircleMarkers(
-          data = airbnb[airbnb$host_is_superhost == 'TRUE',],
-          lng = ~longitude,
-          lat = ~latitude,
-          color = '#FF5A5F',
-          radius = 2,
-          stroke = FALSE,
-          fillOpacity = 0.5,
-          group = 'Superhost'
-        ) %>%
-        addCircleMarkers(
-          data = airbnb[airbnb$host_is_superhost == 'FALSE',],
-          lng = ~longitude,
-          lat = ~latitude,
-          color = '#00A699',
-          radius = 2,
-          stroke = FALSE,
-          fillOpacity = 0.5,
-          group = 'Regular_host'
-        ) %>%
-        addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
-                         overlayGroups = c('Superhost','Regular_host'),
-                         options = layersControlOptions(collapsed = FALSE))
-      
-      rooms <- leaflet(airbnb_sf) %>%
-        addTiles() %>%
-        addProviderTiles('OneMapSG.Original', group = 'Original') %>%
-        addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
-        addProviderTiles('OneMapSG.Night', group = 'Night') %>%
-        addCircleMarkers(
-          data = airbnb[airbnb$room_type == 'Entire home/apt',],
-          lng = ~longitude,
-          lat = ~latitude,
-          color = '#FF5A5F',
-          radius = 2,
-          stroke = FALSE,
-          fillOpacity = 0.5,
-          group = 'Entire home'
-        ) %>%
-        addCircleMarkers(
-          data = airbnb[airbnb$room_type == 'Hotel room',],
-          lng = ~longitude,
-          lat = ~latitude,
-          color = '#00A699',
-          radius = 2,
-          stroke = FALSE,
-          fillOpacity = 0.5,
-          group = 'Hotel room'
-        ) %>%
-        addCircleMarkers(
-          data = airbnb[airbnb$room_type == 'Private room',],
-          lng = ~longitude,
-          lat = ~latitude,
-          color = '#3182bd',
-          radius = 2,
-          stroke = FALSE,
-          fillOpacity = 0.5,
-          group = 'Private room'
-        ) %>%
-        addCircleMarkers(
-          data = airbnb[airbnb$room_type == 'Shared room',],
-          lng = ~longitude,
-          lat = ~latitude,
-          color = '#756bb1',
-          radius = 2,
-          stroke = FALSE,
-          fillOpacity = 0.5,
-          group = 'Shared room'
-        ) %>%  
-        addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
-                         overlayGroups = c('Entire home','Hotel room', 'Private room','Shared room'),
-                         options = layersControlOptions(collapsed = FALSE))
-      
-      
-      
-      avg_price <- tm_shape(mpsz2)+
-        tm_polygons() +
-        tm_shape(airbnb_map) +
-        tm_fill('avg_price_pp',
-                n = 6,
-                style = 'quantile',
-                palette = 'Blues')+
-        tm_borders(lwd = 0.5, alpha = 1)
-      
-      
-      cho_map <- tmap_leaflet(avg_price) %>%
-        addTiles() %>%
-        addProviderTiles('OneMapSG.Original', group = 'Original') %>%
-        addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
-        addProviderTiles('OneMapSG.Night', group = 'Night') %>%
-        addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
-                         options = layersControlOptions(collapsed = FALSE))
-      
-      if(input$map_type == 'Choropleth map'){cho_map}
-      else if(input$filter_point == 'superhost'){ superhost}
-      else if (input$filter_point == 'room_type') {rooms}
-      
-    })
+  })
+  
+  output$show_data <- renderUI({
+    if(input$map_type == "Choropleth map"){
+      checkboxInput(inputId = 'show_data',
+                    label = "Show data table",
+                    value = FALSE)
+    }
+  })
+  
+  output$leaf_map <- renderLeaflet({
     
-    output$szTable <- DT::renderDataTable({
-      if(input$show_data){
-        DT::datatable(data = listing_summary)
-      }
-    })
+    superhost <- leaflet(airbnb_sf) %>%
+      addTiles() %>%
+      addProviderTiles('OneMapSG.Original', group = 'Original') %>%
+      addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
+      addProviderTiles('OneMapSG.Night', group = 'Night') %>%
+      addCircleMarkers(
+        data = airbnb[airbnb$host_is_superhost == 'TRUE',],
+        lng = ~longitude,
+        lat = ~latitude,
+        color = '#FF5A5F',
+        radius = 2,
+        stroke = FALSE,
+        fillOpacity = 0.5,
+        group = 'Superhost'
+      ) %>%
+      addCircleMarkers(
+        data = airbnb[airbnb$host_is_superhost == 'FALSE',],
+        lng = ~longitude,
+        lat = ~latitude,
+        color = '#00A699',
+        radius = 2,
+        stroke = FALSE,
+        fillOpacity = 0.5,
+        group = 'Regular_host'
+      ) %>%
+      addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
+                       overlayGroups = c('Superhost','Regular_host'),
+                       options = layersControlOptions(collapsed = FALSE))
     
+    rooms <- leaflet(airbnb_sf) %>%
+      addTiles() %>%
+      addProviderTiles('OneMapSG.Original', group = 'Original') %>%
+      addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
+      addProviderTiles('OneMapSG.Night', group = 'Night') %>%
+      addCircleMarkers(
+        data = airbnb[airbnb$room_type == 'Entire home/apt',],
+        lng = ~longitude,
+        lat = ~latitude,
+        color = '#FF5A5F',
+        radius = 2,
+        stroke = FALSE,
+        fillOpacity = 0.5,
+        group = 'Entire home'
+      ) %>%
+      addCircleMarkers(
+        data = airbnb[airbnb$room_type == 'Hotel room',],
+        lng = ~longitude,
+        lat = ~latitude,
+        color = '#00A699',
+        radius = 2,
+        stroke = FALSE,
+        fillOpacity = 0.5,
+        group = 'Hotel room'
+      ) %>%
+      addCircleMarkers(
+        data = airbnb[airbnb$room_type == 'Private room',],
+        lng = ~longitude,
+        lat = ~latitude,
+        color = '#3182bd',
+        radius = 2,
+        stroke = FALSE,
+        fillOpacity = 0.5,
+        group = 'Private room'
+      ) %>%
+      addCircleMarkers(
+        data = airbnb[airbnb$room_type == 'Shared room',],
+        lng = ~longitude,
+        lat = ~latitude,
+        color = '#756bb1',
+        radius = 2,
+        stroke = FALSE,
+        fillOpacity = 0.5,
+        group = 'Shared room'
+      ) %>%  
+      addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
+                       overlayGroups = c('Entire home','Hotel room', 'Private room','Shared room'),
+                       options = layersControlOptions(collapsed = FALSE))
+    
+    
+    avg_price <- tm_shape(mpsz2)+
+      tm_polygons() +
+      tm_shape(airbnb_map) +
+      tm_fill('avg_price_pp',
+              n = 6,
+              style = 'quantile',
+              palette = 'Reds')+
+      tm_borders(lwd = 0.5, alpha = 1)
+    
+    
+    cho_map <- tmap_leaflet(avg_price) %>%
+      addTiles() %>%
+      addProviderTiles('OneMapSG.Original', group = 'Original') %>%
+      addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
+      addProviderTiles('OneMapSG.Night', group = 'Night') %>%
+      addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
+                       options = layersControlOptions(collapsed = FALSE))
+    
+    sent_map <- tm_shape(mpsz2)+
+      tm_polygons() +
+      tm_shape(airbnb_map) +
+      tm_fill('avg_sentiment_score',
+              n = 6,
+              style = 'pretty',
+              palette = 'Reds')+
+      tm_borders(lwd = 0.5, alpha = 1) 
+    
+    sent_cho_map <- tmap_leaflet(sent_map) %>%
+      addTiles() %>%
+      addProviderTiles('OneMapSG.Original', group = 'Original') %>%
+      addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
+      addProviderTiles('OneMapSG.Night', group = 'Night') %>%
+      addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
+                       options = layersControlOptions(collapsed = FALSE))
+    
+    
+    if(input$filter_point == 'avg_price'){cho_map}
+    else if(input$filter_point == 'avg_sentiment_score'){sent_cho_map}
+    else if(input$filter_point == 'superhost'){superhost}
+    else if (input$filter_point == 'room_type') {rooms}
+    
+  })
+  
+  output$szTable <- DT::renderDataTable({
+    if(input$show_data){
+      DT::datatable(data = listing_summary)
+    }
+  })
     #### Word Freq plot ####
 
     output$word_freq_plot  <- renderHighchart(

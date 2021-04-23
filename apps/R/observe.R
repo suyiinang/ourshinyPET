@@ -21,9 +21,11 @@ observeUI <- function(id){
       infoBoxOutput(NS(id,'numericBox'), width = 3)
     ),
     fluidRow(
-      box(title = 'Summary of factor variables',
+      box(width = 6,
+          title = 'Summary of factor variables',
           DT::dataTableOutput(NS(id,'categorical'))),
-      box(title = 'Summary of numerical variables',
+      box(width = 6,
+          title = 'Summary of numerical variables',
           DT::dataTableOutput(NS(id,'numeric')))
     )
   )
