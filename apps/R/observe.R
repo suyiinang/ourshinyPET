@@ -26,7 +26,7 @@ observeUI <- function(id){
           DT::dataTableOutput(NS(id,'categorical')))),
     fluidRow(
       h3('Summary of numerical variables'),
-      column(12,
+      column(10,
           DT::dataTableOutput(NS(id,'numeric')))
     )
   )

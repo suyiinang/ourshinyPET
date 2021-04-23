@@ -242,14 +242,17 @@ ui <- dashboardPage(
           tabItem("Intro",
                   fluidPage(theme = shinytheme('journal'), #https://rstudio.github.io/shinythemes/
                             #for intro page
-                            titlePanel("About ShinyPET"),
+                            titlePanel("Shiny PET: A Predictive, Exploratory and Text Application"),
                             fluidRow(
                               column(width = 6,
-                                     p("This application is a user-friendly application that will enable users to make data-driven decisions without the need to understand programming languages or have extensive statistical knowledge. We have used Airbnb data as our baseline for this project - data generated is rich in information, which consists of structured, unstructured (textual), and location data."),
+                                     h4('About'),
+                                     p("Shiny PET is a user-friendly application that will enable users to make data-driven decisions without the need to understand programming languages or have extensive statistical knowledge."),
+                                     p('We have used Airbnb data as our baseline for this project - data generated is rich in information, which consists of structured, unstructured (textual), and location data.'),
+                                     h4('Application feature'),
                                      p("As seen in the figure on the right, this application has 3 modules – exploratory, text and predictive"),
                                      p('The Exploratory module allows users to perform exploratory and confirmatory analysis on selected variables to identify interesting patterns.'),
                                      p('The Text module allows users to analyse textual data from reviews to generate more quantitative insights.'),
-                                     p('The predictive module enables users to prepare and build a variety of prediction models'),
+                                     p('The predictive module enables users to prepare and build a variety of prediction models.'),
                                      tags$div(
                                        'For more information on this project, please visit our',
                                        tags$a(href="https://ourshinypet.netlify.app/", 
@@ -263,10 +266,10 @@ ui <- dashboardPage(
           ),
             tabItem("EDA",
                     tabsetPanel(
-                        tabPanel("Observe variables",
+                        tabPanel("Observe",
                                  observeUI('observe')
                         ),
-                        tabPanel("Explore variables",
+                        tabPanel("Explore and confirm",
                                  fluidPage(
                                    titlePanel("Explore variables"),
                                    sidebarLayout(
@@ -370,8 +373,8 @@ ui <- dashboardPage(
                                  )),
                         tabPanel("Map",
                                  fluidPage(
+                                   titlePanel("Mapping Airbnbs"),
                                    sidebarLayout(
-                                     titlePanel("Mapping Airbnbs"),
                                      sidebarPanel(
                                        selectInput(inputId = 'map_type',
                                                    label = 'Select map type',
