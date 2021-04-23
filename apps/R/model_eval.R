@@ -14,17 +14,8 @@ model_evalUI <- function(id){
   )
 }
 
-get_prediction <- function(tune_result, input_metric, model_wf, datasplit, newinput){
-  best_model <- tune_result %>%
-    select_best(metric = input_metric)
-  
-  final_wf <- model_wf %>%
-    finalize_workflow(best_model)
-  
-  final_model_fit <- final_wf %>%
-    fit(data = training(datasplit))
-  
-  listing_pred <- predict(final_model_fit, new_data = newinput)
+get_prediction <- function(final_model, datasplit, newinput){
+  listing_pred <- predict(final_model, new_data = newinput)
   pred_val <- listing_pred$.pred
   return(pred_val)
 }
@@ -46,7 +37,6 @@ model_evalServer <- function(id, return_train, selected_var, targetvar, trigger_
         updateNavlistPanel(session,
                            inputId = "navpanel_eval",
                            selected = "Info")
-        
       }
     })
     
@@ -126,19 +116,11 @@ model_evalServer <- function(id, return_train, selected_var, targetvar, trigger_
           fluidRow(
             column(4,
                    pickerInput(
-                     inputId = NS(id, "Imetric"),
-                     label = "Choose metric (ignore for LM):",
-                     choices = c("rmse"= "rmse", "mae"= "mae",
-                                 "mape"= "mape", "rsquare"= "rsq"),
-                     selected = "rmse")
-            ),
-            column(4,
-                   pickerInput(
                      inputId = NS(id, "Imodel"),
                      label = "Choose model:",
                      choices = available_model)
             ),
-            column(4,
+            column(8,
                    br(),
                    actionButton(NS(id, "btn_finalmodel"), "Select final model")
             )
@@ -211,7 +193,6 @@ model_evalServer <- function(id, return_train, selected_var, targetvar, trigger_
             tabPanel("Ibox_var", uiOutput(NS(id, "Oboxes")))
             ),
           fluidRow(
-            # dataTableOutput(NS(id, "Otbl_pred")),
             column(4,
                    textOutput(NS(id, "Otext_model")),
                    actionButton(NS(id, "btn_predict"), "Predict")
@@ -226,24 +207,9 @@ model_evalServer <- function(id, return_train, selected_var, targetvar, trigger_
       output$Oboxes <- renderUI(list_UI)
       
       output$Otext_model <- renderText({
-        if (input$Imodel=="LM"){
-          paste0("Prediction using ", input$Imodel, " model")
-        } else{
-          paste0("Prediction using ", input$Imodel, " model with best ", input$Imetric, " value")
-        }
+          paste0("Prediction using best ", input$Imodel, " model.")
       })
     })
-    
-    # output$Otbl_pred <- renderDataTable({
-    #   df_toPred <- NULL
-    #   for (i in 1:length(selected_var())){
-    #     ui_idname <- selected_var()[i]
-    #     df_toPred[[ui_idname]] <- input[[ui_idname]]
-    #   }
-    #   df_toPred <- as.data.frame(df_toPred)
-    #   df_toPred
-    # }, options = list(scrollX = TRUE,
-    #                   paging = FALSE, searching = FALSE, info = FALSE))
     
     observeEvent(input$btn_predict, {
       output$Opred_val <- renderText({
@@ -258,32 +224,32 @@ model_evalServer <- function(id, return_train, selected_var, targetvar, trigger_
         df_toPred <- as.data.frame(df_toPred)
         
         newinput <- df_toPred
-        input_metric <- input$Imetric
         datasplit <- return_train$datasplit()
         
         if (input$Imodel=="LM"){
           listing_pred <- predict(return_train$fit_lm(), new_data = newinput)
           pred_val <- listing_pred$.pred
+          
         }else if (input$Imodel=="GLM"){
           tune_result <- return_train$glm_result()
           model_wf <- return_train$glm_wf()
-          pred_val <- get_prediction(tune_result, input_metric, model_wf,
-                                     datasplit, newinput)
+          pred_val <- get_prediction(return_train$final_glm(), datasplit, newinput)
+          
         }else if (input$Imodel=="DTree"){
           tune_result <- return_train$tree_result()
           model_wf <- return_train$tree_wf()
-          pred_val <- get_prediction(tune_result, input_metric, model_wf,
-                                     datasplit, newinput)
+          pred_val <- get_prediction(return_train$final_tree(), datasplit, newinput)
+          
         }else if (input$Imodel=="RdmForest"){
           tune_result <- return_train$randomf_result()
           model_wf <- return_train$randomf_wf()
-          pred_val <- get_prediction(tune_result, input_metric, model_wf,
-                                     datasplit, newinput)
+          pred_val <- get_prediction(return_train$final_randomf(), datasplit, newinput)
+          
         }else if (input$Imodel=="XGBoost"){
           tune_result <- return_train$xgb_result()
           model_wf <- return_train$xgb_wf()
-          pred_val <- get_prediction(tune_result, input_metric, model_wf,
-                                     datasplit, newinput)
+          pred_val <- get_prediction(return_train$final_xgboost(), datasplit, newinput)
+          
         }
         
         output$Opred_val <- renderText({

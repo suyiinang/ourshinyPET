@@ -231,7 +231,7 @@ ui <- dashboardPage(
     dashboardSidebar(
         sidebarMenu(
             menuItem("Introduction", tabName = "Intro", icon = icon('airbnb')),
-            menuItem("EDA module", tabName = "EDA", icon = icon('chart-bar')),
+            menuItem("Exploratory module", tabName = "EDA", icon = icon('chart-bar')),
             menuItem("Text module", tabName = "TA", icon = icon('text-height')),
             menuItem("Predictive module", tabName = "PA", icon = icon('chart-line'))
         )
@@ -252,7 +252,7 @@ ui <- dashboardPage(
                                      p("As seen in the figure on the right, this application has 3 modules – exploratory, text and predictive"),
                                      p('The Exploratory module allows users to perform exploratory and confirmatory analysis on selected variables to identify interesting patterns.'),
                                      p('The Text module allows users to analyse textual data from reviews to generate more quantitative insights.'),
-                                     p('The predictive module enables users to prepare and build a variety of prediction models.'),
+                                     p('The Predictive module enables users to prepare and build a variety of prediction models.'),
                                      tags$div(
                                        'For more information on this project, please visit our',
                                        tags$a(href="https://ourshinypet.netlify.app/", 

@@ -16,7 +16,7 @@ data_splittingUI <- function(id){
         pickerInput(
           inputId = NS(id, "Itarget_var"),
           label = "Choose response variable:",
-          choices = c("price", "review_scores_rating"),
+          choices = c("price", "review_scores_rating", "price_per_pax"),
           selected = "price"),
         sliderInput(NS(id, "Itrain_prop"), "Training set (%)",
                     value = 80, min = 50, max = 100, step = 5),
@@ -47,8 +47,8 @@ data_splittingServer <- function(id, final_listings){
     Rvar_list <- reactiveVal(NULL)
     
     observeEvent(input$btn_split_data, {
-      shinyalert("This step will reset all the previously built model 
-                  and their results. \n Are you sure?",
+      shinyalert("This step will reset all the previously built model and their results.
+                 Are you sure?",
                  showCancelButton = TRUE, type = "warning", closeOnEsc = FALSE,
                  closeOnClickOutside = FALSE, inputId = "saReset")
     })  

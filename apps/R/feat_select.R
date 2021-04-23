@@ -48,7 +48,7 @@ feat_selectUI <- function(id){
                The features will be sorted according to the
                  importance score.",
                tags$a(href="https://www.datacamp.com/community/tutorials/feature-selection-R-boruta",
-                      em("Boruta"))),
+                      em("(More info on Boruta)"))),
                em("The absolute importance score from the two different methods
                are not in the same range and therefore are not to be compared."),
                br(),
@@ -116,6 +116,10 @@ feat_selectServer <- function(id, final_listings, return_val1, trigger_reset){
       validate(
         need(length(input$Inum_vars_corr)>1, 'Please select more variables')
       )
+      
+      shinyalert(text="Preparing correlation matrix, please wait...",
+                 type="info", showConfirmButton = FALSE, closeOnEsc = FALSE)
+      
       listing_prep2_num <- final_listings %>%
         select(input$Inum_vars_corr)
       
@@ -150,10 +154,13 @@ feat_selectServer <- function(id, final_listings, return_val1, trigger_reset){
         gheat <- gheat +
           geom_text(data = mlt_df, aes(Var1, Var2,
                                        label = round(Correlation, 1)), size = 3)
+        dynamic_size = 2
+      } else {
+        dynamic_size = 1
       }
       
       gx <- gheat + 
-        geom_point(data = mlt_df_x, shape=4, size=1.5,
+        geom_point(data = mlt_df_x, shape=4, size=1.5*dynamic_size,
                    stroke=0.1, fill=NA, color="black") +
         scale_shape_identity() +
         theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1, size = 7),
@@ -167,6 +174,7 @@ feat_selectServer <- function(id, final_listings, return_val1, trigger_reset){
               legend.title = element_text(size = 7),
               legend.text = element_text(size = 6))
       
+      closeAlert()
       output$Oplot_corrmat <- renderPlotly({
         ggplotly(gx, tooltip=c('text'))
         })
@@ -179,6 +187,9 @@ feat_selectServer <- function(id, final_listings, return_val1, trigger_reset){
         need(length(return_val1$datasplit())>1,
              'Please go through data splitting process')
       )
+      
+      shinyalert(text="Feature importance calculation in progress, please wait...",
+                 type="info", showConfirmButton = FALSE, closeOnEsc = FALSE)
       
       listing_train <- training(return_val1$datasplit()) %>%
         na.omit() %>%
@@ -204,9 +215,6 @@ feat_selectServer <- function(id, final_listings, return_val1, trigger_reset){
         theme(plot.title = element_text(size = 10),
               axis.title.y = element_blank())
 
-      output$Oplot_ftimp_rf <- renderPlotly(
-        ggplotly(rf_p, tooltip = c('text')))
-
       # Feature importance using boruta
       boruta_output <- Boruta(f, data = listing_train,
                               maxRuns = 50,
@@ -228,6 +236,11 @@ feat_selectServer <- function(id, final_listings, return_val1, trigger_reset){
         theme(plot.title = element_text(size = 10),
               axis.title.y = element_blank())
 
+      closeAlert()
+      
+      output$Oplot_ftimp_rf <- renderPlotly(
+        ggplotly(rf_p, tooltip = c('text')))
+      
       output$Oplot_ftimp_b <- renderPlotly({
         ggplotly(boruta_p)})
 

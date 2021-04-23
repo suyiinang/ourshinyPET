@@ -17,13 +17,10 @@ data_transformUI <- function(id){
                   choices = character(0),
                   width = "900px"),
                 fluidRow(
-                  column(1,
-                         actionButton(NS(id, "btn_all_num"), "Select all")
-                         ),
-                  column(1,
+                  column(10,
+                         actionButton(NS(id, "btn_all_num"), "Select all"),
                          actionButton(NS(id, "btn_des_all_num"), "Deselect all")
                          ),
-                  column(8,),
                   column(2,
                          actionButton(NS(id, "btn_rcpTransform"), "Prepare recipe")
                          ),

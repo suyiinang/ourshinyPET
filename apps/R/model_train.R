@@ -52,7 +52,7 @@ model_trainUI <- function(id){
                                    plotlyOutput(NS(id, "Oplot_GLMpred")) %>%
                                      withSpinner(color="#FF5A5F"),
                                    br(),
-                                   dataTableOutput(NS(id, "Otbl_finalGLM"))
+                                   tableOutput(NS(id, "Otbl_finalGLM"))
                           )
                           )
              ),
@@ -72,7 +72,7 @@ model_trainUI <- function(id){
                                      plotlyOutput(NS(id, "Oplot_DTpred")) %>%
                                        withSpinner(color="#FF5A5F"),
                                      br(),
-                                     dataTableOutput(NS(id, "Otbl_finalDT"))
+                                     tableOutput(NS(id, "Otbl_finalDT"))
                                    ) 
                           )
              )
@@ -93,7 +93,7 @@ model_trainUI <- function(id){
                                      plotlyOutput(NS(id, "Oplot_RFpred")) %>%
                                        withSpinner(color="#FF5A5F"),
                                      br(),
-                                     dataTableOutput(NS(id, "Otbl_finalRF"))
+                                     tableOutput(NS(id, "Otbl_finalRF"))
                                    ) 
                           )
              )
@@ -114,7 +114,7 @@ model_trainUI <- function(id){
                                      plotlyOutput(NS(id, "Oplot_BTpred")) %>%
                                        withSpinner(color="#FF5A5F"),
                                      br(),
-                                     dataTableOutput(NS(id, "Otbl_finalBT"))
+                                     tableOutput(NS(id, "Otbl_finalBT"))
                                    ) 
                           )
              )
@@ -162,36 +162,52 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
         Rglm_result(NULL)
         Rglm_wf(NULL)
         Rfinal_glm_wf(NULL)
+        Rfinal_glm(NULL)
         Rfinal_metric_glm(NULL)
         output$OplotGLMtrain <- renderPlotly(NULL)
         output$Oplot_GLMcoeff <- renderPlotly(NULL)
         output$Oplot_GLMpred <- renderPlotly(NULL)
-        output$Otbl_finalGLM <- renderDataTable(NULL)
+        output$Otbl_finalGLM <- renderTable(NULL)
         Rtree_result(NULL)
         Rtree_wf(NULL)
         Rfinal_tree_wf(NULL)
+        Rfinal_tree(NULL)
         Rfinal_metric_tree(NULL)
         output$OplotDTtrain <- renderPlotly(NULL)
         output$Oplot_DTvip <- renderPlot(NULL)
         output$Oplot_DTpred <- renderPlotly(NULL)
-        output$Otbl_finalDT <- renderDataTable(NULL)
+        output$Otbl_finalDT <- renderTable(NULL)
         Rrandomf_result(NULL)
         Rrandomf_wf(NULL)
         Rfinal_randomf_wf(NULL)
+        Rfinal_randomf(NULL)
         Rfinal_metric_randomf(NULL)
         output$OplotRFtrain <- renderPlotly(NULL)
         output$Oplot_RFvip <- renderPlot(NULL)
         output$Oplot_RFpred <- renderPlotly(NULL)
-        output$Otbl_finalRF <- renderDataTable(NULL)
+        output$Otbl_finalRF <- renderTable(NULL)
         Rxgboost_result(NULL)
         Rxgboost_wf(NULL)
         Rfinal_xgboost_wf(NULL)
+        Rfinal_xgboost(NULL)
         Rfinal_metric_xgboost(NULL)
         output$OplotBTtrain <- renderPlotly(NULL)
         output$Oplot_BTvip <- renderPlot(NULL)
         output$Oplot_BTpred <- renderPlotly(NULL)
-        output$Otbl_finalBT <- renderDataTable(NULL)
+        output$Otbl_finalBT <- renderTable(NULL)
         
+        updateNavlistPanel(session,
+                           inputId = "navpanel_BT",
+                           selected = "Info")
+        updateNavlistPanel(session,
+                           inputId = "navpanel_RF",
+                           selected = "Info")
+        updateNavlistPanel(session,
+                           inputId = "navpanel_DT",
+                           selected = "Info")
+        updateNavlistPanel(session,
+                           inputId = "navpanel_GLM",
+                           selected = "Info")
         updateNavlistPanel(session,
                            inputId = "navpanel_LM",
                            selected = "Info")
@@ -300,7 +316,8 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       })
     })
     
-    output$Ocoeff_est <- renderPlotly({
+    observeEvent(RfitResult(),{
+      output$Ocoeff_est <- renderPlotly({
       validate(
         need(RfitResult(), "Please train the model first"))
       #select p-value threshold
@@ -315,18 +332,18 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
         mutate(p.value_neg = -p.value)
       
         #plot
-        ggplotly(
-          sig_lm_predictors %>%
-            ggplot(aes(x = estimate, y = reorder(term, !!as.symbol(sort_by)),
-                       text = paste0(term, "\nestimate: ", round(estimate,3),
-                                     "\n95% CI: ", round(estimate-std.error,2),
-                                     "-", round(estimate+std.error,2),
-                                     "\np-value: ", round(p.value,5)))) +
-            geom_pointrange(aes(xmin = estimate-std.error, xmax = estimate+std.error)) +
-            geom_vline(xintercept = 0, linetype = "dashed", color = "#484848") +
-            theme(axis.title.y = element_blank()),
-          tooltip = c('text')
-      )
+      lm_p <- sig_lm_predictors %>%
+        ggplot(aes(x = estimate, y = reorder(term, !!as.symbol(sort_by)),
+                   text = paste0(term, "\nestimate: ", round(estimate,3),
+                                 "\n95% CI: ", round(estimate-std.error,2),
+                                 "-", round(estimate+std.error,2),
+                                 "\np-value: ", round(p.value,5)))) +
+        geom_pointrange(aes(xmin = estimate-std.error, xmax = estimate+std.error)) +
+        geom_vline(xintercept = 0, linetype = "dashed", color = "#484848") +
+        theme(axis.title.y = element_blank())
+        
+      ggplotly(lm_p, tooltip = c('text'))
+    })
     })
     
   observeEvent(input$btn_testLM, {
@@ -589,6 +606,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
   Rglm_result <- reactiveVal(NULL)
   Rglm_wf <- reactiveVal(NULL)
   Rfinal_glm_wf <- reactiveVal(NULL)
+  Rfinal_glm <- reactiveVal(NULL)
   Rfinal_metric_glm <- reactiveVal(NULL)
   output$OplotGLMtrain <- renderPlotly(NULL)
   output$Oplot_GLMcoeff <- renderPlotly(NULL)
@@ -702,6 +720,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     Rfinal_glm_wf(final_glm_wf)
     final_glm <- final_glm_wf %>%
       fit(data = listing_train)
+    Rfinal_glm(final_glm)
     glm_p <- final_glm %>%
       pull_workflow_fit() %>%
       tidy() %>%
@@ -753,9 +772,10 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     final_metric_glm <- collect_metrics(final_fit_glm)
     Rfinal_metric_glm(final_metric_glm)
     
-    output$Otbl_finalGLM <- renderDataTable({
-      final_metric_glm
-    }, options = list(paging = FALSE, searching = FALSE, info = FALSE))
+    output$Otbl_finalGLM <- renderTable({
+      final_metric_glm %>%
+        select(-as.symbol(".config"))
+      })
     
   })
   ############## GLM end ##################
@@ -788,6 +808,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
   Rtree_result <- reactiveVal(NULL)
   Rtree_wf <- reactiveVal(NULL)
   Rfinal_tree_wf <- reactiveVal(NULL)
+  Rfinal_tree <- reactiveVal(NULL)
   Rfinal_metric_tree <- reactiveVal(NULL)
   output$OplotDTtrain <- renderPlotly(NULL)
   output$Oplot_DTvip <- renderPlot(NULL)
@@ -910,6 +931,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     Rfinal_tree_wf(final_tree_wf)
     final_tree <- final_tree_wf %>%
       fit(data = listing_train)
+    Rfinal_tree(final_tree)
     
     output$Oplot_DTvip <- renderPlot({
       final_tree %>%
@@ -965,9 +987,10 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     final_metric_tree <- collect_metrics(final_fit_tree)
     Rfinal_metric_tree(final_metric_tree)
     
-    output$Otbl_finalDT <- renderDataTable({
-      final_metric_tree
-    }, options = list(paging = FALSE, searching = FALSE, info = FALSE))
+    output$Otbl_finalDT <- renderTable({
+      final_metric_tree %>%
+        select(-as.symbol(".config"))
+      })
   })
   
   ############## DT end ##################
@@ -1000,6 +1023,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
   Rrandomf_result <- reactiveVal(NULL)
   Rrandomf_wf <- reactiveVal(NULL)
   Rfinal_randomf_wf <- reactiveVal(NULL)
+  Rfinal_randomf <- reactiveVal(NULL)
   Rfinal_metric_randomf <- reactiveVal(NULL)
   output$OplotRFtrain <- renderPlotly(NULL)
   output$Oplot_RFvip <- renderPlot(NULL)
@@ -1121,6 +1145,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     Rfinal_randomf_wf(final_randomf_wf)
     final_randomf <- final_randomf_wf %>%
       fit(data = listing_train)
+    Rfinal_randomf(final_randomf)
     
     output$Oplot_RFvip <- renderPlot({
       final_randomf %>%
@@ -1172,9 +1197,10 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     final_metric_randomf <- collect_metrics(final_fit_randomf)
     Rfinal_metric_randomf(final_metric_randomf)
     
-    output$Otbl_finalRF <- renderDataTable({
-      final_metric_randomf
-    }, options = list(paging = FALSE, searching = FALSE, info = FALSE))
+    output$Otbl_finalRF <- renderTable({
+      final_metric_randomf %>%
+        select(-as.symbol(".config"))
+      })
   })
   
   ############## RF end ##################
@@ -1202,6 +1228,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
   Rxgboost_result <- reactiveVal(NULL)
   Rxgboost_wf <- reactiveVal(NULL)
   Rfinal_xgboost_wf <- reactiveVal(NULL)
+  Rfinal_xgboost <- reactiveVal(NULL)
   Rfinal_metric_xgboost <- reactiveVal(NULL)
   output$OplotBTtrain <- renderPlotly(NULL)
   output$Oplot_BTvip <- renderPlot(NULL)
@@ -1321,6 +1348,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     Rfinal_xgboost_wf(final_xgboost_wf)
     final_xgboost <- final_xgboost_wf %>%
       fit(data = listing_train)
+    Rfinal_xgboost(final_xgboost)
     
     output$Oplot_BTvip <- renderPlot({
       final_xgboost %>%
@@ -1372,9 +1400,10 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     final_metric_xgboost <- collect_metrics(final_fit_xgboost)
     Rfinal_metric_xgboost(final_metric_xgboost)
     
-    output$Otbl_finalBT <- renderDataTable({
-      final_metric_xgboost
-    }, options = list(paging = FALSE, searching = FALSE, info = FALSE))
+    output$Otbl_finalBT <- renderTable({
+      final_metric_xgboost %>%
+        select(-as.symbol(".config"))
+      })
   })
   
   ############## BT end ##################
@@ -1397,19 +1426,22 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     fm_glm = Rfinal_metric_glm,
     glm_result = Rglm_result,
     glm_wf = Rglm_wf,
+    final_glm = Rfinal_glm,
     
     fm_tree = Rfinal_metric_tree,
     tree_result = Rtree_result,
     tree_wf = Rtree_wf,
+    final_tree = Rfinal_tree,
     
     fm_randomf = Rfinal_metric_randomf,
     randomf_result = Rrandomf_result,
     randomf_wf = Rrandomf_wf,
+    final_randomf = Rfinal_randomf,
     
     fm_xgb = Rfinal_metric_xgboost,
     xgb_result = Rxgboost_result,
     xgb_wf = Rxgboost_wf,
-    
+    final_xgb = Rfinal_xgboost,
     datasplit = return_trf$datasplit
   ))
   })
