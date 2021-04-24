@@ -404,7 +404,6 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
         tableOutput(NS(id, "Ovalidation_lm")) %>%
           withSpinner(color="#FF5A5F"),
         br(),
-        
         actionButton(NS(id, "btn_checkError"), "Check prediction error")
       )
     })
@@ -426,70 +425,6 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     updateNavlistPanel(session,
                        inputId = "navpanel_LM",
                        selected = "Prediction error")
-    
-    output$Opred_error <- renderPlotly({
-      pval <- input$Isig_lvl
-      
-      #get significant features
-      sig_lm_predictors <- RfitResult() %>%
-        filter(p.value <= pval)
-      
-      top_n_predictor <- input$Itop_predictor
-      topn_val <- input$Itop_error
-      n_column <- if_else(top_n_predictor == 3, as.integer(2), as.integer(3))
-      
-      slp <- sig_lm_predictors %>%
-        filter(term != "(Intercept)") %>%
-        arrange(p.value) %>%
-        top_n(top_n_predictor) %>%
-        pull(term)
-  
-      rcpTransform1 <- return_trf$rcp1()
-      listing_train <- training(return_trf$datasplit())
-      listing_pred <- Rlisting_pred()
-  
-      listingTrain_T <- rcpTransform1 %>% prep() %>% juice()
-  
-      slp_train <- listingTrain_T %>%
-        select(all_of(slp), !!as.symbol(target_var())) %>%
-        gather()
-  
-      top_err_id <- listing_pred %>%
-        mutate(pred_error = abs(!!as.symbol(target_var())-.pred)) %>%
-        arrange(-pred_error) %>%
-        top_n(topn_val) %>%
-        pull(id)
-      
-      top_err_tbl <- listing_pred %>%
-        filter(id %in% top_err_id) %>%
-        mutate(pred_error = abs(!!as.symbol(target_var())-.pred)) %>%
-        select(id, pred_error, !!as.symbol(target_var()), all_of(slp))
-      
-      Rtop_err_tbl(top_err_tbl)
-      
-      top_err <- listing_pred %>%
-        filter(id %in% top_err_id) %>%
-        mutate(pred_error = abs(!!as.symbol(target_var())-.pred)) %>%
-        select(all_of(slp), id, pred_error, !!as.symbol(target_var())) %>%
-        gather(key, value, -id, -pred_error) %>%
-        mutate(id = as.factor(id))
-  
-      color_vec <- rep(c("#FF5A5F"), times = length(unique(top_err$id)))
-      
-      ggplotly(ggplot(NULL, aes(x = value)) +
-                 geom_histogram(data = slp_train, color = "grey70",
-                                fill = "grey60", alpha = 0.5) +
-                 geom_jitter(data = top_err, aes(y = 0, color = id,
-                                                 text = paste0("id: ", id,
-                                                               "\n", key, ":", round(value,2),
-                                                               "\nerror: ", round(pred_error,2))),
-                             alpha = 0.7, width = 0.01, height = 50) +
-                 scale_color_manual(values = color_vec) +
-                 facet_wrap(~ key, scales = "free_x", ncol = n_column) +
-                 theme(panel.spacing.y = unit(1, "lines"),
-                       panel.spacing.x = unit(1, "lines")),
-               tooltip = c('text'), height = 250*ceiling(top_n_predictor/3))
-      })
     
     output$Oerror_tbl <- renderDataTable(
       Rtop_err_tbl(), options = list(scrollX = TRUE,
@@ -515,16 +450,96 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
           ),
           column(4,
                  pickerInput(
-                   inputId = NS(id, "Isig_lvl"),
+                   inputId = NS(id, "Isig_lvl2"),
                    label = "p-value:",
-                   choices = c("0.01", "0.05", "0.1"),
-                   selected = "0.05")
+                   choices = c("0.01" = "0.01",
+                               "0.05" = "0.05",
+                               "0.1" = "0.1",
+                               "All" = "1"),
+                   selected = input$Isig_lvl)
           )
         ),
         plotlyOutput(NS(id, "Opred_error"), height = 'auto') %>%
           withSpinner(color="#FF5A5F"),
         dataTableOutput(NS(id, "Oerror_tbl"))
       )
+    })
+    
+    observeEvent(input$Isig_lvl2,{
+      pval <- input$Isig_lvl2
+      
+      #get significant features
+      sig_lm_predictors <- RfitResult() %>%
+        filter(p.value <= pval)
+      
+      updateSliderInput(session = session,
+                        inputId = "Itop_predictor",
+                        max = length(sig_lm_predictors$term)
+                        )
+    })
+    
+    output$Opred_error <- renderPlotly({
+      pval <- input$Isig_lvl2
+      
+      #get significant features
+      sig_lm_predictors <- RfitResult() %>%
+        filter(p.value <= pval)
+      
+      top_n_predictor <- input$Itop_predictor
+      topn_val <- input$Itop_error
+      n_column <- if_else(top_n_predictor == 3, as.integer(2), as.integer(3))
+      
+      slp <- sig_lm_predictors %>%
+        filter(term != "(Intercept)") %>%
+        arrange(p.value) %>%
+        top_n(-top_n_predictor) %>%
+        pull(term)
+      
+      rcpTransform1 <- return_trf$rcp1()
+      listing_train <- training(return_trf$datasplit())
+      listing_pred <- Rlisting_pred()
+      
+      listingTrain_T <- rcpTransform1 %>% prep() %>% juice()
+      
+      slp_train <- listingTrain_T %>%
+        select(all_of(slp), !!as.symbol(target_var())) %>%
+        gather()
+      
+      top_err_id <- listing_pred %>%
+        mutate(pred_error = abs(!!as.symbol(target_var())-.pred)) %>%
+        arrange(-pred_error) %>%
+        top_n(topn_val) %>%
+        pull(id)
+      
+      top_err_tbl <- listing_pred %>%
+        filter(id %in% top_err_id) %>%
+        mutate(pred_error = abs(!!as.symbol(target_var())-.pred)) %>%
+        select(id, pred_error, !!as.symbol(target_var()), all_of(slp))
+      
+      Rtop_err_tbl(top_err_tbl)
+      
+      top_err <- listing_pred %>%
+        filter(id %in% top_err_id) %>%
+        mutate(pred_error = abs(!!as.symbol(target_var())-.pred)) %>%
+        select(all_of(slp), id, pred_error, !!as.symbol(target_var())) %>%
+        gather(key, value, -id, -pred_error) %>%
+        mutate(id = as.factor(id))
+      
+      color_vec <- rep(c("#FF5A5F"), times = length(unique(top_err$id)))
+      
+      ggplotly(ggplot(NULL, aes(x = value)) +
+                 geom_histogram(data = slp_train, color = "grey70",
+                                fill = "grey60", alpha = 0.5) +
+                 geom_jitter(data = top_err, aes(y = 0, color = id,
+                                                 text = paste0("id: ", id,
+                                                               "\n", key, ":", round(value,2),
+                                                               "\nerror: ", round(pred_error,2))),
+                             alpha = 0.7, width = 0.01, height = 50) +
+                 scale_color_manual(values = color_vec) +
+                 facet_wrap(~ key, scales = "free_x", ncol = n_column) +
+                 theme(panel.spacing.y = unit(1, "lines"),
+                       panel.spacing.x = unit(1, "lines")),
+               tooltip = c('text'), height = 250*ceiling(top_n_predictor/3))
     })
     
   })
