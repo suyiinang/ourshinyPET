@@ -256,7 +256,10 @@ ui <- dashboardPage(
                                      tags$div(
                                        'For more information on this project, please visit our',
                                        tags$a(href="https://ourshinypet.netlify.app/", 
-                                              "website")
+                                              "website"),
+                                      h4('User Guide'),
+                                      p('To optimise your user experience, please refer to our user guide.'),
+                                      actionButton("user_guide", "User Guide")
                                      )
                               ),
                               column(width = 6,
@@ -284,7 +287,7 @@ ui <- dashboardPage(
                                        width = 3
                                      ),
                                      mainPanel(
-                                       withSpinner(leafletOutput('leaf_map', height = 450),type = 6, color = "#FF5A5F", size = 2),
+                                       withSpinner(leafletOutput('leaf_map', height = 600),type = 6, color = "#FF5A5F", size = 2),
                                        conditionalPanel(
                                          condition = "input.map_type == 'Choropleth map'",
                                          DT::dataTableOutput('szTable')
@@ -479,7 +482,15 @@ ui <- dashboardPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
     
-    
+  ###############
+  # intro tab
+  ##############
+  
+  observeEvent(input$user_guide, {
+    # Absolute path to a pdf
+    file.show(file.path(".","www", "ShinyPET_userguide.pdf"))
+  })
+  
     ###############
     # observe tab
     ##############
@@ -657,7 +668,7 @@ server <- function(input, output) {
                         axis.ticks.y=element_blank(),
                         axis.text.x = element_text(angle = 45))
     
-    add_box <- ggplot(final_listings, aes(x = x_var, y = y_var)) + 
+    add_box <- ggplot(final_listings, aes(x = reorder(x_var, y_var, na.RM = TRUE), y = y_var)) + 
       labs(
         title = paste(input$chart_type, 'plot of ', input$select_x, ' and ', input$select_y0),
         x = paste(input$select_x),
@@ -665,10 +676,10 @@ server <- function(input, output) {
         colour = paste(input$colour)) +
       plot_theme()+
       geom_boxplot(aes(fill = '#FF5A5F'),outlier.shape = NA) + 
-      stat_summary(fun.y=mean, geom="point", shape=20, size=5, color="blue", fill="blue") + 
+      stat_summary(fun.y=mean, geom="point", shape=20, size=1, color="blue", fill="blue") + 
       text_theme
     
-    add_box_facet <- ggplot(final_listings, aes(x = x_var, y = y_var)) + 
+    add_box_facet <- ggplot(final_listings, aes(x = reorder(x_var, y_var, na.RM = TRUE), y = y_var)) + 
       labs(
         title = paste(input$chart_type, 'plot of ', input$select_x, ' and ', input$select_y0, "facet wrap by", input$facet),
         x = paste(input$select_x),
@@ -679,7 +690,7 @@ server <- function(input, output) {
       facet_wrap(~get(input$facet)) +
       text_theme
     
-    add_c <- ggplot(final_listings, aes(x = x_var, y = y_var)) + 
+    add_c <- ggplot(final_listings, aes(x = reorder(x_var, y_var, na.RM = TRUE), y = y_var)) + 
       labs(
         title = paste(input$chart_type, 'plot of ', input$select_x, ' and ', input$select_y0),
         x = paste(input$select_x),
@@ -689,7 +700,7 @@ server <- function(input, output) {
       geom_boxplot(aes(fill = ccat), outlier.shape = NA) +
       text_theme
     
-    add_c_facet <- ggplot(final_listings, aes(x = x_var, y = y_var)) + 
+    add_c_facet <- ggplot(final_listings, aes(x = reorder(x_var, y_var, na.RM = TRUE), y = y_var)) + 
       labs(
         title = paste(input$chart_type, 'plot of ', input$select_x, ' and ', input$select_y0, "facet wrap by", input$facet),
         x = paste(input$select_x),
@@ -809,7 +820,6 @@ server <- function(input, output) {
     
   })
   
-  ## conf level
   
   output$conf_lev <- renderUI({
     if(plot_type() %in% c(-1,2)){
@@ -867,7 +877,8 @@ server <- function(input, output) {
   
   output$pvalue <- renderText({
     vals <- ttestout()
-    vals$p.value
+    pval <- round(vals$p.value,3)
+    paste(pval)
   })
   
   
@@ -995,7 +1006,8 @@ server <- function(input, output) {
   
   output$pvalue_cortest <- renderText({
     vals <- cor_out()
-    vals$p.value
+    pval <- round(vals$p.value,3)
+    paste(pval)
   })
   
   ############

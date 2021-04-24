@@ -56,26 +56,34 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Introduction
 
-A clear statement of the issues or/and problems your project addresses.
+With the explosion of affordable data storage and processing technologies, the **demand for data-driven decision-making** (DDDM) has increased significantly. Research has shown that the use of data driven decision making through analytics tools had a positive impact on firm performance. Although there is an extensive range of commercial statistical tools, they are often **subscription-based** and **demand good technical knowledge** to mine and draw insights from. Therefore, it may not appeal to the average user. 
 
 # Motivation
 
-An explanation of why the issues and/or problems are interesting and what make them difficult to solve.
+This project was motivated by the **increasing demand for data analytics** coupled with the **lack of open source tools** for users to perform analytics to undercover meaningful patterns from structured, textual and spatial data.
+
+Using a collection of selected R packages, we have developed a R-Shiny application for the average user to perform exploratory and confirmatory analysis, text mining and predictive analysis to formulate insights and make data based decisions. With our application, we **aim to encourage anyone and everyone to make data-based decisions effortlessly**.
 
 # Approach
 
 A description of the techniques or algorithms you used to solve the problem.
 
-## Exploratory
+3 modules
+list of packages
+design approach
+wrangling -> output approach
 
-## Text
+# Exploratory 
 
-## Predictive
+asy include 3 modules write up
 
-# Results
+# Text
 
-Screenshots and a working demo of the system you built.
+# Predictive
 
+
+
+examples to be removed
 ```{r mytable, out.width='80%'}
 knitr::kable(iris[1:10, 1:4], caption = 'Table caption.',align = 'c',"html")
 ```
@@ -100,9 +108,9 @@ plot(x = data$Sepal.Length,
 
 # Further work
 
-An explanation of how the work could be extended.
-
-
+- Include a data load and wrangling function to accommodate different datasets.
+- Combine text and explore module with coordinated linked views for multi-dimensional exploration.
+- Predictive models currently limited to 5 models, additional models such as neural network can be included to provide user with wider model selection  
 
 
 ```{r, include=FALSE}
