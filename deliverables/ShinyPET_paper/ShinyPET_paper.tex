@@ -101,12 +101,14 @@ With the explosion of affordable data storage and processing
 technologies, the demand for data-driven decision-making (DDDM) has
 increased significantly. DDDM refers to the systematic analysis,
 examination and integration of data to making strategic decisions,
-rather than based on intuition or observation alone (Mandinach, 2012).
+rather than based on intuition or observation alone (Mandinach,
+2012){[}\protect\hyperlink{ref-doi:10.1080ux2f00461520.2012.667064}{3}{]}.
 As well-published Geoffrey Moore opines, ``Without big data analytics,
 companies are blind and deaf, wandering out onto the Web like deer on a
-freeway.'' Research by (Yasmin, 2020) found that the use of data driven
-decision making through analytics tools had a positive impact on firm
-performance.
+freeway.'' Research by Yasmin, M et
+al.~(2020){[}\protect\hyperlink{ref-https:ux2fux2fdoi.orgux2f10.1016ux2fj.jbusres.2020.03.028}{5}{]}
+found that the use of data driven decision making through analytics
+tools had a positive impact on firm performance.
 
 \hypertarget{motivation-of-the-application}{%
 \section{Motivation of the
@@ -145,6 +147,23 @@ would be able to make data-based decisions effortlessly.
 \section{Review and critic on past
 works}\label{review-and-critic-on-past-works}}
 
+Radiant application {[}\protect\hyperlink{ref-radiant2019}{4}{]}, an
+open-source platform-independent browser-based interface for business
+analytics in R, illustrate the robustness of Rshiny for web-based
+application. Developed to promote quick and reproducible data analytics,
+the application provides interactivity and flexibility in performing
+visualisation, statistical and predictive analysis. Most of the plots
+produced are of static nature and can be enhanced by wrapping plotly
+around them. Furthermore, for statistical testing, users are expected to
+have a basic understanding of statistical testing methods as they are
+first required to select their testing method before proceeding, this
+can be enhanced by automating testing methods based on inputs.
+Additionally, the statistical testing and visualisation are placed in
+separate tabs, user experienced can be improved by placing both the
+visualise and statistical results on a single page. Lastly, more recent
+package such as visNetwork allows interactive tree visualisation which
+will improve the assessment of decision tree model.
+
 Lu, Y., Garcia, R., Hansen, B. et al.~(2017)
 {[}\protect\hyperlink{ref-https:ux2fux2fdoi.orgux2f10.1111ux2fcgf.13210}{2}{]}
 provides a comprehensive summary of research on Predictive Visual
@@ -154,16 +173,6 @@ selection, incremental learning, model comparison and result
 exploration. The overall goal of visual analytics is to support
 explanation in each step of predictive analytics exercise which is also
 our motivation in developing this application.
-
-Radiant package {[}\protect\hyperlink{ref-radiant2019}{3}{]}, an
-open-source platform-independent browser-based interface for business
-analytics in R, illustrate the robustness of Rshiny for web-based
-application. Developed to promote quick and reproducible data analytics,
-the package provides interactivity and flexibility in performing
-predictive analysis. Most of the plots produced are of static nature and
-can be enhanced by wrapping plotly around them. In addition, more recent
-package such as visNetwork allows interactive tree visualisation which
-will improve the assessment of decision tree model.
 
 In R community, Tidymodels
 {[}\protect\hyperlink{ref-tidymodels2020}{1}{]} has gained interest by
@@ -296,6 +305,109 @@ adjust statistical test.
 \hypertarget{text-module}{%
 \subsection{Text module}\label{text-module}}
 
+\hypertarget{text-module-1}{%
+\subsection{Text module}\label{text-module-1}}
+
+The text module usitlise various text mining techniques to transform
+unstructured text i.e.~reviews into structured format to identify
+patterns and bring about meaninigful insights.
+
+Prior to application of text mining techniques, text preprocessing has
+to be carried out. This involves the use of tokenisation, stemming and
+lematisation. Tokenisation is the process of splitting a column of
+reviews into tokens such that they are flatenned into the format of
+one-token-per-row. Stemming is the process of seperating the prefixes
+and suffixes from words to derive the root word form and meaning.
+
+\hypertarget{token-frequency-submodule}{%
+\subsubsection{Token Frequency
+Submodule}\label{token-frequency-submodule}}
+
+To visualise token frequency, wordcloud is commonly used. Worldcloud
+provides an easy way to show how frequent a word appears in a corpus. In
+wordcloud, the size of a word indicates how frequent the word appears in
+a given text.
+
+Other than condisdering words as individual units, ``ngrams'' are also
+used to tokenise pairs of adajacent words. ngrams provide context in
+sentiment analysis. For instance, while the word ``happy'' can be
+positive, in a sentence which containts the words ``not happy'' would
+mean otherwise. Hence, performing sentiment analysis on bigram allow us
+to examine sentiment-associated words.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/tokenfrequency} 
+
+}
+
+\caption{Interface and components of Explore and Confirm section}\label{fig:unnamed-chunk-5}
+\end{figure}
+
+There are two components: on the left is the wordcloud, and on the right
+is the bar chart the ranks the frequency of word in descending order.
+From the chart, it can be observed that the words ``clean,'' ``stay,''
+``location,'' and ``nice'' occurred most frequently. This could suggest
+that cleanliness of the environement/room is mentioned the most; it
+could mean that travellers generally prefer clean room. Additionally,
+location is mentioned the second-most, suggesting that a location nearer
+to city for convenience, or q quiet location is important as customers.
+
+\hypertarget{sentiment-analysis-submodule}{%
+\subsubsection{Sentiment Analysis
+Submodule}\label{sentiment-analysis-submodule}}
+
+In this submodeule, 3 dictionaries were used to plot wordcloud that
+shows both the frequency and sentiments. First, AFINN lexicon measurs
+sentiment with a numeric score between -5 to 5. BING categorises words
+as either positive or negative. NRC categorise words into emotions.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/sentimentanalysis} 
+
+}
+
+\caption{Interface and components of Explore and Confirm section}\label{fig:unnamed-chunk-6}
+\end{figure}
+
+Users can select the various lexicons to view the wordcloud. To further
+value add to the wordcloud, a further visualisation is conducted. For
+AFINN, bar chart is plotted to show the spread and weightage of
+sentiments. For BING, the distribution of negative, positive and netural
+sentiments are shown. For NRC, a radial plot to show the tendency for
+customers to lean towards is shown.
+
+\hypertarget{topic-modelling-submodule}{%
+\subsubsection{Topic Modelling
+Submodule}\label{topic-modelling-submodule}}
+
+Latent Dirichlet allocation is an example of topic modeling algorithm,
+based on 2 principles: 1. Every document is a mixture of topics.For
+example, document A is 90\% topic on location and 10\% on host's
+hospitality. Whereas, document B is 30\% topic on location and 70\% on
+host's hospitality. 2. Every topic is a mixture of words. For instance,
+based on Airbnb data, one topic can be cleanliness, and the other topic
+can on amenities.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/topicmodelling} 
+
+}
+
+\caption{Interface and components of Explore and Confirm section}\label{fig:unnamed-chunk-7}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/correlationnetwork} 
+
+}
+
+\caption{Interface and components of Explore and Confirm section}\label{fig:unnamed-chunk-8}
+\end{figure}
+
 \hypertarget{predictive-module}{%
 \subsection{Predictive module}\label{predictive-module}}
 
@@ -317,7 +429,7 @@ highlights any potential bias in the training data set.
 
 }
 
-\caption{Data sampling and distribution plot}\label{fig:unnamed-chunk-5}
+\caption{Data sampling and distribution plot}\label{fig:unnamed-chunk-9}
 \end{figure}
 
 Feature selection - Correlation matrix with customised correlation type
@@ -330,7 +442,7 @@ correlation among variables.
 
 }
 
-\caption{Correlation matrix and variable importance}\label{fig:unnamed-chunk-6}
+\caption{Correlation matrix and variable importance}\label{fig:unnamed-chunk-10}
 \end{figure}
 
 Data transformation - Transformation steps from recipe package and plot
@@ -343,7 +455,7 @@ transformation steps are performed and on which variables.
 
 }
 
-\caption{Data transformation steps}\label{fig:unnamed-chunk-7}
+\caption{Data transformation steps}\label{fig:unnamed-chunk-11}
 \end{figure}
 
 Model training - Coefficient estimate or decision tree information as
@@ -355,7 +467,7 @@ interactive plot to improve result evaluation.
 
 }
 
-\caption{Training result evaluation}\label{fig:unnamed-chunk-8}
+\caption{Training result evaluation}\label{fig:unnamed-chunk-12}
 \end{figure}
 
 Model validation - Rsquare plot to visualise validation result along
@@ -367,7 +479,7 @@ with table of metric performance.
 
 }
 
-\caption{Validation result evaluation}\label{fig:unnamed-chunk-9}
+\caption{Validation result evaluation}\label{fig:unnamed-chunk-13}
 \end{figure}
 
 Prediction error assessment - Training set distribution plot is
@@ -380,7 +492,7 @@ prediction error.
 
 }
 
-\caption{Prediction error assessment}\label{fig:unnamed-chunk-10}
+\caption{Prediction error assessment}\label{fig:unnamed-chunk-14}
 \end{figure}
 
 Hyper-parameter tuning - Plot of model performance using different
@@ -393,7 +505,7 @@ performance.
 
 }
 
-\caption{Hyper-parameter tuning result}\label{fig:unnamed-chunk-11}
+\caption{Hyper-parameter tuning result}\label{fig:unnamed-chunk-15}
 \end{figure}
 
 Model selection - Plot of performance metrics from different models to
@@ -405,17 +517,113 @@ support model selection process.
 
 }
 
-\caption{Models performance comparison}\label{fig:unnamed-chunk-12}
+\caption{Models performance comparison}\label{fig:unnamed-chunk-16}
 \end{figure}
 
-\hypertarget{demonstration}{%
-\section{Demonstration}\label{demonstration}}
+The combination of these three modules along with its interactivity and
+usability would empower users to make data driven decisions with the
+insights generated.
 
-\begin{itemize}
-\tightlist
-\item
-  use case
-\end{itemize}
+\hypertarget{case-study-airbnb-singapore}{%
+\section{Case Study : Airbnb
+Singapore}\label{case-study-airbnb-singapore}}
+
+We selected Airbnbs in Singapore data as our case study due to its
+variety of data - structured, textual and location data.
+
+Since founded in 2008, Airbnb has revolutionised the tourism industry
+and has become one of the largest sharing economy. In 2019, Airbnb
+generated USD4.7b in global revenue with close to 7 million listings on
+its
+website{[}\protect\hyperlink{ref-airbnb2021}{\textbf{airbnb2021?}}{]}.
+Airbnb plays an important role of connecting hosts and travelers who
+would not typically interact in absence of the platform. However, given
+the sheer number of Airbnb listings available, Airbnb hosts face stiff
+competition not only from other Airbnb hosts, but also from hotels and
+service apartments. Meanwhile, for Airbnb guests, going through each
+listings and their reviews on Airbnb website can be quite overwhelming
+and a tedious process.
+
+Hence, this application allows users to analyse their needs and compare
+across other listings.
+
+The two main data used for analysis are the listings and reviews of
+Singapore Airbnb data, which were obtained from InsideAirbnb on the 27
+January 2021. The listing dataset contains close to four thousand
+listings with 74 variables, while the review dataset consist of fifty
+thousand reviews and 6 variables.
+
+In order to reduce the loading time of the application, the datasets
+were preprocess prior with only the cleaned dataset loaded. In
+additional to the usual pre-processing steps, redundant variables such
+as listing id, url id, were removed. Additionally, unstructured
+variables were converted into structured variables by counting the
+length of the text.
+
+\hypertarget{geographical-distribution-of-airbnbs}{%
+\subsection{Geographical distribution of
+Airbnbs}\label{geographical-distribution-of-airbnbs}}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/usecase_explore} 
+
+}
+
+\caption{Point symbol map on the left, choropleth on the right}\label{fig:unnamed-chunk-17}
+\end{figure}
+
+The point symbol map reveals that Airbnbs are distributed throughout
+Singapore, with high concentration around town center. The 4 distinct
+hotspots are (1) Geylang/Kallang, (2) Lavender/ Rochor / Bugis , (3)
+Orchard and (4) Chinatown. Area (3) and (4) are mainly tourist areas -
+(3) Orchard is the main shopping belt of Singapore, while (4) Chinatown
+retains significant historical and cultural landmarks. Areas (1) and (2)
+are popular due to its low price per person (see choropleth of figure x)
+while staying relatively close to town. Additionally, we noticed that
+Airbnbs tend to be located along the MRT station track. Given that
+Airbnb guests tend to be more budget conscious, they would most likely
+use public transportation.
+
+Through the use of these maps, potential Airbnb investor can identify
+areas that are highly saturated and the average price per person of that
+area to estimate their investment yield before committing to the
+investment.
+
+\hypertarget{distribution-of-review-score-rating}{%
+\subsection{Distribution of review score
+rating}\label{distribution-of-review-score-rating}}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/usecase_explore2} 
+
+}
+
+\caption{Distribution of review score rating}\label{fig:unnamed-chunk-18}
+\end{figure}
+
+The overall Airbnb listing review score - `review\_scores\_rating,' is
+capped at 100 and has a left skewed distribution. This seems to suggest
+that either most guests tend to score their reviews positively, or
+Airbnbs with low ratings tend to delist and exit the Airbnb market.
+
+\hypertarget{confirmatory-analysis-of-superhost-and-review-scores-hosting}{%
+\subsection{Confirmatory analysis of superhost and review scores
+hosting}\label{confirmatory-analysis-of-superhost-and-review-scores-hosting}}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/usecase_explore4} 
+
+}
+
+\caption{Exploratory and Confirmatory Analysis on superhost status and review scores}\label{fig:unnamed-chunk-19}
+\end{figure}
+
+Figure x suggests that listings with the superhost status tend to have
+higher review scores as indicated the statistical test results where
+p-value is less than alpha of 0.05.
 
 \hypertarget{observing-correlation-among-variables}{%
 \subsection{Observing correlation among
@@ -435,7 +643,7 @@ can then select our variables more wisely.
 
 }
 
-\caption{Correlation among variables}\label{fig:unnamed-chunk-13}
+\caption{Correlation among variables}\label{fig:unnamed-chunk-20}
 \end{figure}
 
 \hypertarget{model-explanation}{%
@@ -461,7 +669,7 @@ and beds, representing more uncertainty in the estimate value.
 
 }
 
-\caption{Coefficient estimate and boxplot from exploratory module}\label{fig:unnamed-chunk-14}
+\caption{Coefficient estimate and boxplot from exploratory module}\label{fig:unnamed-chunk-21}
 \end{figure}
 
 \hypertarget{discussion}{%
@@ -489,7 +697,9 @@ charts, can be incorporated further. Additional hypothesis testing
 methods can be included such as non-parametric test for median,
 statistical test by pairs and others. The current application only
 supports two types of map, other spatial maps such as kernel density map
-and navigation map can be included.
+and navigation map can be included. Moreover, the explore and text
+module can be combined with views coordinated and linked to provide
+multiple dimensional exploration.
 
 The current predictive module is limited to 5 types of predictive model.
 In future, more predictive models can be added to the list, such as
@@ -513,22 +723,34 @@ project.
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{0}{0}
-\leavevmode\vadjust pre{\hypertarget{ref-tidymodels2020}{}}%
+\leavevmode\hypertarget{ref-tidymodels2020}{}%
 \CSLLeftMargin{{[}1{]} }
 \CSLRightInline{Kuhn, M. and Wickham, H. 2020. \emph{Tidymodels: A
 collection of packages for modeling and machine learning using tidyverse
 principles.}}
 
-\leavevmode\vadjust pre{\hypertarget{ref-https:ux2fux2fdoi.orgux2f10.1111ux2fcgf.13210}{}}%
+\leavevmode\hypertarget{ref-https:ux2fux2fdoi.orgux2f10.1111ux2fcgf.13210}{}%
 \CSLLeftMargin{{[}2{]} }
 \CSLRightInline{Lu, Y. et al. 2017. The state-of-the-art in predictive
 visual analytics. \emph{Computer Graphics Forum}. 36, 3 (2017),
 539--562.}
 
-\leavevmode\vadjust pre{\hypertarget{ref-radiant2019}{}}%
+\leavevmode\hypertarget{ref-doi:10.1080ux2f00461520.2012.667064}{}%
 \CSLLeftMargin{{[}3{]} }
+\CSLRightInline{Mandinach, E.B. 2012. A perfect time for data use: Using
+data-driven decision making to inform practice. \emph{Educational
+Psychologist}. 47, 2 (2012), 71--85.}
+
+\leavevmode\hypertarget{ref-radiant2019}{}%
+\CSLLeftMargin{{[}4{]} }
 \CSLRightInline{Nijs, V. 2019. \emph{Radiant -- business analytics using
 r and shiny}.}
+
+\leavevmode\hypertarget{ref-https:ux2fux2fdoi.orgux2f10.1016ux2fj.jbusres.2020.03.028}{}%
+\CSLLeftMargin{{[}5{]} }
+\CSLRightInline{Yasmin, M. et al. 2020. Big data analytics capabilities
+and firm performance: An integrated MCDM approach. \emph{Business
+Research}. 114, (2020), 1--15.}
 
 \end{CSLReferences}
 \setlength{\parindent}{0in}

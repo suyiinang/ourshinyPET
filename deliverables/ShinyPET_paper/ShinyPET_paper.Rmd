@@ -56,6 +56,9 @@ Lu, Y., Garcia, R., Hansen, B. et al. (2017) [@https://doi.org/10.1111/cgf.13210
 
 In R community, Tidymodels [@tidymodels2020] has gained interest by providing a framework for predictive modeling and machine learning. It is aligned with the tidyverse principles which leads to a tidier and consistent grammar in the predictive analytics process. Different models offered in Radiant package are also available for implementation in Tidymodels framework, which is why our application leverages Tidymodel as the main framework to conduct predictive analytics on Airbnb data.
 
+
+Zhang (2019) used text mining approaches including content analysis and topic modelling (Latent Dirichlet Allocation (LDA) method) to examine over 1 million Airbnb reviews across 50,933 listings in the United States of America (USA). Kiatkawsin, Sutherland & Kim (2020) also used LDA method to compare reviews between Hong Kong and Singapore. However, these articles do not provide visualiation of the methods used and are not interactive.
+
 # Design framework
 
 Our target users for this application are the average users without any programming or extensive statistical knowledge yet wants to make data driven decisions. Thus, the design of Shiny PET is based on 3 main principles - user-friendliness, interactivity and ease of understanding, yet comprehensive enough for users to make data driven decisions. The application's colour scheme is based on Airbnb's official colours - Raush, Babu and Foggy (type of gray). 
@@ -105,7 +108,49 @@ The chart was designed according to Shneiderman's interactive dynamics of highli
 Given that the application is tailored towards users that are not well versed in statistics, the statistical test was designed to be easy to understand, thus the test methods and results are automated based on the selected variables. An interactive slider is provided for user to easily adjust statistical test.
 
 ## Text module
+The text module usitlise various text mining techniques to transform unstructured text i.e. reviews into structured format to identify patterns and bring about meaninigful insights. 
 
+Prior to application of text mining techniques, text preprocessing has to be carried out. This involves the use of tokenisation, stemming and lematisation. Tokenisation is the process of splitting a column of reviews into tokens such that they are flatenned into the format of one-token-per-row. Stemming is the process of seperating the prefixes and suffixes from words to derive the root word form and meaning. Stemming algorithms work by cutting off the end or the beginning of the word, taking into account a list of common prefixes and suffixes that can be found in an inflected word. However, the stemming method changes words such as earlier to earli and checking to checkin as shown above. As such, this process was excluded.Lemmatization, on the other hand, takes into consideration the morphological analysis of the words.
+
+### Token Frequency Submodule 
+To visualise token frequency, wordcloud is commonly used. Worldcloud provides an easy way to show how frequent a word appears in a corpus. In wordcloud, the size of a word indicates how frequent the word appears in a given text. 
+
+Other than condisdering words as individual units, "ngrams" are also used to tokenise pairs of adajacent words. ngrams provide context in sentiment analysis. For instance, while the word "happy" can be positive, in a sentence which containts the words "not happy" would mean otherwise. Hence, performing sentiment analysis on bigram allow us to examine sentiment-associated words. 
+
+```{r fig.cap='Interface and components of Explore and Confirm section', out.width="100%"}
+include_graphics("images/tokenfrequency.png")
+```
+
+There are two components: on the left is the wordcloud, and on the right is the bar chart the ranks the frequency of word in descending order. From the chart, it can be observed that the words "clean", "stay", "location", and "nice" occurred most frequently. This could suggest that cleanliness of the environement/room is mentioned the most; it could mean that travellers generally prefer clean room. Additionally, location is mentioned the second-most, suggesting that a location nearer to city for convenience, or q quiet location is important as customers.  
+
+
+### Sentiment Analysis Submodule
+In this submodeule, 3 dictionaries were used to plot wordcloud that shows both the frequency and sentiments. First, AFINN lexicon measurs sentiment with a numeric score between -5 to 5. BING categorises words as either positive or negative. NRC categorise words into emotions.
+
+```{r fig.cap='Interface and components of Explore and Confirm section', out.width="100%"}
+include_graphics("images/sentimentanalysis.png")
+```
+
+Users can select the various lexicons to view the wordcloud. To further value add to the wordcloud, a further visualisation is conducted. For AFINN, bar chart is plotted to show the spread and weightage of sentiments. For BING, the distribution of negative, positive and netural sentiments are shown. For NRC, a radial plot to show the tendency for customers to lean towards is shown. From the chart, it shows that sentiments generally lean towards positive and joy, while less on sadness and surprise. 
+
+### Topic Modelling Submodule
+Latent Dirichlet allocation is an example of topic modeling algorithm, based on 2 principles: 1. Every document is a mixture of topics.For example, document A is 90% topic on location and 10% on host’s hospitality. Whereas, document B is 30% topic on location and 70% on host’s hospitality. 2. Every topic is a mixture of words. For instance, based on Airbnb data, one topic can be cleanliness, and the other topic can on amenities.
+
+```{r fig.cap='Interface and components of Explore and Confirm section', out.width="100%"}
+include_graphics("images/topicmodelling.png")
+```
+
+Users are able to select the number of topics they would like to understand further. For isntance, by selecting 2 topics, we can observe that the most common word in topic 1 is "x", "y", "z". THe most common words in topic 2 include "a", "b", "c". We can also observe that there are overalapping topics. An example of usage in topic modelling would be to improve search algorithe,/suggestions for usesr. By anyalysing the topics and develop subtopics, the most relevant listings e.g. cleanest room, or closest location could be shown to the users.
+
+### Correlation Network Submodule 
+Word occurences and correlations are commonly used to identify family of words. 
+
+```{r fig.cap='Interface and components of Explore and Confirm section', out.width="100%"}
+include_graphics("images/correlationnetwork.png")
+```
+
+There are 2 options. First the is X graph. 
+Second is the X graph. From the diagram, is can be seen that thereis strong connection between words such as "X" and "X", "Y" and "Y" and "Y". 
 
 ## Predictive module
 Our predictive module design framework follows Tidymodels framework for data pre-processing, model training, tuning, and validation. On top of that, feature selection are supported by other R packages such as ggcorplot (for correlation matrix), ranger and Boruta (for feature importance). The visualisation and interactivity are embedded in each step of predictive analytics as explained below.
