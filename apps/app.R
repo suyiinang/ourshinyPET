@@ -269,108 +269,6 @@ ui <- dashboardPage(
                         tabPanel("Observe",
                                  observeUI('observe')
                         ),
-                        tabPanel("Explore and confirm",
-                                 fluidPage(
-                                   titlePanel("Explore variables"),
-                                   sidebarLayout(
-                                     sidebarPanel(
-                                       selectInput(inputId = 'chart_type',
-                                                   label = 'Select chart type',
-                                                   choices = sort(c('Distribution',
-                                                                    "Boxplot",
-                                                                    "Mosaic",
-                                                                    "Scatter")),
-                                                   selected = "Distribution"),
-                                       uiOutput('x_ui'),
-                                       uiOutput('y_ui'),
-                                       uiOutput('colour'),
-                                       uiOutput('flip'),
-                                       uiOutput('facet'),
-                                       uiOutput('bins'),
-                                       selectInput(inputId = 'theme',
-                                                   label = 'Change theme',
-                                                   choices = names(themes),
-                                                   selected = 'Gray'),
-                                       conditionalPanel(
-                                         condition = "input.chart_type == 'Distribution'",
-                                         uiOutput('input_ttest')
-                                       ),
-                                       uiOutput('conf_lev'),
-                                       width = 3
-                                     ),
-                                     mainPanel(
-                                       
-                                       h4("Statistical test result (x and y variable only)"),
-                                       conditionalPanel(
-                                         condition = "input.chart_type == 'Distribution'",
-                                         withSpinner(textOutput('test_method'),type =7, color = "#FF5A5F", size = 1),
-                                         h5("Hypothesis:"),
-                                         withSpinner(textOutput('null_hypo_ttest'),type =7, color = "#FF5A5F", size = 1),
-                                         withSpinner( textOutput('alt_hypo_ttest'),type =7, color = "#FF5A5F", size = 1),
-                                         h5('Confident interval:'),
-                                         withSpinner(textOutput('ci'),type =7, color = "#FF5A5F", size = 1),
-                                         h5('p-value:'),
-                                         withSpinner(textOutput('pvalue'),type =7, color = "#FF5A5F", size = 1),
-                                         p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
-                                       ),
-                                       conditionalPanel(
-                                         condition = "input.chart_type == 'Boxplot'",
-                                         withSpinner(uiOutput('test_method_2ttest'),type =7, color = "#FF5A5F", size = 1),
-                                         withSpinner(uiOutput('test_method_anova'),type =7, color = "#FF5A5F", size = 1),
-                                         h5("Hypothesis:"),
-                                         withSpinner(textOutput('null_hypo_2ttest'),type =7, color = "#FF5A5F", size = 1),
-                                         withSpinner(textOutput('alt_hypo_2ttest'),type =7, color = "#FF5A5F", size = 1),
-                                         h5('p-value:'),
-                                         withSpinner(uiOutput('pvalue_2ttest'),type =7, color = "#FF5A5F", size = 1),
-                                         withSpinner(uiOutput('pvalue_anova'),type =7, color = "#FF5A5F", size = 1),
-                                         p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
-                                       ),
-                                       conditionalPanel(
-                                         condition = "input.chart_type == 'Mosaic'",
-                                         withSpinner(textOutput('test_method_chisq'),type =7, color = "#FF5A5F", size = 1),
-                                         h5("Hypothesis:"),
-                                         withSpinner(textOutput('null_hypo_chisq'),type =7, color = "#FF5A5F", size = 1),
-                                         withSpinner(textOutput('alt_hypo_chisq'),type =7, color = "#FF5A5F", size = 1),
-                                         h5('p-value:'),
-                                         withSpinner(textOutput('pvalue_chisq'),type =7, color = "#FF5A5F", size = 1),
-                                         p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
-                                         
-                                       ),
-                                       conditionalPanel(
-                                         condition = "input.chart_type == 'Scatter'",
-                                         withSpinner(textOutput('test_method_cortest'),type =7, color = "#FF5A5F", size = 1),
-                                         h5("Hypothesis:"),
-                                         withSpinner(textOutput('null_hypo_cortest'),type =7, color = "#FF5A5F", size = 1),
-                                         withSpinner(textOutput('alt_hypo_cortest'),type =7, color = "#FF5A5F", size = 1),
-                                         h5('p-value:'),
-                                         withSpinner(textOutput('pvalue_cortest'),type =7, color = "#FF5A5F", size = 1),
-                                         p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
-                                         
-                                         
-                                       ),
-                                       conditionalPanel(
-                                         condition = "input.chart_type == 'Distribution'",
-                                         withSpinner(plotlyOutput('dist'),type =7, color = "#FF5A5F", size = 1)
-                                       ),
-                                       conditionalPanel(
-                                         condition = "input.chart_type == 'Boxplot'",
-                                         withSpinner(plotlyOutput('bbox'),type =7, color = "#FF5A5F", size = 1)
-                                       ),
-                                       conditionalPanel(
-                                         condition = "input.chart_type == 'Mosaic'",
-                                         withSpinner(plotlyOutput('mosaic'),type =7, color = "#FF5A5F", size = 1)
-                                       ),
-                                       conditionalPanel(
-                                         condition = "input.chart_type == 'Scatter'",
-                                         withSpinner(plotlyOutput('scatter'),type =7, color = "#FF5A5F", size = 1)
-                                       ),
-                                       
-                                       
-                                     )
-                                   )
-                                   
-                                   
-                                 )),
                         tabPanel("Map",
                                  fluidPage(
                                    titlePanel("Mapping Airbnbs"),
@@ -395,8 +293,111 @@ ui <- dashboardPage(
                                      )
                                    )
                                  )
-                        )
+                        
                     ),
+                    tabPanel("Explore and confirm",
+                             fluidPage(
+                               titlePanel("Explore variables"),
+                               sidebarLayout(
+                                 sidebarPanel(
+                                   selectInput(inputId = 'chart_type',
+                                               label = 'Select chart type',
+                                               choices = sort(c('Distribution',
+                                                                "Boxplot",
+                                                                "Mosaic",
+                                                                "Scatter")),
+                                               selected = "Distribution"),
+                                   uiOutput('x_ui'),
+                                   uiOutput('y_ui'),
+                                   uiOutput('colour'),
+                                   uiOutput('flip'),
+                                   uiOutput('facet'),
+                                   uiOutput('bins'),
+                                   selectInput(inputId = 'theme',
+                                               label = 'Change theme',
+                                               choices = names(themes),
+                                               selected = 'Gray'),
+                                   conditionalPanel(
+                                     condition = "input.chart_type == 'Distribution'",
+                                     uiOutput('input_ttest')
+                                   ),
+                                   uiOutput('conf_lev'),
+                                   width = 3
+                                 ),
+                                 mainPanel(
+                                   
+                                   h4("Statistical test result (x and y variable only)"),
+                                   conditionalPanel(
+                                     condition = "input.chart_type == 'Distribution'",
+                                     withSpinner(textOutput('test_method'),type =7, color = "#FF5A5F", size = 1),
+                                     h5("Hypothesis:"),
+                                     withSpinner(textOutput('null_hypo_ttest'),type =7, color = "#FF5A5F", size = 1),
+                                     withSpinner( textOutput('alt_hypo_ttest'),type =7, color = "#FF5A5F", size = 1),
+                                     h5('Confident interval:'),
+                                     withSpinner(textOutput('ci'),type =7, color = "#FF5A5F", size = 1),
+                                     h5('p-value:'),
+                                     withSpinner(textOutput('pvalue'),type =7, color = "#FF5A5F", size = 1),
+                                     p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
+                                   ),
+                                   conditionalPanel(
+                                     condition = "input.chart_type == 'Boxplot'",
+                                     withSpinner(uiOutput('test_method_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                     withSpinner(uiOutput('test_method_anova'),type =7, color = "#FF5A5F", size = 1),
+                                     h5("Hypothesis:"),
+                                     withSpinner(textOutput('null_hypo_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                     withSpinner(textOutput('alt_hypo_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                     h5('p-value:'),
+                                     withSpinner(uiOutput('pvalue_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                     withSpinner(uiOutput('pvalue_anova'),type =7, color = "#FF5A5F", size = 1),
+                                     p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
+                                   ),
+                                   conditionalPanel(
+                                     condition = "input.chart_type == 'Mosaic'",
+                                     withSpinner(textOutput('test_method_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                     h5("Hypothesis:"),
+                                     withSpinner(textOutput('null_hypo_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                     withSpinner(textOutput('alt_hypo_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                     h5('p-value:'),
+                                     withSpinner(textOutput('pvalue_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                     p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
+                                     
+                                   ),
+                                   conditionalPanel(
+                                     condition = "input.chart_type == 'Scatter'",
+                                     withSpinner(textOutput('test_method_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                     h5("Hypothesis:"),
+                                     withSpinner(textOutput('null_hypo_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                     withSpinner(textOutput('alt_hypo_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                     h5('p-value:'),
+                                     withSpinner(textOutput('pvalue_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                     p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
+                                     
+                                     
+                                   ),
+                                   conditionalPanel(
+                                     condition = "input.chart_type == 'Distribution'",
+                                     withSpinner(plotlyOutput('dist'),type =7, color = "#FF5A5F", size = 1)
+                                   ),
+                                   conditionalPanel(
+                                     condition = "input.chart_type == 'Boxplot'",
+                                     withSpinner(plotlyOutput('bbox'),type =7, color = "#FF5A5F", size = 1)
+                                   ),
+                                   conditionalPanel(
+                                     condition = "input.chart_type == 'Mosaic'",
+                                     withSpinner(plotlyOutput('mosaic'),type =7, color = "#FF5A5F", size = 1)
+                                   ),
+                                   conditionalPanel(
+                                     condition = "input.chart_type == 'Scatter'",
+                                     withSpinner(plotlyOutput('scatter'),type =7, color = "#FF5A5F", size = 1)
+                                   ),
+                                   
+                                   
+                                 )
+                               )
+                             )
+                               
+                               
+                             ))
             ),
             tabItem("TA",
                     tabsetPanel(
@@ -1039,7 +1040,7 @@ server <- function(input, output) {
         color = '#FF5A5F',
         radius = 2,
         stroke = FALSE,
-        fillOpacity = 0.5,
+        fillOpacity = 0.75,
         group = 'Superhost'
       ) %>%
       addCircleMarkers(
@@ -1068,7 +1069,7 @@ server <- function(input, output) {
         color = '#FF5A5F',
         radius = 2,
         stroke = FALSE,
-        fillOpacity = 0.5,
+        fillOpacity = 0.75,
         group = 'Entire home'
       ) %>%
       addCircleMarkers(
@@ -1078,7 +1079,7 @@ server <- function(input, output) {
         color = '#00A699',
         radius = 2,
         stroke = FALSE,
-        fillOpacity = 0.5,
+        fillOpacity = 0.75,
         group = 'Hotel room'
       ) %>%
       addCircleMarkers(
@@ -1088,7 +1089,7 @@ server <- function(input, output) {
         color = '#3182bd',
         radius = 2,
         stroke = FALSE,
-        fillOpacity = 0.5,
+        fillOpacity = 0.75,
         group = 'Private room'
       ) %>%
       addCircleMarkers(
@@ -1098,7 +1099,7 @@ server <- function(input, output) {
         color = '#756bb1',
         radius = 2,
         stroke = FALSE,
-        fillOpacity = 0.5,
+        fillOpacity = 0.75,
         group = 'Shared room'
       ) %>%  
       addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),

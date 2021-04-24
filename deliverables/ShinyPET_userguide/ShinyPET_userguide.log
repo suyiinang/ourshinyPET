@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.4.22)  23 APR 2021 23:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.4.22)  24 APR 2021 18:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -874,16 +874,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 ex.map}
 
 ]
-<images/intro.png, id=53, 773.13844pt x 328.97906pt>
-File: images/intro.png Graphic file (type png)
-<use images/intro.png>
-Package pdftex.def Info: images/intro.png  used on input line 97.
-(pdftex.def)             Requested size: 469.76163pt x 199.88882pt.
-<images/observe.png, id=55, 755.4624pt x 370.0224pt>
+<images/landing.png, id=78, 773.289pt x 329.0694pt>
+File: images/landing.png Graphic file (type png)
+<use images/landing.png>
+Package pdftex.def Info: images/landing.png  used on input line 97.
+(pdftex.def)             Requested size: 469.7469pt x 199.8985pt.
+<images/observe.png, id=80, 718.8456pt x 333.4056pt>
 File: images/observe.png Graphic file (type png)
 <use images/observe.png>
 Package pdftex.def Info: images/observe.png  used on input line 117.
-(pdftex.def)             Requested size: 469.76514pt x 230.08904pt.
+(pdftex.def)             Requested size: 469.74496pt x 217.87097pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -897,12 +897,12 @@ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
 l.123 
-       <./images/intro.png>]
-<images/explore2.png, id=66, 698.1282pt x 431.211pt>
-File: images/explore2.png Graphic file (type png)
-<use images/explore2.png>
-Package pdftex.def Info: images/explore2.png  used on input line 144.
-(pdftex.def)             Requested size: 446.25725pt x 275.63853pt.
+       <./images/landing.png>]
+<images/map.png, id=91, 830.1414pt x 369.5406pt>
+File: images/map.png Graphic file (type png)
+<use images/map.png>
+Package pdftex.def Info: images/map.png  used on input line 146.
+(pdftex.def)             Requested size: 469.75278pt x 209.11223pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -915,26 +915,18 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.150 
+l.152 
        <./images/observe.png>]
-<images/plots.png, id=76, 730.8906pt x 455.301pt>
-File: images/plots.png Graphic file (type png)
-<use images/plots.png>
-Package pdftex.def Info: images/plots.png  used on input line 155.
-(pdftex.def)             Requested size: 375.80505pt x 234.104pt.
-LaTeX Font Info:    Trying to load font information for TS1+fav on input line 1
-72.
-LaTeX Font Info:    No file TS1fav.fd. on input line 172.
-
-LaTeX Font Warning: Font shape `TS1/fav/m/n' undefined
-(Font)              using `TS1/cmr/m/n' instead
-(Font)              for symbol `textbullet' on input line 172.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 172--174
-
- []
-
+<images/map1.png, id=101, 819.5418pt x 225.9642pt>
+File: images/map1.png Graphic file (type png)
+<use images/map1.png>
+Package pdftex.def Info: images/map1.png  used on input line 162.
+(pdftex.def)             Requested size: 469.75726pt x 129.52155pt.
+<images/background.png, id=102, 718.3638pt x 399.894pt>
+File: images/background.png Graphic file (type png)
+<use images/background.png>
+Package pdftex.def Info: images/background.png  used on input line 173.
+(pdftex.def)             Requested size: 469.75896pt x 261.50229pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -947,19 +939,18 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.174   b
-         lack line refers to medianpdfTeX warning (ext4): destination with the 
-same identifier (name{figure.4}) has been already used, duplicate ignored
+l.179 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.174   b
-         lack line refers to median <./images/explore2.png> <./images/plots.png
->]
-<images/explore1.png, id=86, 715.9548pt x 424.4658pt>
-File: images/explore1.png Graphic file (type png)
-<use images/explore1.png>
-Package pdftex.def Info: images/explore1.png  used on input line 211.
-(pdftex.def)             Requested size: 469.75679pt x 278.50317pt.
+l.179 
+       <./images/map.png> <./images/map1.png>]
+<images/choro.png, id=111, 818.0964pt x 358.941pt>
+File: images/choro.png Graphic file (type png)
+<use images/choro.png>
+Package pdftex.def Info: images/choro.png  used on input line 187.
+(pdftex.def)             Requested size: 469.75266pt x 206.10466pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -972,18 +963,25 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.229 
-       <./images/explore1.png>]
-<images/map.png, id=99, 789.70032pt x 411.78844pt>
-File: images/map.png Graphic file (type png)
-<use images/map.png>
-Package pdftex.def Info: images/map.png  used on input line 250.
-(pdftex.def)             Requested size: 469.751pt x 244.95117pt.
-<images/map1.png, id=100, 819.5418pt x 225.9642pt>
-File: images/map1.png Graphic file (type png)
-<use images/map1.png>
-Package pdftex.def Info: images/map1.png  used on input line 266.
-(pdftex.def)             Requested size: 469.75726pt x 129.52155pt.
+l.199 {[
+        }2{]} User can decide whether to view the data by checking /pdfTeX warn
+ing (ext4): destination with the same identifier (name{figure.6}) has been alre
+ady used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.199 {[
+        }2{]} User can decide whether to view the data by checking / <./images/
+background.png> <./images/choro.png>]
+<images/explore2.png, id=122, 698.1282pt x 402.303pt>
+File: images/explore2.png Graphic file (type png)
+<use images/explore2.png>
+Package pdftex.def Info: images/explore2.png  used on input line 219.
+(pdftex.def)             Requested size: 446.25725pt x 257.15996pt.
+<images/plots.png, id=123, 730.8906pt x 455.301pt>
+File: images/plots.png Graphic file (type png)
+<use images/plots.png>
+Package pdftex.def Info: images/plots.png  used on input line 230.
+(pdftex.def)             Requested size: 375.80505pt x 234.104pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -992,22 +990,30 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[6pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) 
+[6pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.272 
-       <./images/map.png>]
-<images/background.png, id=110, 718.3638pt x 399.894pt>
-File: images/background.png Graphic file (type png)
-<use images/background.png>
-Package pdftex.def Info: images/background.png  used on input line 277.
-(pdftex.def)             Requested size: 469.75896pt x 261.50229pt.
-<images/choro.png, id=111, 818.0964pt x 381.1038pt>
-File: images/choro.png Graphic file (type png)
-<use images/choro.png>
-Package pdftex.def Info: images/choro.png  used on input line 291.
-(pdftex.def)             Requested size: 469.75266pt x 218.83058pt.
+l.236 
+       <./images/explore2.png>]
+LaTeX Font Info:    Trying to load font information for TS1+fav on input line 2
+47.
+LaTeX Font Info:    No file TS1fav.fd. on input line 247.
+
+LaTeX Font Warning: Font shape `TS1/fav/m/n' undefined
+(Font)              using `TS1/cmr/m/n' instead
+(Font)              for symbol `textbullet' on input line 247.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 247--249
+
+ []
+
+<images/explore1.png, id=133, 715.9548pt x 424.4658pt>
+File: images/explore1.png Graphic file (type png)
+<use images/explore1.png>
+Package pdftex.def Info: images/explore1.png  used on input line 286.
+(pdftex.def)             Requested size: 469.75679pt x 278.50317pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1016,17 +1022,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[7pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) 
+[7pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) 
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.297 
-      pdfTeX warning (ext4): destination with the same identifier (name{figure.
-8}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  
-l.297 
-       <./images/map1.png> <./images/background.png>]
+l.292 
+       <./images/plots.png>]
+<images/explore3.png, id=147, 613.8132pt x 394.1124pt>
+File: images/explore3.png Graphic file (type png)
+<use images/explore3.png>
+Package pdftex.def Info: images/explore3.png  used on input line 315.
+(pdftex.def)             Requested size: 469.7716pt x 301.62729pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1039,32 +1045,362 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   
-l.316 \end{document}
-                     <./images/choro.png>] (./ShinyPET_userguide.aux)
+l.321 
+       <./images/explore1.png>]
+<images/datasplit1.png, id=155, 622.325pt x 275.0275pt>
+File: images/datasplit1.png Graphic file (type png)
+<use images/datasplit1.png>
+Package pdftex.def Info: images/datasplit1.png  used on input line 341.
+(pdftex.def)             Requested size: 446.26942pt x 197.22229pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[9pdfTeX warning (ext4): destination with the same identifier (name{figure.10})
+ has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.347 
+       <./images/explore3.png>]
+<images/datasplit2.png, id=166, 428.09938pt x 405.01312pt>
+File: images/datasplit2.png Graphic file (type png)
+<use images/datasplit2.png>
+Package pdftex.def Info: images/datasplit2.png  used on input line 354.
+(pdftex.def)             Requested size: 428.10486pt x 405.0183pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[10pdfTeX warning (ext4): destination with the same identifier (name{figure.11}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.360 
+       <./images/datasplit1.PNG>]
+<images/corrmatrix.png, id=173, 576.1525pt x 394.97563pt>
+File: images/corrmatrix.png Graphic file (type png)
+<use images/corrmatrix.png>
+Package pdftex.def Info: images/corrmatrix.png  used on input line 381.
+(pdftex.def)             Requested size: 446.28499pt x 305.94624pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[11pdfTeX warning (ext4): destination with the same identifier (name{figure.12}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.387 
+       <./images/datasplit2.PNG>]
+<images/featureselect.png, id=181, 678.03313pt x 335.75438pt>
+File: images/featureselect.png Graphic file (type png)
+<use images/featureselect.png>
+Package pdftex.def Info: images/featureselect.png  used on input line 395.
+(pdftex.def)             Requested size: 446.26173pt x 220.98378pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[12pdfTeX warning (ext4): destination with the same identifier (name{figure.13}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.401 
+       <./images/corrmatrix.PNG>]
+<images/datatrf1.png, id=188, 581.67313pt x 400.49625pt>
+File: images/datatrf1.png Graphic file (type png)
+<use images/datatrf1.png>
+Package pdftex.def Info: images/datatrf1.png  used on input line 418.
+(pdftex.def)             Requested size: 446.27434pt x 307.27084pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[13pdfTeX warning (ext4): destination with the same identifier (name{figure.14}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.424 
+       <./images/featureselect.PNG>]
+<images/datatrf2.png, id=197, 563.10374pt x 261.97874pt>
+File: images/datatrf2.png Graphic file (type png)
+<use images/datatrf2.png>
+Package pdftex.def Info: images/datatrf2.png  used on input line 430.
+(pdftex.def)             Requested size: 446.2648pt x 207.62051pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[14pdfTeX warning (ext4): destination with the same identifier (name{figure.15}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.439 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+16}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.439 
+       <./images/datatrf1.PNG> <./images/datatrf2.PNG>]
+<images/datatrf3.png, id=206, 685.56125pt x 258.46562pt>
+File: images/datatrf3.png Graphic file (type png)
+<use images/datatrf3.png>
+Package pdftex.def Info: images/datatrf3.png  used on input line 442.
+(pdftex.def)             Requested size: 446.27902pt x 168.25307pt.
+<images/mdltrain1.png, id=207, 666.49pt x 206.27063pt>
+File: images/mdltrain1.png Graphic file (type png)
+<use images/mdltrain1.png>
+Package pdftex.def Info: images/mdltrain1.png  used on input line 472.
+(pdftex.def)             Requested size: 446.2714pt x 138.11562pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[15pdfTeX warning (ext4): destination with the same identifier (name{figure.17}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.485 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+18}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.485 
+       <./images/datatrf3.PNG> <./images/mdltrain1.PNG>]
+<images/kfold.png, id=222, 661.97313pt x 215.80624pt>
+File: images/kfold.png Graphic file (type png)
+<use images/kfold.png>
+Package pdftex.def Info: images/kfold.png  used on input line 494.
+(pdftex.def)             Requested size: 446.26714pt x 145.4851pt.
+<images/mdltrain2.png, id=223, 645.41125pt x 174.15062pt>
+File: images/mdltrain2.png Graphic file (type png)
+<use images/mdltrain2.png>
+Package pdftex.def Info: images/mdltrain2.png  used on input line 508.
+(pdftex.def)             Requested size: 446.25998pt x 120.41383pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[16pdfTeX warning (ext4): destination with the same identifier (name{figure.19}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.529 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+20}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.529 
+       <./images/kfold.PNG> <./images/mdltrain2.PNG>]
+<images/mdltrain3.png, id=237, 649.42625pt x 414.04688pt>
+File: images/mdltrain3.png Graphic file (type png)
+<use images/mdltrain3.png>
+Package pdftex.def Info: images/mdltrain3.png  used on input line 532.
+(pdftex.def)             Requested size: 446.27135pt x 284.52383pt.
+<images/mdltrain4.png, id=238, 641.39626pt x 428.60126pt>
+File: images/mdltrain4.png Graphic file (type png)
+<use images/mdltrain4.png>
+Package pdftex.def Info: images/mdltrain4.png  used on input line 559.
+(pdftex.def)             Requested size: 446.27313pt x 298.2138pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[17pdfTeX warning (ext4): destination with the same identifier (name{figure.21}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.565 
+       <./images/mdltrain3.PNG>]
+<images/mdltrain5.png, id=247, 652.4375pt x 251.94125pt>
+File: images/mdltrain5.png Graphic file (type png)
+<use images/mdltrain5.png>
+Package pdftex.def Info: images/mdltrain5.png  used on input line 572.
+(pdftex.def)             Requested size: 446.27985pt x 172.33267pt.
+<images/mdltrain6.png, id=248, 459.21562pt x 419.5675pt>
+File: images/mdltrain6.png Graphic file (type png)
+<use images/mdltrain6.png>
+Package pdftex.def Info: images/mdltrain6.png  used on input line 584.
+(pdftex.def)             Requested size: 446.28647pt x 407.75462pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[18pdfTeX warning (ext4): destination with the same identifier (name{figure.22}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.590 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+23}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.590 
+       <./images/mdltrain4.PNG> <./images/mdltrain5.PNG>]
+<images/mdltrain7.png, id=257, 650.93187pt x 325.71687pt>
+File: images/mdltrain7.png Graphic file (type png)
+<use images/mdltrain7.png>
+Package pdftex.def Info: images/mdltrain7.png  used on input line 600.
+(pdftex.def)             Requested size: 446.273pt x 223.30853pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[19pdfTeX warning (ext4): destination with the same identifier (name{figure.24}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.606 
+       <./images/mdltrain6.PNG>]
+<images/mdltrain8.png, id=267, 461.725pt x 405.01312pt>
+File: images/mdltrain8.png Graphic file (type png)
+<use images/mdltrain8.png>
+Package pdftex.def Info: images/mdltrain8.png  used on input line 631.
+(pdftex.def)             Requested size: 446.26637pt x 391.4532pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[20pdfTeX warning (ext4): destination with the same identifier (name{figure.25}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.637 
+       <./images/mdltrain7.PNG>]
+<images/mdleval1.png, id=276, 643.40375pt x 153.07187pt>
+File: images/mdleval1.png Graphic file (type png)
+<use images/mdleval1.png>
+Package pdftex.def Info: images/mdleval1.png  used on input line 654.
+(pdftex.def)             Requested size: 446.27582pt x 106.17325pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[21pdfTeX warning (ext4): destination with the same identifier (name{figure.26}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.660 
+       <./images/mdltrain8.PNG>]
+<images/mdleval2.png, id=286, 648.92438pt x 307.1475pt>
+File: images/mdleval2.png Graphic file (type png)
+<use images/mdleval2.png>
+Package pdftex.def Info: images/mdleval2.png  used on input line 675.
+(pdftex.def)             Requested size: 446.27304pt x 211.22899pt.
+<images/mdleval3.png, id=287, 556.57938pt x 414.04688pt>
+File: images/mdleval3.png Graphic file (type png)
+<use images/mdleval3.png>
+Package pdftex.def Info: images/mdleval3.png  used on input line 698.
+(pdftex.def)             Requested size: 446.27473pt x 331.98976pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[22pdfTeX warning (ext4): destination with the same identifier (name{figure.27}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.704 
+      pdfTeX warning (ext4): destination with the same identifier (name{figure.
+28}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.704 
+       <./images/mdleval1.PNG> <./images/mdleval2.PNG>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[23pdfTeX warning (ext4): destination with the same identifier (name{figure.29}
+) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  
+l.705 \end{document}
+                     <./images/mdleval3.PNG>] (./ShinyPET_userguide.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `ShinyPET_userguide.out' has not changed.
-(rerunfilecheck)             Checksum: 754BB418521FB0A0BA3D0EAD654755D9;1036.
+(rerunfilecheck)             Checksum: 7C06D5EAFC80A3185580576716A55EF6;1858.
  ) 
 Here is how much of TeX's memory you used:
- 10770 strings out of 480954
- 159183 string characters out of 5905582
- 621090 words of memory out of 5000000
- 27723 multiletter control sequences out of 15000+600000
+ 11038 strings out of 480954
+ 164040 string characters out of 5905582
+ 622090 words of memory out of 5000000
+ 27904 multiletter control sequences out of 15000+600000
  448498 words of font info for 98 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,11n,75p,243b,394s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 72i,12n,75p,243b,334s stack positions out of 5000i,500n,10000p,200000b,80000s
  <c:/Users/Yiin/AppData/Roaming/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec
 /tcrm1200.600pk>{c:/Users/Yiin/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvi
 ps/base/8r.enc}<c:/Users/Yiin/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/pu
 blic/arev/ArevSans-Bold.pfb><c:/Users/Yiin/AppData/Roaming/TinyTeX/texmf-dist/f
 onts/type1/public/arev/ArevSans-Oblique.pfb><c:/Users/Yiin/AppData/Roaming/Tiny
 TeX/texmf-dist/fonts/type1/public/arev/ArevSans-Roman.pfb>
-Output written on ShinyPET_userguide.pdf (8 pages, 3038217 bytes).
+Output written on ShinyPET_userguide.pdf (23 pages, 5949099 bytes).
 PDF statistics:
- 162 PDF objects out of 1000 (max. 8388607)
- 128 compressed objects within 2 object streams
- 47 named destinations out of 1000 (max. 500000)
- 110 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 350 PDF objects out of 1000 (max. 8388607)
+ 260 compressed objects within 3 object streams
+ 114 named destinations out of 1000 (max. 500000)
+ 250 words of extra memory for PDF output out of 10000 (max. 10000000)
 
