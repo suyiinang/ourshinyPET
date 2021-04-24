@@ -30,7 +30,7 @@ knitr::opts_chunk$set(echo = FALSE, fig.pos = "H", fig.align='center')
 ## 1. Landing Page
 
 ```{r, echo=FALSE, fig.align='center', fig.cap='Landing page of Shiny PET', out.width="100%"}
-include_graphics("images/intro.png")
+include_graphics("images/landing.png")
 ```
 
 The landing page of the application provides a brief background for this application, its features and overview of its navigation.
@@ -51,67 +51,13 @@ include_graphics("images/observe.png")
 
 [3] Search data if necessary.
 
-### 2.2 Explore and Confirm
 
-This tab allows users to perform exploratory and confirmatory analysis.
-
-#### Types of chart available  
-
-User can explore the dataset using different charts.
-
-```{r, echo=FALSE,fig.align='center', fig.cap='Explore and Confirm tab of Explore module',out.width="95%"}
-include_graphics("images/explore2.png")
-```
-
-
-[1] There are 4 types of chart:
-
-
-```{r, echo=FALSE, fig.align='center', fig.cap='Four types of charts available',out.width="80%"}
-include_graphics("images/plots.png")
-```
-
-i) Distribution - to analyse a single variable (univariate analysis).
-- teal line refers to mean  
-- black line refers to median
-
-ii) Boxplot - to analyse 1 factor and 1 numeric variables
-- Blue cirlce refers to mean
-
-iii) Mosaic - to analyse two factor variables  
-
-iv) Scatter - to analyse two numeric variables  
-
-[2] Selection available will change according to chart type.  
- 
-[3] Statistical test options available will change according to chart type.
-
-#### Performing exploratory and confirmatory analysis  
-
-```{r, echo=FALSE, fig.align='center', fig.cap='Explore and Confirm tab of Explore module',out.width="100%"}
-include_graphics("images/explore1.png")
-```
-
-[1] Select chart type.
-
-[2] Select the variables that you are interested in analysing.
-
-[3] This changes the background of the graph.
-
-[4] The type of statistical tests are automated based on user's x and y variables. Simply select the variables you wish to analyse.  
-
-If p-value is less than the alpha (1 - confident interval), you reject the null hypothesis and accept the alternative hypothesis. 
-
-**Note:** Statistical test is only applicable to selected x and y variable, and does not take colour and facet variables into consideration. 
-
-[5] User can also hover over chart to view details.
-
-
-### 2.3 Map
+### 2.2 Map
 
 This tab allows user to explore the geographic patterns of Airbnb listings through 2 thematic maps - point symbol and choropleth.
 
-#### Point Symbol map  
+#### 2.2.1 Point Symbol map
+  
 
 Each point on the map is a listing. This allows user to see how distributed Airbnbs are throughout Singapore.  
 
@@ -137,8 +83,8 @@ include_graphics("images/background.png")
 
 [5] User can select between different background.    
   
-#### Choropleth map  
-
+#### 2.2.1 Choropleth map
+  
 
 ```{r, echo=FALSE, fig.align='center', fig.cap='Choropleth map',out.width="100%"}
 include_graphics("images/choro.png")
@@ -152,6 +98,67 @@ include_graphics("images/choro.png")
 [3] Hover over the area to see neighbourhood names.
 
 [4] User can sort table according to needs.
+
+
+### 2.3 Explore and Confirm
+
+This tab allows users to perform exploratory and confirmatory analysis.
+
+#### 2.3.1 Types of chart available
+  
+User can explore the dataset using different charts.
+
+```{r, echo=FALSE,fig.align='center', fig.cap='Explore and Confirm tab of Explore module',out.width="95%"}
+include_graphics("images/explore2.png")
+```
+
+[1] There are 4 types of chart:
+
+```{r, echo=FALSE, fig.align='center', fig.cap='Four types of charts available',out.width="80%"}
+include_graphics("images/plots.png")
+```
+
+i) Distribution - to analyse a single variable (univariate analysis).
+- teal line refers to mean  
+- black line refers to median
+
+ii) Boxplot - to analyse 1 factor and 1 numeric variables
+- Blue cirlce refers to mean
+
+iii) Mosaic - to analyse two factor variables  
+
+iv) Scatter - to analyse two numeric variables  
+
+[2] Selection available will change according to chart type.  
+ 
+[3] Statistical test options available will change according to chart type.
+
+#### 2.3.2 Performing exploratory and confirmatory analysis
+   
+  
+```{r, echo=FALSE, fig.align='center', fig.cap='Explore and Confirm tab of Explore module',out.width="100%"}
+include_graphics("images/explore1.png")
+```
+    
+    
+[1] Select chart type.
+
+[2] Select the variables that you are interested in analysing.
+
+[3] This changes the background of the graph.
+
+[4] The type of statistical tests are automated based on user's x and y variables. Simply select the variables you wish to analyse.  
+
+If p-value is less than the alpha (1 - confident interval), you reject the null hypothesis and accept the alternative hypothesis. 
+  
+**Note:** Statistical test is only applicable to selected x and y variable, and does not take colour and facet variables into consideration. 
+
+[5] The chart is interactive and users hover to select a single object in a plot, highlight selected records by clicking and unclicking legend, define a region and download the chart.
+
+```{r, echo=FALSE, fig.align='center', fig.cap='Interactive chart',out.width="100%"}
+include_graphics("images/explore3.png")
+```
+
 
 
 ## 3. Text
