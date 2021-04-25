@@ -75,7 +75,6 @@ library(knitr)
 knitr::opts_chunk$set(echo = FALSE,  fig.pos = "H", fig.align='left', dpi = 300)
 ```
 
-
 ```{r echo=FALSE, eval=FALSE}
 library(pagedown)
 pagedown::chrome_print("ShinyPET_poster.html")
@@ -150,14 +149,14 @@ include_graphics("images/afinnsentiment.png")
 - Topic Modeling help users interpret the topics that has been fit to a corpus of Airbnb data.   
 - The left panel shows a global view of topic model to show the prevalence of each topic, and how topics relate to each other.  
 - The right panel shows horizontal barchar where the length of the bars represent individual terms that are most useful in interpreting the selected topic. This enable users to understand the meaning behind each topic.  
-```{r, echo=FALSE, out.width="90%"}
+```{r, echo=FALSE, out.width="100%"}
 include_graphics("images/topicmodelling.png")
 ```
 
 **Network Analysis**  
 - Bidirectional network - Utilising the concept of nodes, edges and text,we can observe the connections between words. To make visualisation interpretable, only the top 100 words are shown.    
 - Correlation Network -  Users can observe words that tend to co-occur within particular documents/topics even if they don't exist in the same sentence.  
-```{r, echo=FALSE, out.width="90%"}
+```{r, echo=FALSE, out.width="80%"}
 include_graphics("images/bidirectionalnetwork.png")
 ```
 
@@ -201,8 +200,6 @@ include_graphics("images/mdlselect.PNG")
 - Combine text and explore modules with coordinated linked views for multi-dimensional exploration.
 - More predictive models such as neural network and classification workflow can be included to provide user with wider predictive analytics selection.  
 
-
 ```{r, include=FALSE}
 knitr::write_bib(c('knitr','rmarkdown','posterdown','pagedown'), 'packages.bib')
 ```
-
