@@ -1,0 +1,122 @@
+---
+main_topsize: 0.1 #percent coverage of the poster
+main_bottomsize: 0.08
+title: "Shiny PET: A Predictive, Exploratory and Text RShiny Application using Airbnb data"
+author:
+  - name: Ang Su Yiin
+    email: suyiin.ang.2020@mitb.smu.edu.sg
+    main: true
+  - name: Joey Chua
+    email: joey.chua.2020@mitb.smu.edu.sg
+    main: true
+  - name: Kevin Gunawan Albindo
+    email: kgalbindo.2019@mitb.smu.edu.sg
+    main: true    
+main_findings:
+  - "Making **Exploratory**, **Text** and **Predictive** Analytics assessible to everyone"
+# colour
+primary_colour: '#FF5A60'
+secondary_colour: '#FF5A60'
+accent_colour: '#00A699'
+# title body
+logoleft_name: images/SMU_logo.jpg
+logoright_name: images/airbnb.jpg
+titlebox_bordercol:	"#0b4545"	#Colour of the title box border.
+titlebox_borderwidth:	"0cm"	#Width of the title box border.
+title_textcol: "#ffffff"
+title_textsize: "60pt"
+author_textcol: "#ffffff" 
+author_textsize: '35pt'
+affiliation_textsize: '25pt'
+# poster body
+body_textsize: "25px"
+body_textcol: "#000000" #colour
+column_margins: "0.5in"
+columnline_col:	"#008080"	#Colour of the column line dividers.
+columnline_width:	"1mm"	#Width of line between each column.
+columnline_style:	dashed	#Style of the column line seperator.
+sectitle_textcol:	"#ffffff"	#Colour of the poster section titles.
+sectitle_textsize:	"40t"	#Text size of the section titles (H1).
+sectitle2_textsize:	"30pt"	#Text size of the section titles (H2).
+sectitle_bgcol:	"#00A699"	#Colour of the section title box.
+sectitle_bordercol:	"#00A699"	#Colour of the border around the section title box.
+sectitle_borderwidth:	"2mm"	#Thicknes of the section title box border.
+sectitle_boxshape:	"4mm 0mm"	#Changes the shape of the section title box.
+sectitle2_textcol:	"#00A699"	#Color of 2nd level header text.
+link_col:	"#00A699"	#Colour of other links within the poster.
+output: 
+  posterdown::posterdown_betterport:
+    self_contained: false
+    pandoc_args: --mathjax
+    highlight: haddock
+    number_sections: false
+link-citations: true
+bibliography: packages.bib
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE,  fig.pos = "H", fig.align='left', dpi = 300)
+```
+
+# Introduction
+
+With the explosion of affordable data storage and processing technologies, the **demand for data-driven decision-making** (DDDM) has increased significantly. Although there is an extensive range of commercial statistical tools, they are often **subscription-based** and **demand good technical knowledge** to mine and draw insights from. Therefore, it may not appeal to the average user. 
+
+# Motivation
+- Increasing demand for data analytics  
+- Lack of open source tools for analytics for the average user  
+
+Aim to Create R Shiny application to **encourage anyone and everyone to make data-based decisions effortlessly** 
+
+# Approach
+
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/framework.png")
+```
+
+```{r, echo=FALSE, out.width="90%"}
+include_graphics("images/modules.png")
+```
+
+```{r, echo=FALSE, out.width="90%"}
+include_graphics("images/tool.png")
+```
+
+# Exploratory 
+**Summary of dataset**  
+- Interactive table allows selection and filter of variables 
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/explore1.png")
+```
+
+**Exploratory Geospatial Analysis**  
+- Choropleth map - shows summary of listings by Singapore neighbourhood.  
+- Point symbol map - shows the distribution of listings throughout Singapore.  
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/explore2.png")
+```
+
+**Exploratory and confirmatory analysis**  
+1) Panel on the left allows user to seamlessly toggle between different charts.  
+2) Automated statistical results based on selected variables.  
+3) Interactive plots - user can select, pan, zoom and download plot.  
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/explore3.png")
+```
+
+
+# Text
+
+# Predictive
+
+# Further work
+- Include a data load and wrangling function to accommodate different datasets.
+- Combine text and explore module with coordinated linked views for multi-dimensional exploration.
+- Predictive models currently limited to 5 models, additional models such as neural network can be included to provide user with wider model selection  
+
+
+```{r, include=FALSE}
+knitr::write_bib(c('knitr','rmarkdown','posterdown','pagedown'), 'packages.bib')
+```
+
