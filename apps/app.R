@@ -14,7 +14,7 @@ library(ggfittext)
 library(tidymodels)
 library(glmnet)
 library(ranger)
-#library(xgboost)
+library(xgboost)
 library(rpart)
 library(visNetwork)
 library(sparkline)
@@ -431,7 +431,7 @@ ui <- dashboardPage(
                                            id = 'network_panel',
                                            tabPanel("Bi Directional Network", 
                                                     #sliderInput("bi_freq", "Min Frequency of Bi-grams:",min = 10, max = 200,value = 100, width = '20%'),
-                                                    plotOutput("network_plot1")),
+                                                    withSpinner(plotOutput("network_plot1"),type = 6, color = "#FF5A5F", size = 2)),
                                            tabPanel("Correlation Network", plotOutput("network_plot2"))
                                )
                            )
