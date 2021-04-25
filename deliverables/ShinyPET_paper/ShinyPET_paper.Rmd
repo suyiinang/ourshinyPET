@@ -75,6 +75,7 @@ The combination of the 3 principles are consistently incorporated into various s
 
 The exploratory module enables users to perform Exploratory Data Analysis (EDA) and Confirmatory Data Analysis (CDA) on selected variables to identify interesting patterns. There are three sections in this module - observe, map and confirm & explore.
 
+\vspace{-5truemm}
 ### Observe submodule
 
 In Figure 1, the Observe section provides a summary of the data to facilitate users to understand and form questions surrounding the data.
@@ -249,7 +250,7 @@ The current types of chart and statistical test are limited to only 4 types of c
 
 Additionally, token frequencies and sentiment analysis allow selection of n-grams and lexicons respectively. Further interactivity such as choices of neighbourhood, rating scores can be added. Moreover, the explore and text sub modules can be connected with views coordinated and linked in order to provide multiple dimensional exploration. 
 
-The current predictive module is limited to 5 types of predictive model. More predictive models e.g. neural network can be to provide users with wider model selection. In hyper-parameter tuning, parameters can be made available for user input to provide more flexibility in developing predictive model. In-depth statistical analysis in model training such as residual analysis are currently not available and this would be a good additional tool to improve our application.
+The current predictive module is limited to 5 types of predictive model. More predictive models e.g. neural network can be added to provide users with wider model selection. In hyper-parameter tuning, parameters can be made available for user input to provide more flexibility in developing predictive model. In-depth statistical analysis in model training such as residual analysis are currently not available and this would be a good additional tool to improve our application.
 
 # Acknowledgement
 
