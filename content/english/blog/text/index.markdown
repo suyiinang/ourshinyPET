@@ -19,7 +19,7 @@ always_allow_html: true
 <script src="{{< blogdown/postref >}}index_files/pymjs/pym.v1.js"></script>
 <script src="{{< blogdown/postref >}}index_files/widgetframe-binding/widgetframe.js"></script>
 
-# Prototype testing for the Exploratory module for OurShinyPET
+# Prototype testing for the Text module for OurShinyPET
 
 by [Joey Chua](https://www.linkedin.com/in/joeychuasm/)
 
@@ -220,7 +220,7 @@ glimpse() does not present the data in a tabular format, hence datatable and kab
 - kable() is not up to date with the current version of R and was not used.
 
 ``` r
-dt_reviews <- datatable(reviews)
+dt_reviews <- DT::datatable(head(reviews,500)) #selected a snapshot due to file size
 ```
 
 <iframe seamless src="html/dt_reviews.html" width="120%" height="600">
@@ -374,8 +374,6 @@ afinn_sentiments <- data_comments %>%
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-22-1.png" width="672" />
 
-<img src="afinn.png" width="350" />
-
 ``` r
 afinn_count <- data_comments %>% 
   #group_by(listing_id) %>% 
@@ -391,7 +389,11 @@ afinn_count <- data_comments %>%
 
     ## Joining, by = "word"
 
-<img src="afinn_count.png" width="350" />
+``` r
+afinn_count
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 
 **BING**
 
@@ -406,9 +408,7 @@ bing_sentiments <- data_comments %>%
 
     ## Joining, by = "word"
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-26-1.png" width="672" />
-
-<img src="bing.png" width="350" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-24-1.png" width="672" />
 
 *sorry, please self-censor some words*
 
@@ -426,7 +426,11 @@ bing_count <- data_comments %>%
 
     ## Joining, by = "word"
 
-<img src="bing_count.png" width="350" />
+``` r
+bing_count
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-25-1.png" width="672" />
 
 **NRC**
 
@@ -441,9 +445,7 @@ nrc_sentiments <- data_comments %>%
 
     ## Joining, by = "word"
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-30-1.png" width="672" />
-
-<img src="nrc.png" width="350" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-26-1.png" width="672" />
 
 ``` r
 nrc_count <- data_comments %>% 
@@ -456,9 +458,11 @@ nrc_count <- data_comments %>%
   facet_grid(~sentiment)+
   geom_col()+
   coord_flip()
+
+nrc_count
 ```
 
-<img src="nrc_count.png" width="350" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-27-1.png" width="672" />
 
 ### tm
 
@@ -499,9 +503,7 @@ review <- arrange(review, desc(num))
 wordcloud <- wordcloud(review$term, review$num,max.words = 50, colors = "red")
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-38-1.png" width="672" />
-
-<img src="wordcloud.png" width="350" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-32-1.png" width="672" />
 
 ### TF-IDF
 
@@ -532,9 +534,12 @@ airbnbwords <- left_join(review_words,total_words) %>%
 neigh_freq <- ggplot(airbnbwords,aes(frequency/total,fill=neighbourhood_group_cleansed))+
   geom_histogram() +
   facet_wrap(~neighbourhood_group_cleansed,scales="free_y")
+neigh_freq
 ```
 
-<img src="neigh_freq.png" width="350" />
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-33-1.png" width="672" />
 
 ``` r
 airbnbtfidf <- airbnbwords %>% 
@@ -549,9 +554,7 @@ airbnbtfidf %>%
   facet_wrap(~neighbourhood_group_cleansed,scales="free")
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-42-1.png" width="672" />
-
-<img src="airbnbtdidf.png" width="350" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-34-1.png" width="672" />
 
 ### Topic Modelling (LDA)
 
@@ -583,7 +586,7 @@ airbnb_top_terms %>%
   scale_y_reordered()
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-46-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-37-1.png" width="672" />
 
 ### Geospatial Analysis
 
@@ -671,7 +674,7 @@ frameWidget(map)
 ```
 
 <div id="htmlwidget-1" style="width:100%;height:480px;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"index_files/figure-html//widgets/widget_unnamed-chunk-51.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"index_files/figure-html//widgets/widget_unnamed-chunk-42.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
 
 To allow better visualisation, several factors were taken into consideration:
 

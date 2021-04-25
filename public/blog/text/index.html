@@ -118,7 +118,7 @@
           <script src="https://ourshinypet.netlify.app/blog/text/index_files/htmlwidgets/htmlwidgets.js"></script>
 <script src="https://ourshinypet.netlify.app/blog/text/index_files/pymjs/pym.v1.js"></script>
 <script src="https://ourshinypet.netlify.app/blog/text/index_files/widgetframe-binding/widgetframe.js"></script>
-<h1 id="prototype-testing-for-the-exploratory-module-for-ourshinypet">Prototype testing for the Exploratory module for OurShinyPET</h1>
+<h1 id="prototype-testing-for-the-text-module-for-ourshinypet">Prototype testing for the Text module for OurShinyPET</h1>
 <p>by <a href="https://www.linkedin.com/in/joeychuasm/">Joey Chua</a></p>
 <hr>
 <h1 id="introduction">Introduction</h1>
@@ -273,7 +273,7 @@ As the are unnecessary columns, select() function is use to retain only the colu
 <li>datatable() does not work well with the extensions of FixedColumns, FixedHeader and Scoller when coupled with Shiny. Hence, these specific functionalities are excluded.</li>
 <li>kable() is not up to date with the current version of R and was not used.</li>
 </ul>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">dt_reviews &lt;- <span style="color:#447fcf">datatable</span>(reviews)
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">dt_reviews &lt;- DT::<span style="color:#447fcf">datatable</span>(<span style="color:#447fcf">head</span>(reviews,<span style="color:#3677a9">500</span>)) <span style="color:#999;font-style:italic">#selected a snapshot due to file size</span>
 </code></pre></div><iframe seamless src="html/dt_reviews.html" width="120%" height="600">
 </iframe>
 <h2 id="exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</h2>
@@ -382,7 +382,6 @@ afinn_sentiments &lt;- data_comments %&gt;%
 </code></pre></div><pre><code>## Joining, by = &quot;word&quot;
 </code></pre>
 <p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<p><img src="afinn.png" width="350" /></p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">afinn_count &lt;- data_comments %&gt;% 
   <span style="color:#999;font-style:italic">#group_by(listing_id) %&gt;% </span>
   <span style="color:#447fcf">inner_join</span>(afinn) %&gt;% 
@@ -395,7 +394,8 @@ afinn_sentiments &lt;- data_comments %&gt;%
   <span style="color:#447fcf">coord_flip</span>()
 </code></pre></div><pre><code>## Joining, by = &quot;word&quot;
 </code></pre>
-<p><img src="afinn_count.png" width="350" /></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">afinn_count
+</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p><strong>BING</strong></p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">bing &lt;- <span style="color:#447fcf">get_sentiments</span>(<span style="color:#ed9d13">&#34;bing&#34;</span>)
 bing_sentiments &lt;- data_comments %&gt;% 
@@ -405,8 +405,7 @@ bing_sentiments &lt;- data_comments %&gt;%
   <span style="color:#447fcf">comparison.cloud</span>(colors = <span style="color:#447fcf">c</span>(<span style="color:#ed9d13">&#34;red&#34;</span>, <span style="color:#ed9d13">&#34;blue&#34;</span>))
 </code></pre></div><pre><code>## Joining, by = &quot;word&quot;
 </code></pre>
-<p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
-<p><img src="bing.png" width="350" /></p>
+<p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p><em>sorry, please self-censor some words</em></p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">bing_count &lt;- data_comments %&gt;% 
   <span style="color:#447fcf">inner_join</span>(bing) %&gt;% 
@@ -419,7 +418,8 @@ bing_sentiments &lt;- data_comments %&gt;%
   <span style="color:#447fcf">coord_flip</span>()
 </code></pre></div><pre><code>## Joining, by = &quot;word&quot;
 </code></pre>
-<p><img src="bing_count.png" width="350" /></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">bing_count
+</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p><strong>NRC</strong></p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">nrc &lt;- <span style="color:#447fcf">get_sentiments</span>(<span style="color:#ed9d13">&#34;nrc&#34;</span>)
 nrc_sentiments &lt;- data_comments %&gt;% 
@@ -429,8 +429,7 @@ nrc_sentiments &lt;- data_comments %&gt;%
   <span style="color:#447fcf">comparison.cloud</span>()
 </code></pre></div><pre><code>## Joining, by = &quot;word&quot;
 </code></pre>
-<p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
-<p><img src="nrc.png" width="350" /></p>
+<p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">nrc_count &lt;- data_comments %&gt;% 
   <span style="color:#447fcf">inner_join</span>(nrc) %&gt;% 
   <span style="color:#447fcf">count</span>(word,sentiment,sort=<span style="color:#6ab825;font-weight:bold">TRUE</span>) %&gt;% 
@@ -441,7 +440,9 @@ nrc_sentiments &lt;- data_comments %&gt;%
   <span style="color:#447fcf">facet_grid</span>(~sentiment)+
   <span style="color:#447fcf">geom_col</span>()+
   <span style="color:#447fcf">coord_flip</span>()
-</code></pre></div><p><img src="nrc_count.png" width="350" /></p>
+
+nrc_count
+</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <h3 id="tm">tm</h3>
 <p><strong>Create corpus</strong></p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">corpus_review &lt;- <span style="color:#447fcf">Corpus</span>(<span style="color:#447fcf">VectorSource</span>(<span style="color:#447fcf">as_tibble</span>(data$comments)))
@@ -464,8 +465,7 @@ review &lt;- <span style="color:#447fcf">arrange</span>(review, <span style="col
 <span style="color:#999;font-style:italic">#review[1:10]</span>
 <span style="color:#999;font-style:italic">#barplot(review[1:20], col = &#34;steel blue&#34;, las = 2)</span>
 </code></pre></div><div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">wordcloud &lt;- <span style="color:#447fcf">wordcloud</span>(review$term, review$num,max.words = <span style="color:#3677a9">50</span>, colors = <span style="color:#ed9d13">&#34;red&#34;</span>)
-</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
-<p><img src="wordcloud.png" width="350" /></p>
+</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 <h3 id="tf-idf">TF-IDF</h3>
 <p>TF-IDF is short for Term Frequency-Inverse Document Frequency. Term Frequency is the number of times word is found within a document. Invest Document Frequency is the inverse number of times word is found in collection of documents. A word which appears frequently within a document but is not frequently found in collection will have high TF IDF score as this word is relevant to the document.</p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">review_words &lt;- data_comments %&gt;%
@@ -486,7 +486,10 @@ airbnbwords &lt;- <span style="color:#447fcf">left_join</span>(review_words,tota
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">neigh_freq &lt;- <span style="color:#447fcf">ggplot</span>(airbnbwords,<span style="color:#447fcf">aes</span>(frequency/total,fill=neighbourhood_group_cleansed))+
   <span style="color:#447fcf">geom_histogram</span>() +
   <span style="color:#447fcf">facet_wrap</span>(~neighbourhood_group_cleansed,scales=<span style="color:#ed9d13">&#34;free_y&#34;</span>)
-</code></pre></div><p><img src="neigh_freq.png" width="350" /></p>
+neigh_freq
+</code></pre></div><pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+</code></pre>
+<p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">airbnbtfidf &lt;- airbnbwords %&gt;% 
   <span style="color:#447fcf">bind_tf_idf</span>(word,neighbourhood_group_cleansed ,frequency)
 
@@ -497,8 +500,7 @@ airbnbtfidf %&gt;%
   <span style="color:#447fcf">ggplot</span>(<span style="color:#447fcf">aes</span>(tf_idf,<span style="color:#447fcf">fct_reorder</span>(word,tf_idf),fill=neighbourhood_group_cleansed))+
   <span style="color:#447fcf">geom_col</span>()+
   <span style="color:#447fcf">facet_wrap</span>(~neighbourhood_group_cleansed,scales=<span style="color:#ed9d13">&#34;free&#34;</span>)
-</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
-<p><img src="airbnbtdidf.png" width="350" /></p>
+</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <h3 id="topic-modelling-lda">Topic Modelling (LDA)</h3>
 <p>Latent Dirichlet allocation is an example of topic modeling algorithm, based on 2 principles:</p>
 <ol>
@@ -519,7 +521,7 @@ airbnb_topics &lt;- <span style="color:#447fcf">tidy</span>(airbnb_lda, matrix =
   <span style="color:#447fcf">geom_col</span>(show.legend = <span style="color:#6ab825;font-weight:bold">FALSE</span>) +
   <span style="color:#447fcf">facet_wrap</span>(~ topic, scales = <span style="color:#ed9d13">&#34;free&#34;</span>) +
   <span style="color:#447fcf">scale_y_reordered</span>()
-</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <h3 id="geospatial-analysis">Geospatial Analysis</h3>
 <p>shp files are obtained from data.gov <a href="https://data.gov.sg/dataset/region-census-2010">region planning</a> and <a href="https://data.gov.sg/dataset/master-plan-2014-region-boundary-no-sea">region boundary without sea</a></p>
 <p><strong>Data Preparation</strong></p>
@@ -574,7 +576,7 @@ airbnb_clean_subregion &lt;- <span style="color:#447fcf">right_join</span>(mpsz,
 <div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">map &lt;- <span style="color:#447fcf">tmap_leaflet</span>(map) <span style="color:#999;font-style:italic">#blogdown unable to render interactive tmap</span>
 <span style="color:#447fcf">frameWidget</span>(map)
 </code></pre></div><div id="htmlwidget-1" style="width:100%;height:480px;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"index_files/figure-html//widgets/widget_unnamed-chunk-51.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"index_files/figure-html//widgets/widget_unnamed-chunk-42.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
 <p>To allow better visualisation, several factors were taken into consideration:</p>
 <ul>
 <li>
