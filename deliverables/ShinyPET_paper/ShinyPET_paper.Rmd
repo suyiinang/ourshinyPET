@@ -67,13 +67,7 @@ The design of our shinyPET is based on ensuring a comprehensive data analysis co
 
 To get started, the introduction page provides an overview of the application. This allow users to have an understanding of the case that he/she will be exploring. 
 
-In the exploratory page, data summary and their tabular form would be presented for user's understanding of data. In the explore sub tab, users are able to visualise provided data based on various variables. This user-friendliness and interactivity provides flexibility and ease of use without needing any technical knowledge. 
-
-In the text page, various text mining technique tools are presented in visualisation formats such as wordclouds and barcharts. Concepts such as sentiment analysis are simplified and recreated into visualisations for ease of understanding. 
-
-In the predictive page, various predictive models are available for user selection. Each subtabs guides user through the process from data sampling until final model selection. Visualisation and interactivity are embedded through graphs and user input menu to provide an organised workflow of predictive analytics.
-
-Aesthetically, the application's colour scheme should be based on the theme of the topic. Using our case of Airbnb, the official colours are Raush, Babu and Foggy (type of gray). 
+In the exploratory module (section 4.1), data summary and their tabular form would be presented for user's understanding of data. In the explore sub tab, users are able to visualise provided data based on various variables. This user-friendliness and interactivity provides flexibility and ease of use without needing any technical knowledge. In the text module (section 4.2), various text mining technique tools are presented. Each sub tab utilises visusaliation tools like word clouds and topic modeling to simplify concepts in natural language processing. This aids in understanding of the unstructured data provided. In the predictive module (section 4.3), various predictive models are available for user selection. The sub tabs guide users through the process from data sampling to final model selection. Visualisation and interactivity are embedded through graphs and user input menu to provide an organised workflow of predictive analytics. Aesthetically, the application's colour scheme should be based on the theme of the topic. Using our case of Airbnb, the official colours are Raush, Babu and Foggy (type of gray). 
 
 The combination of the 3 principles are consistently incorporated into various steps of the data analysis in the 3 modules, hence providing users an easy and comprehensive way to make data-driven decisions.
 
@@ -83,100 +77,83 @@ The exploratory module enables users to perform Exploratory Data Analysis (EDA) 
 
 ### Observe submodule
 
-As shown in Figure [1], the Observe section provides a summary of the data for users to quickly understand and form questions surrounding the data. Hence, this section was designed mainly based on ease of understanding principles.
-
+In Figure [1], the Observe section provides a summary of the data to facilitate users to understand and form questions surrounding the data.
 ```{r fig.cap='Interface and components of Observe section', out.width="100%"}
 include_graphics("images/design_observe.png")
 ```
-There are two main components - first is the top 4 boxes that provide an overview of the data - number of variables, observations and data type. The second component is the tables below shows the summary of each variable by respective data type. The tables allow for some interactivity - search boxes allows user to filter the data accordingly, while the arrow icons next to the variables names allow users to sort the data according to their needs.
+2 main components are presented in this section. The first component is the 4 boxes at the top of the page, which present an overview of the data by showing the number of variables, observations and data types. The second component is the summary of each variable according to their data types in a tabular format. Users are able to use the search boxes to filter data, and use the arrow icons to sort data. Hence, these components incorporate both ease of understanding and interactivity.
 
 ### Map submodule
 
-The Map section, Figure [2], the Map section allows user to explore the geographic patterns of Airbnb listings through thematic maps. Thus, this section was designed based on the three principles stated above and partially based on Shneiderman's interactive dynamics principle of "overview, zoom and filter, then details on demand", save for the 'zoom and filter' portion as it was not applicable to this data.
-
+Figure [2] shows the Map section that allows user to explore the geographic patterns through thematic maps. The maps are designed based on the three principles stated above and partially on Shneiderman's interactive dynamics principle of "overview, zoom and filter, then details on demand". 'zoom and filter' portion were not used as they are not applicable to this dataset.
 ```{r fig.cap='Interface and components of Map section', out.width="100%"}
 include_graphics("images/design_map.png")
 ```
-
-As such, there are 2 main components of this submodule - the map which provides a macro overview of the Airbnb listings by the selected variable. The second component is the table, which provides details of the map.
+There are 2 main components to submodule - the map which consist of bubble map and cloropleth map, and the table, which provides details of the map. These maps are chosen as they are deemed to fit the understanding of the data. For instance, price and review scores are used to show the price and score ranges spread shown by the intensity of the colour. 
 
 ### Explore and confirm submodule
 
-The Explore and Confirm section, figure [3], enables user to explore and perform inferential statistics based on their exploration and questions generated from the previous two sections. 
-
+Figure [3] shows the EDA and CDA submodule for users to explore and perform inferential statistics based on the section 4.1.1 and 4.1.2.
 ```{r fig.cap='Interface and components of Explore and Confirm section', out.width="100%"}
 include_graphics("images/design_explore1.png")
 ```
+There are 3 main components - the selection input on the left, the statistical results and the chart. The selection input with drop-down list allow users to customise charts shown. The application provides for 4 types of chart namely: distribution, mosaic, boxplot and scatter plot. Based on the selection input, drop-down menus for variables will be altered accordingly. For example, if 'Distribution' chart was selected, only the x-variable drop-down input will be shown. 
 
-There are 3 main components - the selection input on the left, the statistical results and the chart.
-
-The selection input was designed to be interactive and user-friendly, allowing users to customise charts based on the drop-down list provided. The application provides for 4 types of chart namely: distribution, mosaic, boxplot and scatter plot. In drop down menus will change according to the selected chart type, for example, if the 'Distribution' chart was selected, only the x-variable drop-down input will be shown.
-
-The chart was designed according to Shneiderman's interactive dynamics of highlight, filter or manipulate. This graph allows for users to manipulate views by selecting a single object in a plot, highlighting selected records and defining a region on the graph. Furthermore, the plotted chart can be downloaded for users to communicate their findings. See figure [4] for examples.
-
+The chart was designed based on Shneiderman's interactive dynamics of highlight, filter or manipulate. This graphs allows users to manipulate views by selecting an object in a plot, highlighting selected records and defining a region on the graph. Furthermore, the plotted charts can be downloaded for users to communicate their findings. An example of output is shown in [4].
 ```{r fig.cap="Graph's manipulation function of the Explore and Confirm section", out.width="100%"}
 include_graphics("images/design_explore2.png")
 ```
-
-Given that the application is tailored towards users that are not well versed in statistics, the statistical test was designed to be easy to understand, thus the test methods and results are automated based on the selected variables. An interactive slider is provided for user to easily adjust statistical test.
+As the application is tailored towards users that are not well-versed in statistics, the statistical tests where test methods and results are automated based on the selected variables, are easy to understand. An interactive slider is also provided for user to easily adjust statistical results.
 
 ## Text module
-The text module utilise various text mining techniques to transform unstructured text i.e. reviews into structured format to identify patterns and bring about meaningful insights. 
+The text module utilises various text mining techniques to transform unstructured text i.e. reviews into structured format to identify patterns and bring about meaningful insights. 
 
-Prior to application of text mining techniques, text preprocessing has to be carried out. This involves the use of tokenisation, stemming and lematisation. Tokenisation is the process of splitting a column of reviews into tokens such that they are flatenned into the format of one-token-per-row. Stemming is the process of separating the prefixes and suffixes from words to derive the root word form and meaning. Stemming algorithms work by cutting off the end or the beginning of the word, taking into account a list of common prefixes and suffixes that can be found in an inflected word. However, the stemming method changes words such as earlier to earli and checking to checkin as shown above. As such, this process was excluded. Lemmatization, on the other hand, takes into consideration the morphological analysis of the words.
+Prior to application of text mining techniques, text preprocessing has to be carried out. This involves the use of tokenisation, stemming and lematisation. Tokenisation is the process of splitting a column of reviews into tokens such that they are flattened into the format of one-token-per-row. Stemming is the process of separating the prefixes and suffixes from words to derive the root word form and meaning. Stemming algorithms work by cutting off the end or the beginning of the word, taking into account a list of common prefixes and suffixes that can be found in an inflected word. Lemmatization, on the other hand, takes into consideration the morphological analysis of the words.
 
 ### Token frequency submodule 
-To visualise token frequency, wordcloud is commonly used. Worldcloud provides an easy way to show how frequent a word appears in a corpus. In wordcloud, the size of a word indicates how frequent the word appears in a given text. 
+To visualise token frequency, wordcloud is used. Worldcloud provides an easy way to show how frequent a word appears in a corpus. In wordcloud, the size of a word indicates how frequent the word appears in a given text. 
 
-Other than condisdering words as individual units, "ngrams" are also used to tokenise pairs of adajacent words. ngrams provide context in sentiment analysis. For instance, while the word "happy" can be positive, in a sentence which containts the words "not happy" would mean otherwise. Hence, performing sentiment analysis on bigram allow us to examine sentiment-associated words. 
-
-```{r fig.cap='Interface and components of Explore and Confirm section', out.width="100%"}
+Other than considering words as individual units, "ngrams" are also used to tokenise pairs of adajacent words. ngrams provide context in sentiment analysis. For instance, while the word "happy" can be positive, in a sentence which containts the words "not happy" would mean otherwise. Hence, performing sentiment analysis on bigram allow us to examine sentiment-associated words. 
+```{r fig.cap='Token Frequency', out.width="100%"}
 include_graphics("images/tokenfrequency.png")
 ```
-
-There are two components: on the left is the wordcloud, and on the right is the bar chart the ranks the frequency of word in descending order. From the chart, it can be observed that the words "clean", "stay", "location", and "nice" occurred most frequently. This could suggest that cleanliness of the environement/room is mentioned the most; it could mean that travellers generally prefer clean room. Additionally, location is mentioned the second-most, suggesting that a location nearer to city for convenience, or q quiet location is important as customers.  
-
+There are two components: on the left is the wordcloud, and on the right is the bar chart the ranks the frequency of word in descending order. From the chart, it can be observed that the words "clean", "stay", "location", and "nice" occurred most frequently. When "bi-gram" is chosen, the wordcloud and bar chart changes accordingly. Tooltip to show the number of times the word occurred when hover over allows users to have understanding of the data. Hence, ease of understanding and interactivity are prominent. 
 
 ### Sentiment analysis submodule
-In this submodeule, 3 dictionaries were used to plot wordcloud that shows both the frequency and sentiments. First, AFINN lexicon measurs sentiment with a numeric score between -5 to 5. BING categorises words as either positive or negative. NRC categorise words into emotions.
-
-```{r fig.cap='Interface and components of Explore and Confirm section', out.width="100%"}
-include_graphics("images/sentimentanalysis.png")
+In this sub module, 3 dictionaries were used to plot wordcloud that shows both the frequency and sentiments. AFINN lexicon measures sentiment with a numeric score between -5 to 5, BING categorises words as either positive or negative, and NRC categorises words into 8 basic emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) and 2 sentiments (negative and positive).
+```{r fig.cap='Sentiment Analysis', out.width="100%"}
+include_graphics("images/bingsentiment.png")
 ```
-
-Users can select the various lexicons to view the wordcloud. To further value add to the wordcloud, a further visualisation is conducted. For AFINN, bar chart is plotted to show the spread and weightage of sentiments. For BING, the distribution of negative, positive and netural sentiments are shown. For NRC, a radial plot to show the tendency for customers to lean towards is shown. From the chart, it shows that sentiments generally lean towards positive and joy, while less on sadness and surprise. 
+Users can select the various lexicons to view the wordcloud and related charts such as bar charts and radial chart. For AFINN and BING, bar charts are plotted to show the spread and weightage of sentiments. For NRC, a radial plot to show the tendency for reviews to lean towards. 
 
 ### Topic modelling submodule
-Latent Dirichlet allocation is an example of topic modeling algorithm, based on 2 principles: 1. Every document is a mixture of topics.For example, document A is 90% topic on location and 10% on host’s hospitality. Whereas, document B is 30% topic on location and 70% on host’s hospitality. 2. Every topic is a mixture of words. For instance, based on Airbnb data, one topic can be cleanliness, and the other topic can on amenities.
+Latent Dirichlet allocation (LDA) is an example of topic modeling algorithm, based on 2 principles: First, every document is a mixture of topics. Second, every topic is a mixture of words.
 
-```{r fig.cap='Interface and components of Explore and Confirm section', out.width="100%"}
+```{r fig.cap='Topic Modelling', out.width="100%"}
 include_graphics("images/topicmodelling.png")
 ```
-
-Users are able to select the number of topics they would like to understand further. For isntance, by selecting 2 topics, we can observe that the most common word in topic 1 is "x", "y", "z". THe most common words in topic 2 include "a", "b", "c". We can also observe that there are overalapping topics. An example of usage in topic modelling would be to improve search algorithe,/suggestions for usesr. By anyalysing the topics and develop subtopics, the most relevant listings e.g. cleanest room, or closest location could be shown to the users.
+For flexibility, slider is incorporated to allow users to choose the number of topics and top terms of the topic. As the loading time is long, a "Go" button is included for users to proceed. Subsequently, 2 components are shown. First, the intertopic distance map that uses multidimensional scaling algorithm to plot the topics that have words in common. Second, the bar chart on the right shows salient terms. THe bars exhibit the total frequency of the term.
 
 ### Correlation network submodule 
-Word occurences and correlations are commonly used to identify family of words. 
+Word occurrences and correlations are commonly used to identify family of words. 
 
-```{r fig.cap='Interface and components of Explore and Confirm section', out.width="100%"}
+```{r fig.cap='Network Analysis', out.width="100%"}
 include_graphics("images/correlationnetwork.png")
 ```
-
-There are 2 options. First the is X graph. 
-Second is the X graph. From the diagram, is can be seen that thereis strong connection between words such as "X" and "X", "Y" and "Y" and "Y". 
+There are 2 options. First the is Bi-directional Network graph. Second is the Correlation Network graph. These graphs show how words relate to each other. 
 
 ## Predictive module
-Our predictive module design framework follows Tidymodels framework for data pre-processing, model training, tuning, and validation. On top of that, feature selection are supported by other R packages such as ggcorplot (for correlation matrix), ranger and Boruta (for feature importance). The visualisation and interactivity are embedded in each step of predictive analytics as explained below.
+The predictive module design framework follows the Tidymodels framework for data pre-processing, model training, tuning, and validation. On top of that, feature selections are supported by other R packages such as ggcorplot (for correlation matrix), ranger and Boruta (for feature importance). The visualisations and interactivities are embedded in each step of predictive analytics as explained below.
 
 ### Data sampling submodule
-In this submodule, selection of training-test split proportion provides user with flexibility in deciding how to spend data budget on the model development process. The distribution plot between training and test set are also displayed to highlight any potential bias in the training data set.
+In this submodule, selection of training-test split proportion provides user with flexibility in deciding how to spend data budget on the model development process. The distribution plot between training and test set displayed highlights potential biases in the training data set.
+
 ```{r, echo=FALSE, out.width='100%', fig.cap='Data sampling and distribution plot'}
 include_graphics("images/datasplit.PNG")
 ```
 
-
 ### Feature selection submodule
-To support user with selection of variables, correlation matrix with customised correlation type and p-value criteria are provided. In addition, variable importance score from 2 different methods highlights useful predictors towards response variable.
+To support user with selection of variables, correlation matrix with customised correlation type and p-value criteria are provided. In addition, variable importance score from 2 different methods highlight useful predictors towards response variable.
 ```{r, echo=FALSE, out.width='100%', fig.cap='Correlation matrix and variable importance'}
 include_graphics("images/featselect.PNG")
 ```
@@ -188,15 +165,15 @@ include_graphics("images/recipetrf.PNG")
 ```
 
 ### Model training submodule
-In this submodule, user will be able to select from 5 different types of predictive model for training. For linear regression model, coefficient estimates are shown with option to filter important variables based on p-value. For decision tree training result, visNetwork package is used for its decision tree plot to improve result evaluation.
+In this sub module, user can select from 5 different types of predictive models for training. For linear regression model, coefficient estimates are shown with option to filter important variables based on p-value. For decision tree training result, visNetwork package is used for its decision tree plot to improve result evaluation.
 ```{r, echo=FALSE, out.width='100%', fig.cap='Training result evaluation'}
 include_graphics("images/mdltrn.PNG")
 ```
-Trained model is then assessed using test set (unseen data) which is then assessed by plotting the actual and predicted value on an Rsquare plot. Table of metric performance such as root mean square, mean absolute error, and Rsquare value is also provided.
+Following, trained model is assessed using test set (unseen data) which is in turn assessed by plotting the actual and predicted value on an Rsquare plot. Table of metric performances such as root mean square, mean absolute error, and Rsquare value is also displayed
 ```{r, echo=FALSE, out.width='100%', fig.cap='Validation result evaluation'}
 include_graphics("images/mdleval.PNG")
 ```
-For linear regression model, user will have an option to further evaluate cases with high prediction error. Training set distribution plot is overlapped with predicted values, which may highlight outlier in the predictors. User can also choose to show N number of top predictor based on p-value score to be displayed.
+For linear regression model, users have an option to further evaluate cases with high prediction error. Training set distribution plot is overlapped with predicted values, which may highlight outliers in the predictors. Users can also choose to show N number of top predictor based on p-value score to be displayed.
 ```{r, echo=FALSE, out.width='100%', fig.cap='Prediction error assessment'}
 include_graphics("images/prederror.PNG")
 ```
@@ -204,45 +181,43 @@ Tree based model and generalised linear model use cross validation training set 
 ```{r, echo=FALSE, out.width='100%', fig.cap='Hyper-parameter tuning result'}
 include_graphics("images/hypartune.PNG")
 ```
+
 ### Model selection submodule
 In the final submodule, all trained and validated models are gathered and their metrics are compared for user to choose the final model. Once selected, user will be able to provide new input variables to each predictor and get the response variable using the selected model.
 ```{r, echo=FALSE, out.width='100%', fig.cap='Models performance comparison'}
 include_graphics("images/mdlcompare.PNG")
 ```
 
-The combination of these three modules along with its interactivity and usability would empower users to make data driven decisions with the insights generated.
+The combination of these three modules, along with its interactivity and usability would empower users to make data-driven decisions based on the insights generated.
 
 # Case Study : Airbnb Singapore
+InsideAirbnb provides tools and data for users to explore Airbnb. 2 files dated  27 January 2021 were used: (1) listing.csv.gz: This dataset consists of 74 variables and 4256 data points (2) reviews.csv.gz: This dataset provides 6 variables and 52368 data points. Our application can be used from both the perspective of hosts and guests.
 
-We selected Airbnbs in Singapore data as our case study due to its variety of data - structured, textual and location data.
+**Hosts**: In 2014, Airbnb launched the Superhost programme to reward hosts with outstanding hospitality. As a Superhost, one will have better earnings, more visibility, and are able to earn exclusive rewards such as increased earnings compared to regular hosts. To become a Superhost, these are the criteria to be met:
+- 4.8 or higher overall rating based on reviews
+- Completed at least 10 stays in the past year or 100 nights over at least 3 completed stays
+- Less than 1% cancellation rate, not including extenuating circumstances
+- Responds to 90% of new messages within 24 hours 
+**Guests**: With over 60,000 members and 6,000 properties listed on Airbnb website, a dilemma on which is the right space might be of concern to users. Various modules in our dashboard will allow both types of users to analyse Airbnb data according to their needs. 
 
-Since founded in 2008, Airbnb has revolutionised the tourism industry and has become one of the largest sharing economy. In 2019, Airbnb generated USD4.7b in global revenue with close to 7 million listings on its website [@airbnb2021]. Airbnb plays an important role of connecting hosts and travelers who would not typically interact in absence of the platform. However, given the sheer number of Airbnb listings available, Airbnb hosts face stiff competition not only from other Airbnb hosts, but also from hotels and service apartments. Meanwhile, for Airbnb guests, going through each listings and their reviews on Airbnb website can be quite overwhelming and a tedious process.Hence, this application allows users to analyse their needs and compare across other listings.
-
-The two main data used for analysis are the listings and reviews of Singapore Airbnb data, which were obtained from InsideAirbnb on the 27 January 2021. The listing dataset contains close to four thousand listings with 74 variables, while the review dataset consist of fifty thousand reviews and 6 variables.
-
-In order to reduce the loading time of the application, the datasets were preprocess prior with only the cleaned dataset loaded. In additional to the usual pre-processing steps, redundant variables such as listing id, url id, were removed. Additionally, unstructured variables were converted into structured variables by counting the length of the text.
+In order to reduce the loading time of the application, the datasets were preprocess and only the cleaned datasets were loaded. In addition, redundant variables such as listing id, url id, were removed.
 
 ## Geographical distribution of Airbnbs
-
-The point symbol map reveals that Airbnbs are distributed throughout Singapore, with high concentration around town center. The 4 distinct hotspots are (1) Geylang/Kallang, (2) Lavender/ Rochor / Bugis , (3) Orchard and (4) Chinatown. Area (3) and (4) are mainly tourist areas - (3) Orchard is the main shopping belt of Singapore, while (4) Chinatown retains significant historical and cultural landmarks. Areas (1) and (2) are popular due to its low price per person (see choropleth of figure x) while staying relatively close to town. Additionally, we noticed that Airbnbs tend to be located along the MRT station track. Given that Airbnb guests tend to be more budget conscious, they would most likely use public transportation.
-
+The point symbol map reveals that the distribution of Airbnb listings in Singapore has high concentration in the central regions. The 4 distinct hotspots are (1) Geylang/Kallang, (2) Lavender/ Rochor / Bugis, (3) Orchard and (4) Chinatown. Area (3) and (4) are mainly tourist areas - (3) Orchard is the main shopping belt of Singapore and (4) Chinatown retains significant historical and cultural landmarks. Areas (1) and (2) are popular given their low prices per person (see choropleth of figure [X]) while staying relatively close to central. Additionally, Airbnb listings tend to be located along the MRT station track, which could signify the use of public transports are generally more popular for Airbnb guests.
 ```{r fig.cap="Point symbol map on the left, choropleth on the right", out.width="100%"}
 include_graphics("images/usecase_explore.png")
 ```
-
-Through the use of these maps, potential Airbnb investor can identify areas that are highly saturated and the average price per person of that area to estimate their investment yield before committing to the investment.
+With this information, potential Airbnb investors can identify highly saturated areas and the average price per person of that area, which could help in estimatation of their investment yield prior to commitment of investments.
 
 ## Distribution of review score rating
-
-The overall Airbnb listing review score - 'review_scores_rating', is capped at 100 and has a left skewed distribution. This seems to suggest that either most guests tend to score their reviews positively, or Airbnbs with low ratings tend to delist and exit the Airbnb market. 
+The overall Airbnb listing review score - 'review_scores_rating', is capped at 100 and has a left-skewed distribution. This suggests that most guests tend to post positive reviews, or listings with low ratings tend to be delisted/exited from Airbnb market. 
 
 ```{r fig.cap="Distribution of review score rating", out.width="100%"}
 include_graphics("images/usecase_explore2.png")
 ```
 
 ## Confirmatory analysis of superhost and review scores hosting
-
-Figure x suggests that listings with the superhost status tend to have higher review scores as indicated the statistical test results where p-value is less than alpha of 0.05. 
+Figure X suggests that listings with the superhost status tend to have higher review scores as indicated the statistical test results where p-value is less than alpha of 0.05. 
 
 ```{r fig.cap="Exploratory and Confirmatory Analysis on superhost status and review scores", out.width="100%"}
 include_graphics("images/usecase_explore4.png")
@@ -253,7 +228,11 @@ Data sets like Airbnb are rich with large numbers of variable. However, multicol
 ```{r, echo=FALSE, out.width='100%', fig.cap='Correlation among variables'}
 include_graphics("images/corrcase.PNG")
 ```
-## Model explanation
+
+##Sentiment Analysis
+From the wordclouds and polarity clouds, the cleanliness of room seem to be mentioned the most frequently. Additionally, the distance to various areas and transport based on words like "minute walk", "bus stop", and "public transport" seemed to play an important factor to providing ratings and review. Based on the various lexicons, there is a common result of sentiments being skewed towards the positive side. 
+
+## Model Explanation
 In predicting listing price using linear model, the plot of coefficient estimate helps to explain the trained model. In the example below, our interface allows sorting of variables based on p-value score where variables with lowest p-value is located on top. Property type which falls under "Others" category (those with counts of less than 5% in the data set) has the lowest p-value score and positive estimate, which may represent unique property type (e.g. boat, campsite, chalet, villa) where the listing price is above the average price of common property type like apartment and condominium (as shown in the boxplot from exploratory module). Amenities and beds are also in the top 5 predictor where it correlates positively with listing price. However, the error bar is wider for property type "Others" as compared to the amenities and beds, representing more uncertainty in the estimate value.
 ```{r, echo=FALSE, out.width='100%', fig.cap='Coefficient estimate and boxplot from exploratory module'}
 include_graphics("images/LMcoeff.PNG")
@@ -261,19 +240,16 @@ include_graphics("images/LMcoeff.PNG")
 
 
 # Discussion
-
-**What has the audience learned from your work? What new insights or practices has your system enabled? A full blown user study is not expected, but informal observations of use that help evaluate your system are encouraged.**
-
 In this project, we have developed ShinyPET, an interactive web-based application to promote data exploratory, text analytics and predictive analytics on Airbnb data set. The interactivity and functionality of our application provides evidence on the robustness of R shiny as a framework to develop web application, along with the variety of available R packages that serve as building blocks for each module in our application. On top of the functionality, user interface is also carefully designed with the arrangement of submodules for each analytics task, to ease the usage for non-technical user. With the integration of main analytics task (exploratory, textual, and predictive), our application enables user to assess and make use of a dataset from different perspective in a single platform. The modularisation of analytics task allows user to quickly navigate between modules when necessary. Example of benefit from such case has been discussed previously where exploratory module can aid in the understanding of predictive model.
 
-
 # Future Work
+Shiny PET was built in relation to Singapore's Airbnb dataset as a usecase. The Shiny PET enable users to perform exploratory and confirmatory analysis, text mining, and predictive modelling without users needing extensive programming or statistical knowledge. The application could be further enhance by including a data load and wrangling function to accommodate different datasets.
 
-Shiny PET was built with Singapore's Airbnb dataset as a usecase for using R Shiny to perform exploratory and confirmatory, text and predictive analytics without users needing extensive programming or statistical knowledge. Hence, the application could be further enhance by including a data load and wrangling function to accommodate different datasets.
+The current types of chart and statistical test are limited to only 4 types of charts and parametric statistical test for each chart type respectively. Other charts, such as violin and bar charts, can be incorporated further. Additional hypothesis testing methods such as non-parametric test for median, statistical test by pairs etc. can be incorporated. The current application supports two types of map, providing room for additions in terms of kernel density map and navigation map
 
-Additionally, the current types of chart and statistical test are limited with only 4 types of charts and parametric statistical test for each chart type respectively. Other charts, such as violin and bar charts, can be incorporated further. Additional hypothesis testing methods can be included such as non-parametric test for median, statistical test by pairs and others. The current application only supports two types of map, other spatial maps such as kernel density map and navigation map can be included. Moreover, the explore and text module can be combined with views coordinated and linked to provide multiple dimensional exploration. 
+Additionally, token frequencies and sentiment analysis allow selection of n-grams and lexicons respectively. Further interactivity such as choices of neighbourhood, rating scores can be added. Moreover, the explore and text sub modules can be connected with views coordinated and linked in order to provide multiple dimensional exploration. 
 
-The current predictive module is limited to 5 types of predictive model. In future, more predictive models can be added to the list, such as neural network to provide user with wider model selection. In terms of hyper-parameter tuning, parameters can be made available for user input to provide more flexibility in developing predictive model. In-depth statistical analysis in model training such as residual analysis are currently not available and this would be a good additional tool to improve our application.
+The current predictive module is limited to 5 types of predictive model. More predictive models e.g. neural network can be to provide users with wider model selection. In hyper-parameter tuning, parameters can be made available for user input to provide more flexibility in developing predictive model. In-depth statistical analysis in model training such as residual analysis are currently not available and this would be a good additional tool to improve our application.
 
 # Acknowledgement
 
