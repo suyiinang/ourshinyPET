@@ -35,11 +35,11 @@ knitr::opts_chunk$set(echo = FALSE, fig.pos = "H", fig.align='center')
 
 With increasing affordable data storage and processing technologies, the demand for data-driven decision-making (DDDM)^[DDDM refers to the systematic analysis, examination and integration of data to making strategic decisions, rather than based on intuition or observation alone (Mandinach, 2012) [@doi:10.1080/00461520.2012.667064]] has increased significantly. As Geoffrey Moore opines, “Without big data analytics, companies are blind and deaf, wandering out onto the Web like deer on a freeway.”. With the use of data driven decision making through analytics tools, firms performance would improve (Yasmin, M et al., 2020) [@https://doi.org/10.1016/j.jbusres.2020.03.028]
 
-Airbnb is an online vacation rental maravailableketplace servicing a community of hosts and travellers. By 2020, Airbnb has millions of listings in over 220 counties and regions across 100,000 cities [@airbnb2021]. The data generated provides rich information, including structured data e.g. price and location, as well as unstructured data e.g. reviews and listing descriptions. Thus, Airbnb provides a good use case and base case for exploratory and confirmatory analysis, text mining, and predictive modeling as presented in our ShinyPET dashboard. 
+Airbnb is an online vacation rental marketplace servicing a community of hosts and travellers. By 2020, Airbnb has millions of listings in over 220 counties and regions across 100,000 cities [@airbnb2021]. The data generated provides rich information, including structured data e.g. price and location, as well as unstructured data e.g. reviews and listing descriptions. Thus, Airbnb provides a good use case and base case for exploratory and confirmatory analysis, text mining, and predictive modeling as presented in our ShinyPET dashboard. 
 
 # Motivation of the application
 
-The motivation of this project stems from two main issues - the proliferation of data and lack of user-friendly tools to make data-driven decision. According to Harris (2012) [@harris_2014], data is impractical without the ability to analyse it. Although there is a wide range of commercial statistics and analytics tools, these tools are often subscription-based and require technical knowledge to mine and draw insights from. On the other hand, while open source tools as such Python and R allow for data visualisations, users would require extensive programming background to generate such insights.
+The motivation of this project stems from two main issues - the proliferation of data and lack of user-friendly open source tools to make data-driven decision. According to Harris (2012) [@harris_2014], data is impractical without the ability to analyse it. Although there is a wide range of commercial statistics and analytics tools, these tools are often subscription-based and require technical knowledge to mine and draw insights from. On the other hand, while open source tools as such Python and R allow for data visualisations, users would require extensive programming background to generate such insights.
 
 Hence, this project aims to develop an interface which is concise, interactive, and user-friendly using R Shiny. With this interface, data-based decisions can be made from the interactive GUI. The R Shiny App will cover 3 modules:
 1) Exploratory - users are able to draw interesting patterns based on selected variables, which are augmented by statistical tests based on the chosen variables. 
@@ -77,7 +77,7 @@ The exploratory module enables users to perform Exploratory Data Analysis (EDA) 
 
 ### Observe submodule
 
-In Figure [1], the Observe section provides a summary of the data to facilitate users to understand and form questions surrounding the data.
+In Figure 1, the Observe section provides a summary of the data to facilitate users to understand and form questions surrounding the data.
 ```{r fig.cap='Interface and components of Observe section', out.width="100%"}
 include_graphics("images/design_observe.png")
 ```
@@ -85,7 +85,7 @@ include_graphics("images/design_observe.png")
 
 ### Map submodule
 
-Figure [2] shows the Map section that allows user to explore the geographic patterns through thematic maps. The maps are designed based on the three principles stated above and partially on Shneiderman's interactive dynamics principle of "overview, zoom and filter, then details on demand". 'zoom and filter' portion were not used as they are not applicable to this dataset.
+Figure 2 shows the Map section that allows user to explore the geographic patterns through thematic maps. The maps are designed based on the three principles stated above and partially on Shneiderman's interactive dynamics principle of "overview, zoom and filter, then details on demand". 'zoom and filter' portion were not used as they are not applicable to this dataset.
 ```{r fig.cap='Interface and components of Map section', out.width="100%"}
 include_graphics("images/design_map.png")
 ```
@@ -93,13 +93,13 @@ There are 2 main components to submodule - the map which consist of bubble map a
 
 ### Explore and confirm submodule
 
-Figure [3] shows the EDA and CDA submodule for users to explore and perform inferential statistics based on the section 4.1.1 and 4.1.2.
+Figure 3 shows the EDA and CDA submodule for users to explore and perform inferential statistics based on the section 4.1.1 and 4.1.2.
 ```{r fig.cap='Interface and components of Explore and Confirm section', out.width="100%"}
 include_graphics("images/design_explore1.png")
 ```
 There are 3 main components - the selection input on the left, the statistical results and the chart. The selection input with drop-down list allow users to customise charts shown. The application provides for 4 types of chart namely: distribution, mosaic, boxplot and scatter plot. Based on the selection input, drop-down menus for variables will be altered accordingly. For example, if 'Distribution' chart was selected, only the x-variable drop-down input will be shown. 
 
-The chart was designed based on Shneiderman's interactive dynamics of highlight, filter or manipulate. This graphs allows users to manipulate views by selecting an object in a plot, highlighting selected records and defining a region on the graph. Furthermore, the plotted charts can be downloaded for users to communicate their findings. An example of output is shown in [4].
+The chart was designed based on Shneiderman's interactive dynamics of highlight, filter or manipulate. This graphs allows users to manipulate views by selecting an object in a plot, highlighting selected records and defining a region on the graph. Furthermore, the plotted charts can be downloaded for users to communicate their findings. An example of output is shown in figure 4.
 ```{r fig.cap="Graph's manipulation function of the Explore and Confirm section", out.width="100%"}
 include_graphics("images/design_explore2.png")
 ```
@@ -203,7 +203,7 @@ InsideAirbnb provides tools and data for users to explore Airbnb. 2 files dated 
 In order to reduce the loading time of the application, the datasets were preprocess and only the cleaned datasets were loaded. In addition, redundant variables such as listing id, url id, were removed.
 
 ## Geographical distribution of Airbnbs
-The point symbol map reveals that the distribution of Airbnb listings in Singapore has high concentration in the central regions. The 4 distinct hotspots are (1) Geylang/Kallang, (2) Lavender/ Rochor / Bugis, (3) Orchard and (4) Chinatown. Area (3) and (4) are mainly tourist areas - (3) Orchard is the main shopping belt of Singapore and (4) Chinatown retains significant historical and cultural landmarks. Areas (1) and (2) are popular given their low prices per person (see choropleth of figure [X]) while staying relatively close to central. Additionally, Airbnb listings tend to be located along the MRT station track, which could signify the use of public transports are generally more popular for Airbnb guests.
+The point symbol map reveals that the distribution of Airbnb listings in Singapore has high concentration in the central regions. The 4 distinct hotspots are (1) Geylang/Kallang, (2) Lavender/ Rochor / Bugis, (3) Orchard and (4) Chinatown. Area (3) and (4) are mainly tourist areas - (3) Orchard is the main shopping belt of Singapore and (4) Chinatown retains significant historical and cultural landmarks. Areas (1) and (2) are popular given their low prices per person (see choropleth map on the right) while staying relatively close to central. Additionally, Airbnb listings tend to be located along the MRT station track, which could signify the use of public transports are generally more popular for Airbnb guests.
 ```{r fig.cap="Point symbol map on the left, choropleth on the right", out.width="100%"}
 include_graphics("images/usecase_explore.png")
 ```
@@ -217,7 +217,7 @@ include_graphics("images/usecase_explore2.png")
 ```
 
 ## Confirmatory analysis of superhost and review scores hosting
-Figure X suggests that listings with the superhost status tend to have higher review scores as indicated the statistical test results where p-value is less than alpha of 0.05. 
+The chart below suggests that listings with the superhost status tend to have higher review scores as indicated the statistical test results where p-value is less than alpha of 0.05. 
 
 ```{r fig.cap="Exploratory and Confirmatory Analysis on superhost status and review scores", out.width="100%"}
 include_graphics("images/usecase_explore4.png")
@@ -245,7 +245,7 @@ In this project, we have developed ShinyPET, an interactive web-based applicatio
 # Future Work
 Shiny PET was built in relation to Singapore's Airbnb dataset as a usecase. The Shiny PET enable users to perform exploratory and confirmatory analysis, text mining, and predictive modelling without users needing extensive programming or statistical knowledge. The application could be further enhance by including a data load and wrangling function to accommodate different datasets.
 
-The current types of chart and statistical test are limited to only 4 types of charts and parametric statistical test for each chart type respectively. Other charts, such as violin and bar charts, can be incorporated further. Additional hypothesis testing methods such as non-parametric test for median, statistical test by pairs etc. can be incorporated. The current application supports two types of map, providing room for additions in terms of kernel density map and navigation map
+The current types of chart and statistical test are limited to only 4 types of charts and parametric statistical test for each chart type respectively. Other charts, such as violin and bar charts, can be incorporated further. Additional hypothesis testing methods such as non-parametric test for median, statistical test by pairs etc. can be incorporated. The current application supports two types of map, providing room for additions in terms of kernel density map and navigation map.
 
 Additionally, token frequencies and sentiment analysis allow selection of n-grams and lexicons respectively. Further interactivity such as choices of neighbourhood, rating scores can be added. Moreover, the explore and text sub modules can be connected with views coordinated and linked in order to provide multiple dimensional exploration. 
 
