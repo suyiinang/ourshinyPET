@@ -3,7 +3,7 @@ main_topsize: 0.09 #percent coverage of the poster
 main_bottomsize: 0.07
 poster_width: "23.39in"
 poster_height: "33.11in"
-title: "Shiny PET: A Predictive, Exploratory and Text RShiny Application using Airbnb data"
+title: "Shiny PET: A Predictive, Exploratory and Text R Shiny Application using Airbnb Data"
 author:
   - name: Ang Su Yiin
     email: suyiin.ang.2020@mitb.smu.edu.sg
@@ -25,7 +25,7 @@ affiliation:
   - num: 1
     address: Singapore Management University  
 main_findings:
-  - "Making **Exploratory**, **Text** and **Predictive** Analytics accessible to everyone"
+  - "Making **Exploratory**, **Text** and **Predictive** Analytics <br /> Accessible to Everyone"
 main_textsize: "80px"
 main_fontfamily: "Roboto"
 # colour
@@ -88,7 +88,7 @@ With the explosion of affordable data storage and processing technologies, the *
 # Motivation
 The motivation of this project stems from two main issues - the **proliferation of data** and **lack of user-friendly open source tools** to make data-driven decision.
 
-Aim to Create R Shiny application to **encourage anyone and everyone to make data-based decisions effortlessly** 
+The aim is to create an R Shiny application to **encourage anyone and everyone to make data-based decisions effortlessly**. 
 
 # Approach
 
@@ -119,9 +119,9 @@ include_graphics("images/explore2.png")
 ```
 
 **Exploratory and confirmatory analysis**  
-1) Panel on the left allows user to seamlessly toggle between different charts.  
-2) Automated statistical results based on selected variables.  
-3) Interactive plots - user can select, pan, zoom and download plot.  
+- Panel on the left allows user to seamlessly toggle between different charts.  
+- Automated statistical results based on selected variables.  
+- Interactive plots - user can select, pan, zoom and download plot.  
 ```{r, echo=FALSE, out.width="90%"}
 include_graphics("images/explore3.png")
 ```
@@ -130,7 +130,7 @@ include_graphics("images/explore3.png")
 # Text
 
 **Token Frequency**  
-- Word Cloud allows visualiastion of qualitative data by showing the frequency of appearance of a particular word in Airbnb reviews.   
+- Word Cloud allows visualisation of qualitative data by showing the frequency of appearance of a particular word in Airbnb reviews.   
 - Bar chart sorts the frequency of word in descending order.   
 - Unigram/Bigram allow user to understand reviews in various forms.  
 ```{r, echo=FALSE, out.width="90%"}
@@ -147,10 +147,10 @@ include_graphics("images/afinnsentiment.png")
 ```
 
 **Topic Modelling**  
-- Topic Modelling help users interpret the topics that has been fit to a corpus of Airbnb data.   
-- The left panel shows a global view of topic model to show the prevalence of each topic, and how topics relat to each other.  
+- Topic Modeling help users interpret the topics that has been fit to a corpus of Airbnb data.   
+- The left panel shows a global view of topic model to show the prevalence of each topic, and how topics relate to each other.  
 - The right panel shows horizontal barchar where the length of the bars represent individual terms that are most useful in interpreting the selected topic. This enable users to understand the meaning behind each topic.  
-```{r, echo=FALSE, out.width="115%"}
+```{r, echo=FALSE, out.width="90%"}
 include_graphics("images/topicmodelling.png")
 ```
 
@@ -198,8 +198,8 @@ include_graphics("images/mdlselect.PNG")
 
 # Further work
 - Include a data load and wrangling function to accommodate different datasets.
-- Combine text and explore module with coordinated linked views for multi-dimensional exploration.
-- More predictive model such as neural network and classification workflow can be included to provide user with wider predictive analytics selection.  
+- Combine text and explore modules with coordinated linked views for multi-dimensional exploration.
+- More predictive models such as neural network and classification workflow can be included to provide user with wider predictive analytics selection.  
 
 
 ```{r, include=FALSE}
