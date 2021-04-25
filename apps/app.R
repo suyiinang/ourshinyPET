@@ -14,7 +14,7 @@ library(ggfittext)
 library(tidymodels)
 library(glmnet)
 library(ranger)
-library(xgboost)
+#library(xgboost)
 library(rpart)
 library(visNetwork)
 library(sparkline)
@@ -85,19 +85,25 @@ data$comments <- gsub("^[alpha:][:space:]'\"]", " ",data$comments) %>%
   tolower()
 data$comments <- gsub("[^a-zA-Z]", " ",data$comments)
 data$comments <- iconv(data$comments,to="UTF-8")
+data$comments <- gsub("min", "minute",data$comments)
+data$comments <- gsub("minutes", "minute",data$comments)
+data$comments <- gsub("mins", "minute",data$comments)
+data$comments <- gsub("minuteutes", "minute",data$comments)
+data$comments <- gsub("recommended", "recommend",data$comments)
 data$price <- str_remove(string=data$price,pattern='\\$') %>% 
   as.numeric()
 data$host_response_rate <- gsub("%","",data$host_response_rate) 
 data$amenities <- gsub('\"', "", data$amenities, fixed = TRUE)
 data <- subset(data,host_location=="Singapore" | host_location=="Singapore, Singapore" | host_location=="SG")
-new_stopwords <- c("NA","michelle's","elizabeth","yuan","felix","anita","susan","eddie","eddie's","edwin","belinda","besan","nargis","antonio","sharm","tim","kathleen","stteven","jerome","freddy","eunice","eunice's","vivian","jerome's","mi's","freddy's","joey","tay","michelle","noor","anthony","tay's","carrie","jauhara","susan","karen","jenny","lena","leonard","kingsley","freda","jialin","matthew","fran","na","joey")
+new_stopwords <- c("NA","michelle's","elizabeth","yuan","felix","anita","susan","eddie","eddie's","edwin","belinda","besan","nargis","antonio","sharm","tim","kathleen","stteven","jerome","freddy","eunice","eunice's","vivian","jerome's","mi's","freddy's","joey","tay","michelle","noor","anthony","tay's","carrie","jauhara","susan","karen","jenny","lena","leonard","kingsley","freda","jialin","matthew","fran","na","joey","swimminuteg","dick","cock","bitch","fran")
 all_stopwords <- c(new_stopwords,stop_words)
 data_comments <- data %>% 
   dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
   unnest_tokens(word,comments) %>% 
   group_by(listing_id) %>% 
   ungroup() %>% 
-  anti_join(stop_words)
+  anti_join(all_stopwords,copy=TRUE) %>% 
+  filter(!word %in% all_stopwords)
 data_count <- data_comments %>% 
   group_by(word) %>% 
   summarise(frequency=n()) %>% 
@@ -112,72 +118,6 @@ bigram_data_count <- data %>%
   #ungroup() %>% 
   count(word,sort=TRUE) %>% 
   dplyr::slice(-c(1))
-
-
-afinn <- get_sentiments("afinn") 
-afinn_sentiments <- data_comments %>% 
-  inner_join(afinn) %>% 
-  count(word,value,sort=TRUE) %>% 
-  acast(word~value,value.var="n",fill=0) 
-#%>% 
-#comparison.cloud()
-
-afinn_count <- data_comments %>% 
-  #group_by(listing_id) %>% 
-  inner_join(afinn) %>% 
-  count(word,value) %>% 
-  filter(n>500) %>% 
-  #mutate(n=ifelse(sentiment=="negative",-n,n)) %>% 
-  mutate(word=reorder(word,n)) %>% 
-  arrange(desc(n))
-#%>% 
-#ggplot(aes(word,(n)))+
-#geom_col()+
-#coord_flip()
-
-bing <- get_sentiments("bing")
-bing_sentiments <- data_comments %>% 
-  inner_join(bing) %>% 
-  count(word,sentiment,sort=TRUE) %>% 
-  acast(word~sentiment,value.var="n",fill=0) 
-#%>% 
-#comparison.cloud(colors = c("#FF5A5F", "#00A699"))
-
-bing_count <- data_comments %>% 
-  inner_join(bing) %>% 
-  count(word,sentiment) %>% 
-  filter(n>500) %>% 
-  mutate(n=ifelse(sentiment=="negative",-n,n)) %>% 
-  mutate(word=reorder(word,n))%>% 
-  arrange(desc(n))
-#%>% 
-#ggplot(aes(word,n,fill=sentiment))+
-#geom_col()+
-#coord_flip()
-bing_count
-
-nrc <- get_sentiments("nrc")
-nrc_sentiments <- data_comments %>% 
-  inner_join(nrc) %>% 
-  count(word,sentiment,sort=TRUE) %>% 
-  acast(word~sentiment,value.var="n",fill=0) 
-#%>% 
-#comparison.cloud()
-
-nrc_count <- data_comments %>% 
-  inner_join(nrc) %>% 
-  count(word,sentiment,sort=TRUE) %>% 
-  filter(n>1500) %>% 
-  mutate(n=ifelse(sentiment=="negative",-n,n))%>% 
-  mutate(word=reorder(word,n)) %>% 
-  arrange(desc(n))
-#%>% 
-#ggplot(aes(word,n))+
-#facet_grid(~sentiment)+
-#geom_col()+
-#coord_flip()
-nrc_count
-
 region_data <-data_comments %>% 
   group_by(neighbourhood_group_cleansed) %>% 
   inner_join(afinn) %>% 
@@ -185,6 +125,9 @@ region_data <-data_comments %>%
   mutate(score=value*n) %>%
   group_by(neighbourhood_group_cleansed) %>% 
   summarise(mean_score=mean(score))
+afinn <- get_sentiments("afinn") 
+bing <- get_sentiments("bing")
+nrc <- get_sentiments("nrc")
 
 subzone <- readOGR(dsn = "data/spatial", layer="MP14_SUBZONE_WEB_PL")
 
@@ -225,263 +168,263 @@ airbnb_map <- right_join(mpsz2,listing_summary, c("PLN_AREA_N" = 'neighbourhood_
 
 
 ui <- dashboardPage(
-    skin = 'black',
-    dashboardHeader(title = "Airbnb ShinyPET"),         
-    
-    dashboardSidebar(
-        sidebarMenu(
-            menuItem("Introduction", tabName = "Intro", icon = icon('airbnb')),
-            menuItem("Exploratory module", tabName = "EDA", icon = icon('chart-bar')),
-            menuItem("Text module", tabName = "TA", icon = icon('text-height')),
-            menuItem("Predictive module", tabName = "PA", icon = icon('chart-line'))
-        )
-    ),
-    
-    dashboardBody(
-        tabItems(
-          tabItem("Intro",
-                  fluidPage(theme = shinytheme('journal'), #https://rstudio.github.io/shinythemes/
-                            #for intro page
-                            titlePanel("Shiny PET: A Predictive, Exploratory and Text Application"),
-                            fluidRow(
-                              column(width = 6,
-                                     h4('About'),
-                                     p("Shiny PET is a user-friendly application that will enable users to make data-driven decisions without the need to understand programming languages or have extensive statistical knowledge."),
-                                     p('We have used Airbnb data as our baseline for this project - data generated is rich in information, which consists of structured, unstructured (textual), and location data.'),
-                                     h4('Application feature'),
-                                     p("As seen in the figure on the right, this application has 3 modules – exploratory, text and predictive"),
-                                     p('The Exploratory module allows users to perform exploratory and confirmatory analysis on selected variables to identify interesting patterns.'),
-                                     p('The Text module allows users to analyse textual data from reviews to generate more quantitative insights.'),
-                                     p('The Predictive module enables users to prepare and build a variety of prediction models.'),
-                                     tags$div(
-                                       'For more information on this project, please visit our',
-                                       tags$a(href="https://ourshinypet.netlify.app/", 
-                                              "website"),
-                                      h4('User Guide'),
-                                      p('To optimise your user experience, please refer to our user guide.'),
-                                      actionButton("user_guide", "User Guide")
-                                     )
-                              ),
-                              column(width = 6,
-                                     tags$img(src = 'nav.png',width = 500, height = 400))
-                            )
-                  )
-          ),
-            tabItem("EDA",
-                    tabsetPanel(
-                        tabPanel("Observe",
-                                 observeUI('observe')
-                        ),
-                        tabPanel("Map",
-                                 fluidPage(
-                                   titlePanel("Mapping Airbnbs"),
-                                   sidebarLayout(
-                                     sidebarPanel(
-                                       selectInput(inputId = 'map_type',
-                                                   label = 'Select map type',
-                                                   choices = c('Point Symbol map',
-                                                               'Choropleth map'),
-                                                   selected = 'Point Symbol map'),
-                                       uiOutput('point_view'),
-                                       uiOutput('show_data'),
-                                       width = 3
-                                     ),
-                                     mainPanel(
-                                       withSpinner(leafletOutput('leaf_map', height = 600, width = 1000),type = 6, color = "#FF5A5F", size = 2),
-                                       conditionalPanel(
-                                         condition = "input.map_type == 'Choropleth map'",
-                                         withSpinner(DT::dataTableOutput('szTable'),type = 6, color = "#FF5A5F", size = 2)
-                                       )
-                                       
-                                     )
-                                   )
-                                 )
-                        
-                    ),
-                    tabPanel("Explore and confirm",
-                             fluidPage(
-                               titlePanel("Explore variables"),
-                               sidebarLayout(
-                                 sidebarPanel(
-                                   selectInput(inputId = 'chart_type',
-                                               label = 'Select chart type',
-                                               choices = sort(c('Distribution',
-                                                                "Boxplot",
-                                                                "Mosaic",
-                                                                "Scatter")),
-                                               selected = "Distribution"),
-                                   uiOutput('x_ui'),
-                                   uiOutput('y_ui'),
-                                   uiOutput('colour'),
-                                   uiOutput('flip'),
-                                   uiOutput('facet'),
-                                   uiOutput('bins'),
-                                   selectInput(inputId = 'theme',
-                                               label = 'Change theme',
-                                               choices = names(themes),
-                                               selected = 'Gray'),
-                                   conditionalPanel(
-                                     condition = "input.chart_type == 'Distribution'",
-                                     uiOutput('input_ttest')
-                                   ),
-                                   uiOutput('conf_lev'),
-                                   width = 3
-                                 ),
-                                 mainPanel(
-                                   
-                                   h4("Statistical test result (x and y variable only)"),
-                                   conditionalPanel(
-                                     condition = "input.chart_type == 'Distribution'",
-                                     withSpinner(textOutput('test_method'),type =7, color = "#FF5A5F", size = 1),
-                                     h5("Hypothesis:"),
-                                     withSpinner(textOutput('null_hypo_ttest'),type =7, color = "#FF5A5F", size = 1),
-                                     withSpinner( textOutput('alt_hypo_ttest'),type =7, color = "#FF5A5F", size = 1),
-                                     h5('Confident interval:'),
-                                     withSpinner(textOutput('ci'),type =7, color = "#FF5A5F", size = 1),
-                                     h5('p-value:'),
-                                     withSpinner(textOutput('pvalue'),type =7, color = "#FF5A5F", size = 1),
-                                     p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
-                                   ),
-                                   conditionalPanel(
-                                     condition = "input.chart_type == 'Boxplot'",
-                                     withSpinner(uiOutput('test_method_2ttest'),type =7, color = "#FF5A5F", size = 1),
-                                     withSpinner(uiOutput('test_method_anova'),type =7, color = "#FF5A5F", size = 1),
-                                     h5("Hypothesis:"),
-                                     withSpinner(textOutput('null_hypo_2ttest'),type =7, color = "#FF5A5F", size = 1),
-                                     withSpinner(textOutput('alt_hypo_2ttest'),type =7, color = "#FF5A5F", size = 1),
-                                     h5('p-value:'),
-                                     withSpinner(uiOutput('pvalue_2ttest'),type =7, color = "#FF5A5F", size = 1),
-                                     withSpinner(uiOutput('pvalue_anova'),type =7, color = "#FF5A5F", size = 1),
-                                     p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
-                                   ),
-                                   conditionalPanel(
-                                     condition = "input.chart_type == 'Mosaic'",
-                                     withSpinner(textOutput('test_method_chisq'),type =7, color = "#FF5A5F", size = 1),
-                                     h5("Hypothesis:"),
-                                     withSpinner(textOutput('null_hypo_chisq'),type =7, color = "#FF5A5F", size = 1),
-                                     withSpinner(textOutput('alt_hypo_chisq'),type =7, color = "#FF5A5F", size = 1),
-                                     h5('p-value:'),
-                                     withSpinner(textOutput('pvalue_chisq'),type =7, color = "#FF5A5F", size = 1),
-                                     p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
-                                     
-                                   ),
-                                   conditionalPanel(
-                                     condition = "input.chart_type == 'Scatter'",
-                                     withSpinner(textOutput('test_method_cortest'),type =7, color = "#FF5A5F", size = 1),
-                                     h5("Hypothesis:"),
-                                     withSpinner(textOutput('null_hypo_cortest'),type =7, color = "#FF5A5F", size = 1),
-                                     withSpinner(textOutput('alt_hypo_cortest'),type =7, color = "#FF5A5F", size = 1),
-                                     h5('p-value:'),
-                                     withSpinner(textOutput('pvalue_cortest'),type =7, color = "#FF5A5F", size = 1),
-                                     p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
-                                     
-                                     
-                                   ),
-                                   conditionalPanel(
-                                     condition = "input.chart_type == 'Distribution'",
-                                     withSpinner(plotlyOutput('dist'),type =7, color = "#FF5A5F", size = 1)
-                                   ),
-                                   conditionalPanel(
-                                     condition = "input.chart_type == 'Boxplot'",
-                                     withSpinner(plotlyOutput('bbox'),type =7, color = "#FF5A5F", size = 1)
-                                   ),
-                                   conditionalPanel(
-                                     condition = "input.chart_type == 'Mosaic'",
-                                     withSpinner(plotlyOutput('mosaic'),type =7, color = "#FF5A5F", size = 1)
-                                   ),
-                                   conditionalPanel(
-                                     condition = "input.chart_type == 'Scatter'",
-                                     withSpinner(plotlyOutput('scatter'),type =7, color = "#FF5A5F", size = 1)
-                                   ),
-                                   
-                                   
-                                 )
-                               )
-                             )
-                               
-                               
-                             ))
-            ),
-            tabItem("TA",
-                    tabsetPanel(
-                        tabPanel("Token frequency",
-                                 fluidPage(
-                                     fluidRow(
-                                         column(7, id = "col_word_cloud",
-                                                box(width=12, height=550, solidHeader = F, title = strong("The Word Cloud"),
-                                                    radioButtons("word_cloud_gram",NULL, c("Uni-gram","Bi-gram"), selected = "Uni-gram", inline = T),
-                                                    #plotOutput("word_cloud_plot",height = "300px")
-                                                    wordcloud2Output("word_cloud_plot",height = "470px"))
-                                         ),
-                                         column(5, id = "col_freq",
-                                                box(width=12, height=550, solidHeader = F, title = strong("Word Frequency"),
-                                                highchartOutput("word_freq_plot", height=500)
-                                                )
-                                                
-                                         )
-                                     )
-                                 )
-                                 
-                        ),
-                        tabPanel("Sentiment analysis",
-                                 fluidPage(
-                                     fluidRow(
-                                         column(7, id = "col_polarity_cloud",
-                                                box(width=12, height=550, solidHeader = F, title = strong("Polarity"),
-                                                    radioButtons("word_polarity_plot",NULL, c("AFINN","BING","NRC"), selected = "BING", inline = T),
-                                                    #plotOutput("word_cloud_plot",height = "300px")
-                                                    wordcloud2Output("polarity_cloud_plot",height = "470px"))
-                                         ),
-                                         column(5, id = "col_polarity_freq",
-                                                box(width=12, height=550, solidHeader = F, title = strong("Word Frequency"),
-                                                    highchartOutput("polarity_freq_plot", height=500)
-                                                )
-                                                )
-                                         )
-                                     )
-                        ),
-                        tabPanel("Topic modeling",
-                                 #put ui here
-                        ),
-                        tabPanel("Network analysis",
-                                 fluidRow(
-                                     box(width=12, height=500, solidHeader = F,
-                                         tabsetPanel(type = 'pills',
-                                                     id = 'network_panel',
-                                                     tabPanel("Bi Directional Network", 
-                                                              #sliderInput("bi_freq", "Min Frequency of Bi-grams:",min = 10, max = 200,value = 100, width = '20%'),
-                                                              plotOutput("network_plot1")),
-                                                     tabPanel("Correlation Network", plotOutput("network_plot2"))
-                                         )
-                                     )
-                                 )
-                        )
-                        )),
-            tabItem("PA",
-                    tabsetPanel(
-                        tabPanel("Data splitting",
-                                 data_splittingUI("ds")
-                        ),
-                        tabPanel("Feature selection",
-                                 feat_selectUI("fs")
-                        ),
-                        tabPanel("Data transformation",
-                                 data_transformUI("dtf")
-                        ),
-                        tabPanel("Model training",
-                                 model_trainUI("mdlt")
-                        ),
-                        tabPanel("Model evaluation",
-                                 model_evalUI("mdle")
-                        )
-            )
-        )
+  skin = 'black',
+  dashboardHeader(title = "Airbnb ShinyPET"),         
+  
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Introduction", tabName = "Intro", icon = icon('airbnb')),
+      menuItem("Exploratory module", tabName = "EDA", icon = icon('chart-bar')),
+      menuItem("Text module", tabName = "TA", icon = icon('text-height')),
+      menuItem("Predictive module", tabName = "PA", icon = icon('chart-line'))
     )
-))
+  ),
+  
+  dashboardBody(
+    tabItems(
+      tabItem("Intro",
+              fluidPage(theme = shinytheme('journal'), #https://rstudio.github.io/shinythemes/
+                        #for intro page
+                        titlePanel("Shiny PET: A Predictive, Exploratory and Text Application"),
+                        fluidRow(
+                          column(width = 6,
+                                 h4('About'),
+                                 p("Shiny PET is a user-friendly application that will enable users to make data-driven decisions without the need to understand programming languages or have extensive statistical knowledge."),
+                                 p('We have used Airbnb data as our baseline for this project - data generated is rich in information, which consists of structured, unstructured (textual), and location data.'),
+                                 h4('Application feature'),
+                                 p("As seen in the figure on the right, this application has 3 modules – exploratory, text and predictive"),
+                                 p('The Exploratory module allows users to perform exploratory and confirmatory analysis on selected variables to identify interesting patterns.'),
+                                 p('The Text module allows users to analyse textual data from reviews to generate more quantitative insights.'),
+                                 p('The Predictive module enables users to prepare and build a variety of prediction models.'),
+                                 tags$div(
+                                   'For more information on this project, please visit our',
+                                   tags$a(href="https://ourshinypet.netlify.app/", 
+                                          "website"),
+                                   h4('User Guide'),
+                                   p('To optimise your user experience, please refer to our user guide.'),
+                                   actionButton("user_guide", "User Guide")
+                                 )
+                          ),
+                          column(width = 6,
+                                 tags$img(src = 'nav.png',width = 500, height = 400))
+                        )
+              )
+      ),
+      tabItem("EDA",
+              tabsetPanel(
+                tabPanel("Observe",
+                         observeUI('observe')
+                ),
+                tabPanel("Map",
+                         fluidPage(
+                           titlePanel("Mapping Airbnbs"),
+                           sidebarLayout(
+                             sidebarPanel(
+                               selectInput(inputId = 'map_type',
+                                           label = 'Select map type',
+                                           choices = c('Point Symbol map',
+                                                       'Choropleth map'),
+                                           selected = 'Point Symbol map'),
+                               uiOutput('point_view'),
+                               uiOutput('show_data'),
+                               width = 3
+                             ),
+                             mainPanel(
+                               withSpinner(leafletOutput('leaf_map', height = 600, width = 1000),type = 6, color = "#FF5A5F", size = 2),
+                               conditionalPanel(
+                                 condition = "input.map_type == 'Choropleth map'",
+                                 withSpinner(DT::dataTableOutput('szTable'),type = 6, color = "#FF5A5F", size = 2)
+                               )
+                               
+                             )
+                           )
+                         )
+                         
+                ),
+                tabPanel("Explore and confirm",
+                         fluidPage(
+                           titlePanel("Explore variables"),
+                           sidebarLayout(
+                             sidebarPanel(
+                               selectInput(inputId = 'chart_type',
+                                           label = 'Select chart type',
+                                           choices = sort(c('Distribution',
+                                                            "Boxplot",
+                                                            "Mosaic",
+                                                            "Scatter")),
+                                           selected = "Distribution"),
+                               uiOutput('x_ui'),
+                               uiOutput('y_ui'),
+                               uiOutput('colour'),
+                               uiOutput('flip'),
+                               uiOutput('facet'),
+                               uiOutput('bins'),
+                               selectInput(inputId = 'theme',
+                                           label = 'Change theme',
+                                           choices = names(themes),
+                                           selected = 'Gray'),
+                               conditionalPanel(
+                                 condition = "input.chart_type == 'Distribution'",
+                                 uiOutput('input_ttest')
+                               ),
+                               uiOutput('conf_lev'),
+                               width = 3
+                             ),
+                             mainPanel(
+                               
+                               h4("Statistical test result (x and y variable only)"),
+                               conditionalPanel(
+                                 condition = "input.chart_type == 'Distribution'",
+                                 withSpinner(textOutput('test_method'),type =7, color = "#FF5A5F", size = 1),
+                                 h5("Hypothesis:"),
+                                 withSpinner(textOutput('null_hypo_ttest'),type =7, color = "#FF5A5F", size = 1),
+                                 withSpinner( textOutput('alt_hypo_ttest'),type =7, color = "#FF5A5F", size = 1),
+                                 h5('Confident interval:'),
+                                 withSpinner(textOutput('ci'),type =7, color = "#FF5A5F", size = 1),
+                                 h5('p-value:'),
+                                 withSpinner(textOutput('pvalue'),type =7, color = "#FF5A5F", size = 1),
+                                 p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
+                               ),
+                               conditionalPanel(
+                                 condition = "input.chart_type == 'Boxplot'",
+                                 withSpinner(uiOutput('test_method_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                 withSpinner(uiOutput('test_method_anova'),type =7, color = "#FF5A5F", size = 1),
+                                 h5("Hypothesis:"),
+                                 withSpinner(textOutput('null_hypo_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                 withSpinner(textOutput('alt_hypo_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                 h5('p-value:'),
+                                 withSpinner(uiOutput('pvalue_2ttest'),type =7, color = "#FF5A5F", size = 1),
+                                 withSpinner(uiOutput('pvalue_anova'),type =7, color = "#FF5A5F", size = 1),
+                                 p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
+                               ),
+                               conditionalPanel(
+                                 condition = "input.chart_type == 'Mosaic'",
+                                 withSpinner(textOutput('test_method_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                 h5("Hypothesis:"),
+                                 withSpinner(textOutput('null_hypo_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                 withSpinner(textOutput('alt_hypo_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                 h5('p-value:'),
+                                 withSpinner(textOutput('pvalue_chisq'),type =7, color = "#FF5A5F", size = 1),
+                                 p("If p-value <0.05, then there is enough statistical evidence to reject the null hypothesis.")
+                                 
+                               ),
+                               conditionalPanel(
+                                 condition = "input.chart_type == 'Scatter'",
+                                 withSpinner(textOutput('test_method_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                 h5("Hypothesis:"),
+                                 withSpinner(textOutput('null_hypo_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                 withSpinner(textOutput('alt_hypo_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                 h5('p-value:'),
+                                 withSpinner(textOutput('pvalue_cortest'),type =7, color = "#FF5A5F", size = 1),
+                                 p("If p-value is smaller than alpha (1 - confident interval), then there is enough statistical evidence to reject the null hypothesis.")
+                                 
+                                 
+                               ),
+                               conditionalPanel(
+                                 condition = "input.chart_type == 'Distribution'",
+                                 withSpinner(plotlyOutput('dist'),type =7, color = "#FF5A5F", size = 1)
+                               ),
+                               conditionalPanel(
+                                 condition = "input.chart_type == 'Boxplot'",
+                                 withSpinner(plotlyOutput('bbox'),type =7, color = "#FF5A5F", size = 1)
+                               ),
+                               conditionalPanel(
+                                 condition = "input.chart_type == 'Mosaic'",
+                                 withSpinner(plotlyOutput('mosaic'),type =7, color = "#FF5A5F", size = 1)
+                               ),
+                               conditionalPanel(
+                                 condition = "input.chart_type == 'Scatter'",
+                                 withSpinner(plotlyOutput('scatter'),type =7, color = "#FF5A5F", size = 1)
+                               ),
+                               
+                               
+                             )
+                           )
+                         )
+                         
+                         
+                ))
+      ),
+      tabItem("TA",
+              tabsetPanel(
+                tabPanel("Token frequency",
+                         fluidPage(
+                           fluidRow(
+                             column(6, id = "col_word_cloud",
+                                    box(width=12, height=550, solidHeader = F, title = strong("The Word Cloud"),
+                                        radioButtons("word_cloud_gram",NULL, c("Uni-gram","Bi-gram"), selected = "Uni-gram", inline = T),
+                                        #plotOutput("word_cloud_plot",height = "300px")
+                                        wordcloud2Output("word_cloud_plot",height = "470px"))
+                             ),
+                             column(6, id = "col_freq",
+                                    box(width=12, height=550, solidHeader = F, title = strong("Word Frequency"),
+                                        highchartOutput("word_freq_plot", height=500)
+                                    )
+                                    
+                             )
+                           )
+                         )
+                         
+                ),
+                tabPanel("Sentiment analysis",
+                         fluidPage(
+                           fluidRow(
+                             column(6, id = "col_polarity_cloud",
+                                    box(width=12, height=550, solidHeader = F, title = strong("Polarity"),
+                                        radioButtons("word_polarity_plot",NULL, c("AFINN","BING","NRC"), selected = "BING", inline = T),
+                                        #plotOutput("word_cloud_plot",height = "300px")
+                                        plotOutput("polarity_cloud_plot",height = "470px"))
+                             ),
+                             column(6, id = "col_polarity_freq",
+                                    box(width=12, height=550, solidHeader = F, title = strong("Word Frequency"),
+                                        plotOutput("polarity_freq_plot", height=500)
+                                    )
+                             )
+                           )
+                         )
+                ),
+                tabPanel("Topic modeling",
+                         #put ui here
+                ),
+                tabPanel("Network analysis",
+                         fluidRow(
+                           box(width=12, height=500, solidHeader = F,
+                               tabsetPanel(type = 'pills',
+                                           id = 'network_panel',
+                                           tabPanel("Bi Directional Network", 
+                                                    #sliderInput("bi_freq", "Min Frequency of Bi-grams:",min = 10, max = 200,value = 100, width = '20%'),
+                                                    plotOutput("network_plot1")),
+                                           tabPanel("Correlation Network", plotOutput("network_plot2"))
+                               )
+                           )
+                         )
+                )
+              )),
+      tabItem("PA",
+              tabsetPanel(
+                tabPanel("Data splitting",
+                         data_splittingUI("ds")
+                ),
+                tabPanel("Feature selection",
+                         feat_selectUI("fs")
+                ),
+                tabPanel("Data transformation",
+                         data_transformUI("dtf")
+                ),
+                tabPanel("Model training",
+                         model_trainUI("mdlt")
+                ),
+                tabPanel("Model evaluation",
+                         model_evalUI("mdle")
+                )
+              )
+      )
+    )
+  ))
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-    
+  
   ###############
   # intro tab
   ##############
@@ -492,11 +435,11 @@ server <- function(input, output) {
   })
   
   
-    ###############
-    # observe tab
-    ##############
-    observeServer('observe', final_listings)
-    
+  ###############
+  # observe tab
+  ##############
+  observeServer('observe', final_listings)
+  
   ############
   # explore tab
   ###########
@@ -1168,15 +1111,16 @@ server <- function(input, output) {
       DT::datatable(data = listing_summary)
     }
   })
-    #### Word Freq plot ####
-
-    output$word_freq_plot  <- renderHighchart(
-        hc <- highchart() %>%
-            #hc_title(text = "Incremental Revenue and Total Cost by Offer Group") %>%
-            hc_chart(type = "bar") %>%
-            #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
-            hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
-                       formatter = JS(paste0("function() {
+  #### Word Freq plot ####
+  
+  output$word_freq_plot  <- renderHighchart(
+    if(input$word_cloud_gram == "Uni-gram"){
+    hc <- highchart() %>%
+      #hc_title(text = "Incremental Revenue and Total Cost by Offer Group") %>%
+      hc_chart(type = "bar") %>%
+      #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
+      hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
+                 formatter = JS(paste0("function() {
                                        //console.log(this);
                                        //console.log(this.point.y);
                                        var result='';
@@ -1184,54 +1128,21 @@ server <- function(input, output) {
                                        +Math.round(this.point.y.toFixed(0)/100)/10 + 'K' + '</b>';
                                        return result;
       }"))) %>%
-            hc_xAxis(categories = data_count[1:100,]$word,
-                     #labels = list(rotation = 0, step=1), title =list(text="Brand")
-                     labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
-            )    %>%
-            hc_add_series(name="Word", data = data_count[1:100,]$frequency, type ="column",
-                          #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
-                          color = "#FF5A5F", showInLegend= F)
-        #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
-    )
-    
-    
-    #### Wordcloud plot ####
-    output$word_cloud_plot <- renderWordcloud2({
-        
-        if(input$word_cloud_gram == "Uni-gram"){
-            
-            set.seed(1234)
-            # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
-            #           max.words=100, random.order=FALSE, rot.per=0.35, 
-            #           colors=brewer.pal(8, "Dark2"))
-            d1 <- (data_count %>% filter(frequency>1) %>% arrange(desc(frequency)))[1:100,]
-            wordcloud2(data = data_count, size=0.8, minSize = 0.0, fontWeight = 'bold', 
-                       ellipticity = 0.65)
-            
-        } else if(input$word_cloud_gram == "Bi-gram"){
-            
-            set.seed(1234)
-            # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
-            #           max.words=100, random.order=FALSE, rot.per=0.35, 
-            #           colors=brewer.pal(8, "Dark2"))
-            d2 <- (bigram_data_count %>% filter(n>1) %>% arrange(desc(n)))[1:100,]
-            wordcloud2(data = bigram_data_count, size=0.8, minSize = 0.0, fontWeight = 'bold', 
-                       ellipticity = 0.65)
-            
-            
-        }
-        
-    })
-    
-    
-    #### POLARITY Sentiment Analysis ####
-    
-    output$polarity_freq_plot <- renderHighchart(
-            hc <- highchart() %>%
-                hc_chart(type = "bar") %>%
-                #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
-                hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
-                           formatter = JS(paste0("function() {
+      hc_xAxis(categories = data_count[1:100,]$word,
+               #labels = list(rotation = 0, step=1), title =list(text="Brand")
+               labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
+      )    %>%
+      hc_add_series(name="Word", data = data_count[1:100,]$frequency, type ="column",
+                    #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
+                    color = "#FF5A5F", showInLegend= F)
+    #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
+  } else if(input$word_cloud_gram == "Bi-gram"){
+    hc <- highchart() %>%
+      #hc_title(text = "Incremental Revenue and Total Cost by Offer Group") %>%
+      hc_chart(type = "bar") %>%
+      #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
+      hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
+                 formatter = JS(paste0("function() {
                                        //console.log(this);
                                        //console.log(this.point.y);
                                        var result='';
@@ -1239,138 +1150,243 @@ server <- function(input, output) {
                                        +Math.round(this.point.y.toFixed(0)/100)/10 + 'K' + '</b>';
                                        return result;
       }"))) %>%
-                hc_xAxis(categories = afinn_count[1:100,]$word,
-                         #labels = list(rotation = 0, step=1), title =list(text="Brand")
-                         labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
-                )    %>%
-                hc_add_series(name="Word", data = afinn_count[1:100,]$n, type ="column",
-                              #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
-                              color = "#FF5A5F", showInLegend= F) 
-            #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
-            )
+      hc_xAxis(categories = bigram_data_count[1:100,]$word,
+               #labels = list(rotation = 0, step=1), title =list(text="Brand")
+               labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
+      )    %>%
+      hc_add_series(name="Word", data = bigram_data_count[1:100,]$n, type ="column",
+                    #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
+                    color = "#FF5A5F", showInLegend= F)
+    #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
     
-    #### POLARITY Wordcloud plot ####
-    output$polarity_cloud_plot <- renderPlot({
-        
-        if(input$polarity_cloud_plot == "AFINN"){
-            
-            set.seed(1234)
-            # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
-            #           max.words=100, random.order=FALSE, rot.per=0.35, 
-            #           colors=brewer.pal(8, "Dark2"))
-            c1 <- (afinn_count %>% filter(frequency>1) %>% arrange(desc(n)))[1:100,]
-            comparison.cloud(data = afinn_sentiments, size=0.8, minSize = 0.0, fontWeight = 'bold', 
-                             ellipticity = 0.65)
-            
-        } else if (input$polarity_cloud_plot == "BING"){
-            
-            set.seed(1234)
-            # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
-            #           max.words=100, random.order=FALSE, rot.per=0.35, 
-            #           colors=brewer.pal(8, "Dark2"))
-            c2 <- (bing_count %>% filter(n>1) %>% arrange(desc(n)))[1:100,]
-            comparison.cloud(data = bing_sentiments, size=0.8, minSize = 0.0, fontWeight = 'bold', 
-                       ellipticity = 0.65)
-            
-            
-            
-        }
-        
-        
-    })
+  })
+  
+  
+  #### Wordcloud plot ####
+  output$word_cloud_plot <- renderWordcloud2({
     
+    if(input$word_cloud_gram == "Uni-gram"){
+      
+      set.seed(1234)
+      # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
+      #           max.words=100, random.order=FALSE, rot.per=0.35, 
+      #           colors=brewer.pal(8, "Dark2"))
+      d1 <- (data_count %>% filter(frequency>1) %>% arrange(desc(frequency)))[1:100,]
+      wordcloud2(data = data_count, size=0.8, minSize = 0.0, fontWeight = 'bold', 
+                 ellipticity = 0.65)
+      
+    } else if(input$word_cloud_gram == "Bi-gram"){
+      
+      set.seed(1234)
+      # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
+      #           max.words=100, random.order=FALSE, rot.per=0.35, 
+      #           colors=brewer.pal(8, "Dark2"))
+      d2 <- (bigram_data_count %>% filter(n>1) %>% arrange(desc(n)))[1:100,]
+      wordcloud2(data = bigram_data_count, size=0.8, minSize = 0.0, fontWeight = 'bold', 
+                 ellipticity = 0.65)
+      
+      
+    }
     
-####  bigram_graph ####
+  })
+  
+  
+  #### POLARITY Wordcloud plot ####
+  output$polarity_cloud_plot <- renderPlot({
+    
+    if(input$word_polarity_plot == "AFINN"){
 
-    output$network_plot1 <- renderPlot({
-        progress <- shiny::Progress$new()
-        progress$set(message = "Bi Directional Graph", value = 0.2)
-        on.exit(progress$close())
-        progress$set(detail = "Creating Bitokens..", value = 0.6)
-        
-        progress$set(detail = "Plotting..", value = 0.8)
-        bigram_graph <- head(bigram_data_count %>% arrange(desc(n)),150) %>% graph_from_data_frame()
-        
-        
-        #bigram_graph
-        #library(ggraph)
-        set.seed(2020)
-        # ggraph(bigram_graph, layout = "fr") +
-        #   geom_edge_link() +
-        #   geom_node_point() +
-        #   geom_node_text(aes(label = name), vjust = 1, hjust = 1)
-        
-        a <- grid::arrow(type = "closed", length = unit(.08, "inches"))
-        ggraph(bigram_graph, layout = "fr") +
-            geom_edge_link() +
-            geom_node_point(color = "#FF5A5F", size = 1) +
-            geom_node_text(aes(label = name), vjust = 1, hjust = 1, size=2) +
-            theme_void()
-        
-        
-    })
+      
+      set.seed(1234)
+      afinn <- get_sentiments("afinn") 
+      
+      data_comments %>% 
+        inner_join(afinn) %>% 
+        count(word,value,sort=TRUE) %>% 
+        acast(word~value,value.var="n",fill=0) %>% 
+        comparison.cloud(title.size=0.5)
+      
+    } else if (input$word_polarity_plot == "BING"){
+      
     
-    output$network_plot2 <- renderPlot({
-        progress <- shiny::Progress$new()
-        progress$set(message = "Correlation Plot", value = 0.2)
-        on.exit(progress$close())
-        progress$set(message = "Creating Pairwise words", value = 0.4)
-        
-        #x <- data.frame(text = sapply(docs(), as.character), stringsAsFactors = FALSE)
-        #x$tweet_nbr <- 1:nrow(x)
-        #tweet_word <- x %>% unnest_tokens(word, text)
-        
-        word_corr <- data_count %>% 
-            filter(frequency >= 300) %>% 
-            pairwise_cor(word, frequency, sort = TRUE)
-        
-        #progress$set(detail = "Plotting..", value = 0.8)
-        set.seed(1234)
-        word_corr %>%
-            filter(correlation > .5) %>%
-            graph_from_data_frame() %>%
-            ggraph(layout = "fr") +
-            geom_edge_link(aes(edge_alpha = correlation, edge_width = correlation), edge_colour = "#FF5A5F") +
-            geom_node_point(size = 2) +
-            geom_node_text(aes(label = name), repel = TRUE,
-                           point.padding = unit(0.2, "lines")) +
-            theme_void()
-        
-        
-    })
+      data_comments %>% 
+        inner_join(bing) %>% 
+        count(word,sentiment,sort=TRUE) %>% 
+        acast(word~sentiment,value.var="n",fill=0) %>% 
+        comparison.cloud(colors = c("#FF5A5F", "#00A699"),title.size=1)
+      
+    }
+    else if (input$word_polarity_plot == "NRC"){
+
+      data_comments %>% 
+        inner_join(nrc) %>% 
+        count(word,sentiment,sort=TRUE) %>% 
+        acast(word~sentiment,value.var="n",fill=0) %>% 
+        comparison.cloud(title.size=0.5)
+      
+    }
     
-    #### SPATIAL PLOT ####
+  })
+  #### POLARITY Sentiment Analysis ####
+  
+  output$polarity_freq_plot <- renderPlot(
     
-    output$chart <- renderHighchart({
-        highchart(type = "map") %>% 
-                                        hc_add_series_map(data=mpsz_nosea, df=region_data(),value = "PLN_AREA_N", joinBy = "mean_score") %>% 
-                                        hc_colorAxis(stops = color_stops()) %>% 
-                                        hc_tooltip(useHTML=TRUE,headerFormat='',pointFormat = paste0(subregion_data$mean_score,'  {point.neighbourhood_cleansed} Sales : {point.mean_score} ')) %>% 
-                                        #hc_title(text = 'Global Sales') %>% 
-                                        #hc_subtitle(text = paste0('Year: ',input$yearid)) %>% 
-                                        hc_exporting(enabled = TRUE,filename = 'custom')
-    })   
+    if(input$word_polarity_plot == "AFINN"){
+      
+      
+    data_comments %>% 
+        #group_by(listing_id) %>% 
+        inner_join(afinn) %>% 
+        count(word,value) %>% 
+        filter(n>500) %>% 
+        mutate(sentiment=ifelse(value>0,"positive","negative")) %>% 
+        mutate(word=reorder(word,n)) %>% 
+        #arrange(desc(n))%>% 
+        ggplot(aes(x=reorder(word,value),y=value,colour=sentiment,fill=sentiment))+
+      geom_col()+
+      coord_flip()
+      
+
+    } else if (input$word_polarity_plot == "BING"){
+
+      data_comments %>% 
+        inner_join(bing) %>% 
+        count(word,sentiment) %>% 
+        filter(n>500) %>% 
+        mutate(n=ifelse(sentiment=="negative",-n,n)) %>% 
+        mutate(word=reorder(word,n))%>% 
+        arrange(desc(n))%>% 
+        ggplot(aes(word,n,fill=sentiment))+
+      geom_col()+
+      coord_flip()
+      
+    }
+  else if (input$word_polarity_plot == "NRC"){
+    
+    nrc_count <- data_comments %>% 
+      inner_join(nrc) %>% 
+      count(word,sentiment,sort=TRUE) %>% 
+      filter(n>1500) %>% 
+      mutate(n=ifelse(sentiment=="negative",-n,n))%>% 
+      mutate(word=reorder(word,n)) %>% 
+      arrange(desc(n))
+    #%>% 
+      #ggplot(aes(word,n))+
+      #facet_grid(~sentiment)+
+      #geom_col()+
+      #coord_flip()
+    
+    se <- function(x) sqrt(var(x)/length(x)) 
+    set.seed(9876) 
+    
+    ggplot(nrc_count, aes(sentiment, n, fill = sentiment)) +
+      geom_bar(width = 1, stat = "identity", color = "white") +
+      geom_errorbar(aes(ymin = n - se(nrc_count$n), 
+                        ymax = n + se(nrc_count$n), 
+                        color = sentiment), 
+                    width = .2) + 
+      scale_y_continuous(breaks = 0:nlevels(nrc_count$sentiment)) +
+      theme_minimal()+
+      theme(axis.ticks = element_blank(),
+            axis.text = element_blank(),
+            axis.title = element_blank(),
+            axis.line = element_blank()) +
+      coord_polar() 
+    
+
+  })
+  
+  ####  bigram_graph ####
+  
+  output$network_plot1 <- renderPlot({
+    progress <- shiny::Progress$new()
+    progress$set(message = "Bi Directional Graph", value = 0.2)
+    on.exit(progress$close())
+    progress$set(detail = "Creating Bitokens..", value = 0.6)
+    
+    progress$set(detail = "Plotting..", value = 0.8)
+    bigram_graph <- head(bigram_data_count %>% arrange(desc(n)),150) %>% graph_from_data_frame()
     
     
+    #bigram_graph
+    #library(ggraph)
+    set.seed(2020)
+    # ggraph(bigram_graph, layout = "fr") +
+    #   geom_edge_link() +
+    #   geom_node_point() +
+    #   geom_node_text(aes(label = name), vjust = 1, hjust = 1)
+    
+    a <- grid::arrow(type = "closed", length = unit(.08, "inches"))
+    ggraph(bigram_graph, layout = "fr") +
+      geom_edge_link() +
+      geom_node_point(color = "#FF5A5F", size = 1) +
+      geom_node_text(aes(label = name), vjust = 1, hjust = 1, size=2) +
+      theme_void()
     
     
+  })
+  
+  output$network_plot2 <- renderPlot({
+    progress <- shiny::Progress$new()
+    progress$set(message = "Correlation Plot", value = 0.2)
+    on.exit(progress$close())
+    progress$set(message = "Creating Pairwise words", value = 0.4)
+    
+    #x <- data.frame(text = sapply(docs(), as.character), stringsAsFactors = FALSE)
+    #x$tweet_nbr <- 1:nrow(x)
+    #tweet_word <- x %>% unnest_tokens(word, text)
+    
+    word_corr <- data_count %>% 
+      filter(frequency >= 300) %>% 
+      pairwise_cor(word, frequency, sort = TRUE)
+    
+    #progress$set(detail = "Plotting..", value = 0.8)
+    set.seed(1234)
+    word_corr %>%
+      filter(correlation > .5) %>%
+      graph_from_data_frame() %>%
+      ggraph(layout = "fr") +
+      geom_edge_link(aes(edge_alpha = correlation, edge_width = correlation), edge_colour = "#FF5A5F") +
+      geom_node_point(size = 2) +
+      geom_node_text(aes(label = name), repel = TRUE,
+                     point.padding = unit(0.2, "lines")) +
+      theme_void()
     
     
-    
-    
-    
-    ########### predictive server file ###########
-    return_val1 <- data_splittingServer("ds", final_listings)
-    feat_selectServer("fs", final_listings, return_val1,
-                      return_val1$triggerReset)
-    return_trf <- data_transformServer("dtf", final_listings, return_val1,
-                                       return_val1$triggerReset)
-    return_train <- model_trainServer("mdlt", return_trf, return_val1$targetvar,
-                                      return_val1$triggerReset)
-    model_evalServer("mdle", return_train, return_trf$selected_var,
-                     return_val1$targetvar, return_val1$triggerReset)
-    ############################################
-    
+  })
+  
+  #### SPATIAL PLOT ####
+  
+  output$chart <- renderHighchart({
+    highchart(type = "map") %>% 
+      hc_add_series_map(data=mpsz_nosea, df=region_data(),value = "PLN_AREA_N", joinBy = "mean_score") %>% 
+      hc_colorAxis(stops = color_stops()) %>% 
+      hc_tooltip(useHTML=TRUE,headerFormat='',pointFormat = paste0(subregion_data$mean_score,'  {point.neighbourhood_cleansed} Sales : {point.mean_score} ')) %>% 
+      #hc_title(text = 'Global Sales') %>% 
+      #hc_subtitle(text = paste0('Year: ',input$yearid)) %>% 
+      hc_exporting(enabled = TRUE,filename = 'custom')
+  })   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  ########### predictive server file ###########
+  return_val1 <- data_splittingServer("ds", final_listings)
+  feat_selectServer("fs", final_listings, return_val1,
+                    return_val1$triggerReset)
+  return_trf <- data_transformServer("dtf", final_listings, return_val1,
+                                     return_val1$triggerReset)
+  return_train <- model_trainServer("mdlt", return_trf, return_val1$targetvar,
+                                    return_val1$triggerReset)
+  model_evalServer("mdle", return_train, return_trf$selected_var,
+                   return_val1$targetvar, return_val1$triggerReset)
+  ############################################
+  
 }
 
 # Run the application 
