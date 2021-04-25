@@ -25,10 +25,10 @@ data_splittingUI <- function(id){
       mainPanel(
         (div(style='height: 500px; overflow-x: scroll',
                        plotlyOutput(NS(id, "Oplot_traintest_dense"))%>%
-               withSpinner(color="#FF5A5F")
+               withSpinner(color="#FF5A5F", type=6)
                        )),
         
-        plotlyOutput(NS(id, "Oplot_traintest_bar")) %>% withSpinner(color="#FF5A5F")
+        plotlyOutput(NS(id, "Oplot_traintest_bar")) %>% withSpinner(color="#FF5A5F", type=6)
       , width = 9)
     )
   )
