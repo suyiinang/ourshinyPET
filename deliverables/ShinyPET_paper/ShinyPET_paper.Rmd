@@ -11,7 +11,7 @@ author:
     email: kgalbindo.2019@mitb.smu.edu.sg
     affiliation: Singapore Management University
 abstract: |
-  The increasing availability of data has resulted in the increased demand for data driven decisions. Although there is an extensive range of commercial statistical tools, they are often subscription-based and demand good technical knowledge to mine and draw insights from. Therefore, it may not appeal to the average user. Using a collection of R packages available, A R-Shiny application was developed for the average user to perform exploratory and confirmatory analysis, text mining and predictive analysis to formulate insights and make data based decisions. We have used Airbnb data as our baseline for this project as data generated is rich in information, consisting of structured, unstructured (textual), and location data. This paper discusses the application's design choices, use case and future works.
+  The increasing availability of data has resulted in the increased demand for data driven decisions. Although there is an extensive range of commercial statistical tools, they are often subscription-based and demand good technical knowledge to mine and draw insights from. Therefore, it may not appeal to the average user. Using a collection of R packages available, ShinyPET, an R-Shiny application is developed for the average user to perform exploratory and confirmatory analysis, text mining and predictive analysis, as well as to formulate insights and make data-driven decisions. Airbnb data provides a baseline for this application as the data generated is rich in information, consisting of structured, unstructured, and location data. This paper discusses the design framework, use case and future works of the ShinyPET dashboard.
 bibliography: sigproc.bib
 csl: acm-sig-proceedings.csl
 output: rticles::acm_article
@@ -33,45 +33,59 @@ knitr::opts_chunk$set(echo = FALSE, fig.pos = "H", fig.align='center')
 
 # Introduction
 
-With the explosion of affordable data storage and processing technologies, the demand for data-driven decision-making (DDDM) has increased significantly. DDDM refers to the systematic analysis, examination and integration of data to making strategic decisions, rather than based on intuition or observation alone (Mandinach, 2012)[@doi:10.1080/00461520.2012.667064]. As well-published Geoffrey Moore opines, “Without big data analytics, companies are blind and deaf, wandering out onto the Web like deer on a freeway.”  Research by Yasmin, M et al. (2020)[@https://doi.org/10.1016/j.jbusres.2020.03.028] found that the use of data driven decision making through analytics tools had a positive impact on firm performance.
+With increasing affordable data storage and processing technologies, the demand for data-driven decision-making (DDDM)^[DDDM refers to the systematic analysis, examination and integration of data to making strategic decisions, rather than based on intuition or observation alone (Mandinach, 2012)[@doi:10.1080/00461520.2012.667064]] has increased significantly. As Geoffrey Moore opines, “Without big data analytics, companies are blind and deaf, wandering out onto the Web like deer on a freeway.”. With the use of data driven decision making through analytics tools, firms performance would improve (Yasmin, M et al., 2020)[@https://doi.org/10.1016/j.jbusres.2020.03.028]
+
+Airbnb is an online vacation rental maravailableketplace servicing a community of hosts and travellers. By 2020, Airbnb has millions of listings in over 220 counties and regions across 100,000 cities [@Airbnb2020]. The data generated provides rich information, including structured data e.g. price and location, as well as unstructured data e.g. reviews and listing descriptions. Thus, Airbnb provides a good use case and base case for exploratory and confirmatory analysis, text mining, and predictive modeling as presented in our ShinyPET dashboard. 
 
 # Motivation of the application
 
-This project was motivated by the increasing demand for data analytics as well as the lack of open source tools for users to perform analytics to undercover meaningful patterns from structured, textual and spatial data.
+The motivation of this project stems from two main issues - the proliferation of data and lack of user-friendly tools to make data-driven decision. According to Harris (2012)[@https://hbr.org/2012/09/data-is-useless-without-the-skills], data is impractical without the ability to analyse it. Although there is a wide range of commercial statistics and analytics tools , these tools are often subscription-based and require technical knowledge to mine and draw insights from. On the other hand, while open source tools as such Python and R allow for data visualisations, users would require extensive programming background to generate such insights.
 
-Although, there is a wide range of commercial statistical and analytics tools available, these tools are often subscription-based and require technical knowledge to mine and draw insights from. Alternatively, open source tools as such R allows for interactive data visualisations, however users would require extensive programming background to generate such insights.
-
-As such, we have developed a free, user-friendly and interactive tool with 3 modules :
-1) Exploratory - allows users to identify interesting patterns based on selected variables. Findings from the exploratory module are augmented by a statistical test based on user’s chosen variables.  
-2) Text - users can be able to perform analysis on textual data to generate more quantitative insights.    
-3) Predictive - enables users to prepare and build a variety of prediction models without needing to have in-depth understanding of the predictive models and its algorithms.  
-
-To achieve our objective, we have used Airbnb data as our baseline as data generated is rich in information, including structured data such as price and location, as well as unstructured data such as reviews and listing descriptions. Thus, with our application, anyone and everyone would be able to make data-based decisions effortlessly.
+Hence, this project aims to develop an interface which is concise, interactive, and user-friendly using R Shiny. With this interface, data-based decisions can be made from the interactive GUI. The R Shiny App will cover 3 modules:
+1) Exploratory - users are able to draw interesting patterns based on selected variables, which are augmented by statistical tests based on the chosen variables. 
+2) Text - users are able to perform analysis on textual data such as reviews to generate quantitative insights.    
+3) Predictive - users are able to prepare and build a variety of prediction models without the need to have in-depth understanding of predictive models and their algorithms.  
+This application can be extended to Airbnb data from other countries, and also to other datasets.
 
 # Review and critic on past works
 
-Radiant application [@radiant2019], an open-source platform-independent browser-based interface for business analytics in R, illustrate the robustness of Rshiny for web-based application. Developed to promote quick and reproducible data analytics, the application provides interactivity and flexibility in performing visualisation, statistical and predictive analysis. Most of the plots produced are of static nature and can be enhanced by wrapping plotly around them. Furthermore, for statistical testing, users are expected to have a basic understanding of statistical testing methods as they are first required to select their testing method before proceeding, this can be enhanced by automating testing methods based on inputs. Additionally, the statistical testing and visualisation are placed in separate tabs, user experienced can be improved by placing both the visualise and statistical results on a single page. Lastly, more recent package such as visNetwork allows interactive tree visualisation which will improve the assessment of decision tree model.
+Radiant application [@radiant2019], an open-source platform-independent browser-based interface for business analytics in R, illustrates the robustness of Rshiny for web-based application. Developed to promote quick and reproducible data analytics, the application provides interactivity and flexibility in performing visualisation, statistical and predictive analysis. However, there are limitations to the application. First, in terms of exploratory data analysis, most of the plots produced are of static nature which can be enhanced by wrapping plotly around them. Secon, for statistical testing, users are expected to have a basic understanding of statistical testing methods as they are first required to select their testing method, which is further enhanced by automating testing methods based on inputs. In addition, newer packages such as visNetwork can be applied for interactive tree visualisation that in turn improves the assessment of decision tree model. Last, in terms of visualisation, the statistical testing and charts are placed in separate tabs.A single-page view would enhance the aesthetics and usability. 
+
+
+Text Mining with R Book[@https://www.tidytextmining.com/index.html] authored by Silge and Robinson presents a comprehensive approach to handle text. First, the book is content-heavy, which may not be appealing to the typical users. Second, tidytext used for data wrangling and visusaliastion is widely used thus allow users to apply such methods easily. However, these tools require technical skills from users and are not interactive. To allow easy usage and enhance interactivity, packages such as plotly and highchart can be used. Highcharter has various themes and features such as tooltips which greatly enahnce visualisation.    
+
+
+Tidymodels [@tidymodels2020] has gained interest by providing a framework for predictive modeling and machine learning. It is aligned with the tidyverse principles which leads to a tidier and consistent grammar in the predictive analytics process. Different models offered in Radiant package are also available for implementation in Tidymodels framework, which is why our application leverages Tidymodel as the main framework to conduct predictive analytics on Airbnb data.
+
 
 Lu, Y., Garcia, R., Hansen, B. et al. (2017) [@https://doi.org/10.1111/cgf.13210] provides a comprehensive summary of research on Predictive Visual Analytics. The paper discusses how visual analytics systems are implemented to support predictive analytics process such as feature selection, incremental learning, model comparison and result exploration. The overall goal of visual analytics is to support explanation in each step of predictive analytics exercise which is also our motivation in developing this application.
 
-In R community, Tidymodels [@tidymodels2020] has gained interest by providing a framework for predictive modeling and machine learning. It is aligned with the tidyverse principles which leads to a tidier and consistent grammar in the predictive analytics process. Different models offered in Radiant package are also available for implementation in Tidymodels framework, which is why our application leverages Tidymodel as the main framework to conduct predictive analytics on Airbnb data.
-
-
-Zhang (2019) used text mining approaches including content analysis and topic modelling (Latent Dirichlet Allocation (LDA) method) to examine over 1 million Airbnb reviews across 50,933 listings in the United States of America (USA). Kiatkawsin, Sutherland & Kim (2020) also used LDA method to compare reviews between Hong Kong and Singapore. However, these articles do not provide visualiation of the methods used and are not interactive.
 
 # Design framework
 
-Our target users for this application are the average users without any programming or extensive statistical knowledge yet wants to make data driven decisions. Thus, the design of Shiny PET is based on 3 main principles - user-friendliness, interactivity and ease of understanding, yet comprehensive enough for users to make data driven decisions. The application's colour scheme is based on Airbnb's official colours - Raush, Babu and Foggy (type of gray). 
+The design of our shinyPET is based on ensuring a comprehensive data analysis coupled with aesthetics. Taking into account the user point of view, 3 main principles, namely user-friendliness, interactivity and ease of understanding are adopted. 
 
-The application consist of three modules - Exploratory, Text and Predictive. 
+To get started, the introduction page provides an overview of the application. This allow users to have an understanding of the case that he/she will be exploring. 
+
+In the exploratory page, data summary and their tabular form would be presented for user's understanding of data. In the explore sub tab, users are able to visualise provided data based on various variables. This user-friendliness and interactivity provides flexibility and ease of use without needing any technical knowledge. 
+
+In the text page, various text mining technique tools are presented in visualiastion formats such as wordclouds and barcharts. Concepts such as sentiment analysis are simplified and recerated into visualisations for ease of understanding. 
+
+In the predictive page, *to add on*
+
+
+Aesthetically, the application's colour scheme should be based on the theme of the topic. Using our case of Airbnb, the official colours are Raush, Babu and Foggy (type of gray). 
+
+The combination of the 3 principles are consistently incorporated into various steps of the data analysis in the 3 modules, hence providing users an easy and comprehensive way to make data-driven decisions.
 
 ## Exploratory module
 
-The exploratory module enables users to perform exploratory and confirmatory analysis on selected variables to identify interesting patterns. There are three sections in this module - observe, map and confirm & explore.
+The exploratory module enables users to perform Exploratory Data Analysis (EDA) and Confirmatory Data Analysis (CDA) on selected variables to identify interesting patterns. There are three sections in this module - observe, map and confirm & explore.
 
 ### Observe submodule
 
 As shown in Figure [1], the Observe section provides a summary of the data for users to quickly understand and form questions surrounding the data. Hence, this section was designed mainly based on ease of understanding principles.
+
 ```{r fig.cap='Interface and components of Observe section', out.width="100%"}
 include_graphics("images/design_observe.png")
 ```
