@@ -163,6 +163,81 @@ include_graphics("images/explore3.png")
 
 ## 3. Text
 
+### 3.1 Word Cloud
+
+There are two charts shown.  
+
+```{r, echo=FALSE, fig.align='center', fig.cap='Uni-gram',out.width="95%"}
+include_graphics("images/wordcloud.png")
+```
+
+[1] Word cloud.
+
+[2] Frequency Bar Chart.
+
+```{r, echo=FALSE, fig.align='center', fig.cap='Bi-gram',out.width="95%"}
+include_graphics("images/wordcloud2.png")
+```
+
+[1] Select chart type - Unigram or Bigram.
+
+[2] Hover over each word to observe it frequency.
+
+[3] Scroll up/down to see the occurrence of words in a descending order.
+
+### 3.2 Sentiment Analysis
+
+There are two charts shown.
+
+```{r, echo=FALSE, fig.align='center', fig.cap='AFINN',out.width="95%"}
+include_graphics("images/sentimentchart.png")
+```
+
+[1] Sentiment Polarity Cloud
+
+[2] Bar Chart/Radial Plot
+
+```{r, echo=FALSE, fig.align='center', fig.cap='BING',out.width="95%"}
+include_graphics("images/bingchart.png")
+```
+
+```{r, echo=FALSE, fig.align='center', fig.cap='NRC',out.width="95%"}
+include_graphics("images/nrcchart.png")
+```
+
+[1] Select lexicon - AFINN, BING or NRC.
+
+[2] AFINN cloud word cloud with 5 different values in different colours and the related bar chart will show the value and frequency of occurrence of each word, in a descending order
+
+[3] BING cloud will show positive and negative sentiments in blue and red colour respectively with the related bar chart showing the value and frequency of occurrence of each word, in a descending order
+
+[4] NRC cloud will show words with 8 different emotions and 2 sentiments. The radial plot illustrates the frequency of words appearing. 
+
+
+### 3.3 Topic Modelling
+```{r, echo=FALSE, fig.align='center', fig.cap='Topic Modelling',out.width="95%"}
+include_graphics("images/topicmodelling.png")
+```
+
+[1] Slide number of topics to display, top terms per topic, then press "Go".
+
+[2] After the graph is plotted, type the topic. 
+
+[3] Intertopic Distance Map will be shown.
+
+[4] Slide to adjust relevance metric.
+
+[5] Bar chart of top 20 most salient terms will be shown.
+
+[6] Brief explanation of relevancy and saliency are described in the footnote.
+
+### 3.4 Network Analysis
+```{r, echo=FALSE, fig.align='center', fig.cap='Network Analysis',out.width="95%"}
+include_graphics("images/network.png")
+```
+
+[1] Pills button to allow user to observe bi directional or correlation network.
+
 ## 4. Predictive
 
 ### 4.1 Data splitting
