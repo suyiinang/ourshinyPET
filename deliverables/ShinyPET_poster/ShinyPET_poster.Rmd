@@ -1,5 +1,7 @@
 ---
-title: "**ShinyPET**: A Predictive, Exploratory and Text RShiny Application using Airbnb data"
+main_topsize: 0.1 #percent coverage of the poster
+main_bottomsize: 0.1
+title: "**ShinyPET**: A **P**redictive, **E**xploratory and **T**ext RShiny Application using Airbnb data"
 poster_width: "23.39in"
 poster_height: "33.11in"
 font_family: 'Rasa'
@@ -8,7 +10,7 @@ author:
   - name: Ang Su Yiin
   - name: Joey Chua
   - name: Kevin Gunawan Albindo
-  - name: Dr. Kam Tin Seong
+  - name: Mentor - Dr. Kam Tin Seong
     affil: 1
 affiliation:
   - num: 1
@@ -29,7 +31,7 @@ author_textcol: "#ffffff"
 author_textsize: '35pt'
 affiliation_textsize: '25pt'
 # poster body
-body_textsize: "30px"
+body_textsize: "25px"
 body_textcol: "#000000" #colour
 column_margins: "0.5in"
 columnline_col:	"#008080"	#Colour of the column line dividers.
@@ -48,66 +50,68 @@ output:
   posterdown::posterdown_html:
     self_contained: false
 bibliography: packages.bib
+header-includes: 
+- \usepackage{graphicx}
+- \usepackage{float}
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE,  fig.pos = "H", fig.align='left')
 ```
 
 # Introduction
 
-With the explosion of affordable data storage and processing technologies, the **demand for data-driven decision-making** (DDDM) has increased significantly. Research has shown that the use of data driven decision making through analytics tools had a positive impact on firm performance. Although there is an extensive range of commercial statistical tools, they are often **subscription-based** and **demand good technical knowledge** to mine and draw insights from. Therefore, it may not appeal to the average user. 
+With the explosion of affordable data storage and processing technologies, the **demand for data-driven decision-making** (DDDM) has increased significantly. Although there is an extensive range of commercial statistical tools, they are often **subscription-based** and **demand good technical knowledge** to mine and draw insights from. Therefore, it may not appeal to the average user. 
 
 # Motivation
+- Increasing demand for data analytics  
+- Lack of open source tools for analytics for the average user  
 
-This project was motivated by the **increasing demand for data analytics** coupled with the **lack of open source tools** for users to perform analytics to undercover meaningful patterns from structured, textual and spatial data.
-
-Using a collection of selected R packages, we have developed a R-Shiny application for the average user to perform exploratory and confirmatory analysis, text mining and predictive analysis to formulate insights and make data based decisions. With our application, we **aim to encourage anyone and everyone to make data-based decisions effortlessly**.
+Aim to Create R Shiny application to **encourage anyone and everyone to make data-based decisions effortlessly** 
 
 # Approach
 
-A description of the techniques or algorithms you used to solve the problem.
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/framework.png")
+```
 
-3 modules
-list of packages
-design approach
-wrangling -> output approach
+```{r, echo=FALSE, out.width="90%"}
+include_graphics("images/modules.png")
+```
+
+```{r, echo=FALSE, out.width="90%"}
+include_graphics("images/tool.png")
+```
 
 # Exploratory 
+**Summary of dataset**  
+- Interactive table allows selection and filter of variables 
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/explore1.png")
+```
 
-asy include 3 modules write up
+**Exploratory Geospatial Analysis**  
+- Choropleth map - shows summary of listings by Singapore neighbourhood.  
+- Point symbol map - shows the distribution of listings throughout Singapore.  
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/explore2.png")
+```
+
+**Exploratory and confirmatory analysis**  
+1) Panel on the left allows user to seamlessly toggle between different charts.  
+2) Automated statistical results based on selected variables.  
+3) Interactive plots - user can select, pan, zoom and download plot.  
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/explore3.png")
+```
+
 
 # Text
 
 # Predictive
 
-
-
-examples to be removed
-```{r mytable, out.width='80%'}
-knitr::kable(iris[1:10, 1:4], caption = 'Table caption.',align = 'c',"html")
-```
-
-Or with figures: Figure \@ref(fig:standard-plot), or Figure \@ref(fig:morefigs).
-
-```{r standard-plot, out.width='80%', fig.align='center', fig.cap='Great figure!', fig.height=5}
-plot(mtcars[1:2])
-```
-
-```{r morefigs, out.width='80%', echo=TRUE, fig.cap='Amazing, right?!', fig.height=5}
-data <- iris
-
-plot(x = data$Sepal.Length, 
-     y = data$Sepal.Width, 
-     col = data$Species,
-     pch = 19, 
-     xlab = "Sepal Length (cm)",
-     ylab = "Sepal Width (cm)")
-
-```
-
 # Further work
-
 - Include a data load and wrangling function to accommodate different datasets.
 - Combine text and explore module with coordinated linked views for multi-dimensional exploration.
 - Predictive models currently limited to 5 models, additional models such as neural network can be included to provide user with wider model selection  

@@ -287,10 +287,10 @@ ui <- dashboardPage(
                                        width = 3
                                      ),
                                      mainPanel(
-                                       withSpinner(leafletOutput('leaf_map', height = 600),type = 6, color = "#FF5A5F", size = 2),
+                                       withSpinner(leafletOutput('leaf_map', height = 600, width = 1000),type = 6, color = "#FF5A5F", size = 2),
                                        conditionalPanel(
                                          condition = "input.map_type == 'Choropleth map'",
-                                         DT::dataTableOutput('szTable')
+                                         withSpinner(DT::dataTableOutput('szTable'),type = 6, color = "#FF5A5F", size = 2)
                                        )
                                        
                                      )
@@ -488,8 +488,9 @@ server <- function(input, output) {
   
   observeEvent(input$user_guide, {
     # Absolute path to a pdf
-    file.show(file.path(".","www", "ShinyPET_userguide.pdf"))
+    browseURL("https://ourshinypet.netlify.app/files/ShinyPET_userguide.pdf/")
   })
+  
   
     ###############
     # observe tab
