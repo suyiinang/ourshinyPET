@@ -3,10 +3,25 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ourshinypet.netlify.app/blog/</loc>
-    <lastmod>2021-04-10T00:00:00+00:00</lastmod>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ourshinypet.netlify.app/categories/</loc>
-    <lastmod>2021-04-10T00:00:00+00:00</lastmod>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ourshinypet.netlify.app/</loc>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ourshinypet.netlify.app/tags/</loc>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ourshinypet.netlify.app/tags/text/</loc>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ourshinypet.netlify.app/categories/text/</loc>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ourshinypet.netlify.app/blog/text/</loc>
+    <lastmod>2021-04-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ourshinypet.netlify.app/categories/exploratory/</loc>
     <lastmod>2021-04-10T00:00:00+00:00</lastmod>
@@ -17,9 +32,6 @@
     <loc>https://ourshinypet.netlify.app/tags/exploratry/</loc>
     <lastmod>2021-04-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ourshinypet.netlify.app/</loc>
-    <lastmod>2021-04-10T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://ourshinypet.netlify.app/tags/predictive/</loc>
     <lastmod>2021-04-10T00:00:00+00:00</lastmod>
   </url><url>
@@ -27,9 +39,6 @@
     <lastmod>2021-04-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ourshinypet.netlify.app/blog/predictive/</loc>
-    <lastmod>2021-04-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://ourshinypet.netlify.app/tags/</loc>
     <lastmod>2021-04-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ourshinypet.netlify.app/tags/proposal/</loc>

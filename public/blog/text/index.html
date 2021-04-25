@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="utf-8">
+	<title>Text - Prototype test</title>
+
+	<!-- mobile responsive meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="description" content="Our Shiny PET">
+	
+	<meta name="generator" content="Hugo 0.82.0" />
+
+	<!-- plugins -->
+	
+	<link rel="stylesheet" href="https://ourshinypet.netlify.app/plugins/bootstrap/bootstrap.min.css">
+	
+	<link rel="stylesheet" href="https://ourshinypet.netlify.app/plugins/themify-icons/themify-icons.css">
+	
+	<link rel="stylesheet" href="https://ourshinypet.netlify.app/plugins/magnific-popup/magnific-popup.css">
+	
+	<link rel="stylesheet" href="https://ourshinypet.netlify.app/plugins/slick/slick.css">
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Anaheim%7cQuattrocento&#43;Sans:400,700&amp;display=swap">
+	
+
+	<!-- Main Stylesheet -->
+	
+	<link rel="stylesheet" href="https://ourshinypet.netlify.app/css/style.min.css" media="screen">
+
+	<!-- Custom stylesheet - for your changes -->
+	
+  <link rel="stylesheet" href="https://ourshinypet.netlify.app/css/custom.min.css" media="screen">
+
+	<!--Favicon-->
+	<link rel="shortcut icon" href="https://ourshinypet.netlify.app/images/favicon.png" type="image/x-icon">
+	<link rel="icon" href="https://ourshinypet.netlify.app/images/favicon.png" type="image/x-icon">
+
+	
+	<!-- Global Site Tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-189162512-2"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-189162512-2');
+	</script>
+	
+    	<script src="/lib/htmlwidgets-1.0/htmlwidgets.js"></script>
+    <script src="/lib/jquery-1.12.4/jquery.min.js"></script>
+    <script src="/lib/datatables-binding-0.4/datatables.js"></script>
+    <script src="/lib/dt-core-1.10.16/js/jquery.dataTables.min.js"></script> 
+    <script src="/lib/crosstalk-1.0.0/js/crosstalk.min.js"></script> 
+
+	
+
+</head>
+
+
+<body id="body" data-spy="scroll" data-target=".navbar" data-offset="55">
+  <div id="content">
+    
+
+
+<section class="sticky-top navigation">
+	<div class="container">
+		<nav class="navbar navbar-expand-lg navbar-dark">
+			<a class="navbar-brand p-0" href="/">
+				
+				<img class="lozad" data-src="https://ourshinypet.netlify.app/images/logo.png" alt="Our Shiny PET" height="42">
+				
+			</a>
+
+			<button class="navbar-toggler rounded-0" type="button" data-toggle="collapse" data-target="#navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navigation">
+				<ul class="navbar-nav ml-auto">
+					
+					<li class="nav-item">
+            <a class="nav-link" href="https://ourshinypet.netlify.app#feature">about</a>
+					</li>
+					
+					<li class="nav-item">
+            <a class="nav-link" href="https://ourshinypet.netlify.app#about">feature</a>
+					</li>
+					
+					<li class="nav-item">
+            <a class="nav-link" href="https://ourshinypet.netlify.app#team">team</a>
+					</li>
+					
+					<li class="nav-item">
+            <a class="nav-link" href="https://ourshinypet.netlify.app#blog">blog</a>
+					</li>
+					
+				</ul>
+				
+			</div>
+		</nav>
+	</div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2 text-center">
+        <h1>Text - Prototype test</h1>
+        <ul class="list-inline mb-50">
+          <li class="list-inline-item"><a href="/author//"></a></li>
+          <li class="list-inline-item">Sunday, Apr 11, 2021</li>
+        </ul>
+        <img class="img-fluid mb-50 lozad" data-src="https://ourshinypet.netlify.app/images/blog/text/text.jpg" alt="blog-image">
+      </div>
+      <div class="col-lg-8 offset-lg-2">
+        <div class="post-single-content">
+          <script src="https://ourshinypet.netlify.app/blog/text/index_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="https://ourshinypet.netlify.app/blog/text/index_files/pymjs/pym.v1.js"></script>
+<script src="https://ourshinypet.netlify.app/blog/text/index_files/widgetframe-binding/widgetframe.js"></script>
+<h1 id="prototype-testing-for-the-exploratory-module-for-ourshinypet">Prototype testing for the Exploratory module for OurShinyPET</h1>
+<p>by <a href="https://www.linkedin.com/in/joeychuasm/">Joey Chua</a></p>
+<hr>
+<h1 id="introduction">Introduction</h1>
+<p>Airbnb is an online vacation rental marketplace servicing a community of hosts and travellers. The diagram below shows the process of how Airbnb started with two individuals who could not pay for rent in 2007 to starting a company that reached US$10 billion valuation by 2014.In 2020, Airbnb went public with valuation of up to US$47 million. <a href="https://blog.seedly.sg/airbnb-ipo/">valuation of up to US$47 million</a></p>
+<p><img src="airbnbhistory.png" alt="">
+<a href="https://blog.adioma.com/how-airbnb-started-infographic/">Adapted from Adioma</a></p>
+<p>According to <a href="https://news.airbnb.com/2020-update/">Airbnb</a>, Airbnb has millions of listings in over 220 counties and regions across 100,000 cities. The data generated provides rich information, including structured data e.g. price and location, as well as unstructured data e.g. reviews and listing descriptions. While there are statistical and analytic tools available to derive insights using these data, these tools are often subscription-based and require technical knowledge, which may not be available or accessible to everyone. Hence, this project aims to develop an interface which is concise, interactive, and user-friendly using R Shiny. With this interface, data-based decisions can be made from the interactive GUI. The R Shiny app will cover exploratory data analysis, confirmatory data analysis, text mining, as well as predictive analysis.</p>
+<p>This assignment is sub-module of our final Shiny-based Visual Analytics Application (Shiny-VAA). In particular, a focus on text mining utilising various R packages will be presented. The process is shown below:</p>
+<h2 id="application-use-case">Application Use Case</h2>
+<p>Our application can be used from both the perspective of hosts and guests.</p>
+<p><strong>Hosts</strong>: In 2014, Airbnb launched the Superhost programme to reward hosts with outstanding hospitality. As a Superhost, one will have better earnings, more visibility, and are able to earn exclusive rewards such as increased earnings compared to regular hosts. To become a Superhost, these are the criteria to be met:</p>
+<ul>
+<li>4.8 or higher overall rating based on reviews</li>
+<li>Completed at least 10 stays in the past year or 100 nights over at least 3 completed stays</li>
+<li>Less than 1% cancellation rate, not including extenuating circumstances</li>
+<li>Responds to 90% of new messages within 24 hours</li>
+</ul>
+<p><strong>Guests</strong>: With over 60,000 members and 6,000 properties listed on Airbnb website, a dilemma on which is the right space might be of concern to users. Various modules in our dashboard will allow both types of users to analyse Airbnb data according to their needs.</p>
+<h2 id="data">Data</h2>
+<p><a href="http://insideairbnb.com/get-the-data.html">InsideAirbnb</a> provides tools and data for users to explore Airbnb. We will be using the following files:</p>
+<ul>
+<li>listing.csv.gz: This dataset consists of 74 variables and 4256 data points.</li>
+<li>reviews.csv.gz: This dataset provides 6 variables and 52368 data points.<br>
+While the team has decided to use the latest set of data compiled on 27 January 2021, this report uses data compiled on 29 December 2020 for completeness.</li>
+</ul>
+<h1 id="literature-review">Literature Review</h1>
+<p><em>Conducting literature review on how the analysis were performed before. The focus should be on identifying gaps whereby interactive web approach and visual analytics techniques can be used to enhance user experience on using the analysis techniques.</em></p>
+<p>Airbnb data has been widely used for text mining in tools like Python and R. In Python, (Natural Language Processing Toolkit)[https://www.nltk.org/] has easy-to-use interfaces to over 50 corpora and lexical resource, as well as a wide range of text processing libraries for tokenisation, stemming, classification etc. Similarly, R has extensive libraries such as tidyverse and Shiny which allows for text mining and building of interactive dashboards.</p>
+<p>Zhang (2019) used text mining approaches including content analysis and topic modelling (Latent Dirichlet Allocation (LDA) method) to examine over 1 million Airbnb reviews across 50,933 listings in the United States of America (USA). Kiatkawsin, Sutherland &amp; Kim (2020) also used LDA method to compare reviews between Hong Kong and Singapore. However, these articles do not provide visualiation of the methods used and are not interactive.</p>
+<p><a href="https://donghwikim21.shinyapps.io/ShinyAirbnb/">Kim’s Shiny Airbnb App</a> provided dashboard which is interactive for Exploratory Data Analysis (EDA), but left out reviews. <a href="https://github.com/ankit2web/Twitter-Sentiment-Analysis-using-R-Shiny-WebApp">Ankit Pandey</a> provided a more comprehensive text analytics dashboard using wordcloud and polarity of sentiments, but does not provide much interactivity.</p>
+<p>To solve the above gaps, the next section outlines the steps:</p>
+<h1 id="submodules">Submodules</h1>
+<h2 id="data-preparation">Data Preparation</h2>
+<p><em>Extracting, wrangling and preparing the input data required to perform the analysis. The focus should be on exploring appropriate tidyverse methods</em></p>
+<h3 id="r-markdown">R Markdown</h3>
+<p>runtime:shiny was added to allow dynamic documentation.
+{r} part of the code chunk can be used to specify elements and subsequently rendered into different format.
+echo=TRUE is set to allow printing of code chunk when rendered into a different file format.
+More details can be found at <a href="https://rmarkdown.rstudio.com/lesson-1.html">R Markdown Documentation</a>.</p>
+<h3 id="packages">Packages</h3>
+<p>To install multiple packages and load the libraries, run the following codes chunk:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">packages &lt;- <span style="color:#447fcf">c</span>(<span style="color:#ed9d13">&#34;tidyverse&#34;</span>,<span style="color:#ed9d13">&#34;sf&#34;</span>,<span style="color:#ed9d13">&#34;tmap&#34;</span>,<span style="color:#ed9d13">&#34;crosstalk&#34;</span>,<span style="color:#ed9d13">&#34;leaflet&#34;</span>,<span style="color:#ed9d13">&#34;RColorBrewer&#34;</span>,<span style="color:#ed9d13">&#34;ggplot2&#34;</span>,
+              <span style="color:#ed9d13">&#34;rgdal&#34;</span>, <span style="color:#ed9d13">&#34;rgeos&#34;</span>, <span style="color:#ed9d13">&#34;raster&#34;</span>,<span style="color:#ed9d13">&#34;maptools&#34;</span>,<span style="color:#ed9d13">&#34;tmaptools&#34;</span>,<span style="color:#ed9d13">&#34;shiny&#34;</span>,<span style="color:#ed9d13">&#34;tidytext&#34;</span>,
+              <span style="color:#ed9d13">&#34;wordcloud&#34;</span>,<span style="color:#ed9d13">&#34;wordcloud2&#34;</span>,<span style="color:#ed9d13">&#34;tm&#34;</span>,<span style="color:#ed9d13">&#34;ggthemes&#34;</span>,<span style="color:#ed9d13">&#34;igraph&#34;</span>,<span style="color:#ed9d13">&#34;ggmap&#34;</span>,<span style="color:#ed9d13">&#34;DT&#34;</span>,
+              <span style="color:#ed9d13">&#34;reshape2&#34;</span>,<span style="color:#ed9d13">&#34;ggraph&#34;</span>,<span style="color:#ed9d13">&#34;topicmodels&#34;</span>,<span style="color:#ed9d13">&#34;tidytext&#34;</span>,<span style="color:#ed9d13">&#34;topicmodels&#34;</span>,<span style="color:#ed9d13">&#34;quanteda&#34;</span>,
+              <span style="color:#ed9d13">&#34;tm&#34;</span>,<span style="color:#ed9d13">&#34;RColorBrewer&#34;</span>,<span style="color:#ed9d13">&#34;DataExplorer&#34;</span>, <span style="color:#ed9d13">&#39;widgetframe&#39;</span>, <span style="color:#ed9d13">&#39;knitr&#39;</span>)
+
+<span style="color:#447fcf">for </span>(p in packages){
+  <span style="color:#447fcf">if </span>(!<span style="color:#447fcf">require</span>(p,character.only=T)){
+    <span style="color:#447fcf">install.packages</span>(p)
+  }
+  <span style="color:#447fcf">library</span>(p, character.only=T)
+}
+</code></pre></div><h3 id="import-data">Import Data</h3>
+<p>Use the read_csv() function to determine the path to the file to read. It prints out a column specification that gives the name and type of each column.
+As the are unnecessary columns, select() function is use to retain only the columns used in subsequent analysis.</p>
+<ul>
+<li>review file contains 52367 observations with 6 variables; 2 columns (listing_id and comments) are retained.</li>
+<li>listings file contains 4255 observations with 74 variables; 33 columns are retained.</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">reviews &lt;- <span style="color:#447fcf">read_csv</span>(<span style="color:#ed9d13">&#34;./data/reviews.csv&#34;</span>)%&gt;% 
+  dplyr::<span style="color:#447fcf">select</span>(listing_id,comments)
+</code></pre></div><pre><code>## 
+## -- Column specification --------------------------------------------------------
+## cols(
+##   listing_id = col_double(),
+##   id = col_double(),
+##   date = col_date(format = &quot;&quot;),
+##   reviewer_id = col_double(),
+##   reviewer_name = col_character(),
+##   comments = col_character()
+## )
+</code></pre>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">listings &lt;- <span style="color:#447fcf">read_csv</span>(<span style="color:#ed9d13">&#34;./data/listings.csv&#34;</span>)  %&gt;% 
+  <span style="color:#447fcf">rename</span>(listing_id=id) %&gt;% 
+  dplyr::<span style="color:#447fcf">select</span>(-<span style="color:#447fcf">c</span>(listing_url, scrape_id, last_scraped, name, picture_url,host_url, host_about,host_thumbnail_url, host_picture_url, host_listings_count, host_verifications,calendar_updated,first_review,last_review,license,neighborhood_overview,description,host_total_listings_count,host_has_profile_pic,availability_30,availability_60,availability_90,availability_365,calculated_host_listings_count,calculated_host_listings_count_entire_homes,calculated_host_listings_count_private_rooms,calculated_host_listings_count_shared_rooms,reviews_per_month,minimum_nights,maximum_nights,minimum_minimum_nights,maximum_minimum_nights,minimum_maximum_nights,maximum_maximum_nights,number_of_reviews_ltm,number_of_reviews_l30d,minimum_nights_avg_ntm,maximum_nights_avg_ntm,calendar_last_scraped,has_availability,instant_bookable))
+</code></pre></div><pre><code>## 
+## -- Column specification --------------------------------------------------------
+## cols(
+##   .default = col_double(),
+##   listing_url = col_character(),
+##   last_scraped = col_date(format = &quot;&quot;),
+##   name = col_character(),
+##   description = col_character(),
+##   neighborhood_overview = col_character(),
+##   picture_url = col_character(),
+##   host_url = col_character(),
+##   host_name = col_character(),
+##   host_since = col_date(format = &quot;&quot;),
+##   host_location = col_character(),
+##   host_about = col_character(),
+##   host_response_time = col_character(),
+##   host_response_rate = col_character(),
+##   host_acceptance_rate = col_character(),
+##   host_is_superhost = col_logical(),
+##   host_thumbnail_url = col_character(),
+##   host_picture_url = col_character(),
+##   host_neighbourhood = col_character(),
+##   host_verifications = col_character(),
+##   host_has_profile_pic = col_logical()
+##   # ... with 17 more columns
+## )
+## i Use `spec()` for the full column specifications.
+</code></pre>
+<h3 id="merge-data">Merge Data</h3>
+<p>right_join() is used to merge the listings and review files so that all rows from listings will be returned.</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">data &lt;- <span style="color:#447fcf">right_join</span>(reviews,listings,by=<span style="color:#ed9d13">&#34;listing_id&#34;</span>)
+</code></pre></div><h3 id="save-file">Save file</h3>
+<p>To write to CSV for future usage, run the following code without hashtag(#).</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#999;font-style:italic">#write.csv(data,&#34;data.csv&#34;)</span>
+</code></pre></div><h3 id="view-data">View data</h3>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#447fcf">glimpse</span>(data)
+</code></pre></div><pre><code>## Rows: 54,074
+## Columns: 34
+## $ listing_id                   &lt;dbl&gt; 49091, 50646, 50646, 50646, 50646, 50646,~
+## $ comments                     &lt;chr&gt; &quot;Fran was absolutely gracious and welcomi~
+## $ host_id                      &lt;dbl&gt; 266763, 227796, 227796, 227796, 227796, 2~
+## $ host_name                    &lt;chr&gt; &quot;Francesca&quot;, &quot;Sujatha&quot;, &quot;Sujatha&quot;, &quot;Sujat~
+## $ host_since                   &lt;date&gt; 2010-10-20, 2010-09-08, 2010-09-08, 2010~
+## $ host_location                &lt;chr&gt; &quot;Singapore&quot;, &quot;Singapore, Singapore&quot;, &quot;Sin~
+## $ host_response_time           &lt;chr&gt; &quot;within a few hours&quot;, &quot;a few days or more~
+## $ host_response_rate           &lt;chr&gt; &quot;100%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;0%~
+## $ host_acceptance_rate         &lt;chr&gt; &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;, &quot;N/A&quot;,~
+## $ host_is_superhost            &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,~
+## $ host_neighbourhood           &lt;chr&gt; &quot;Woodlands&quot;, &quot;Bukit Timah&quot;, &quot;Bukit Timah&quot;~
+## $ host_identity_verified       &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE,~
+## $ neighbourhood                &lt;chr&gt; NA, &quot;Singapore, Singapore&quot;, &quot;Singapore, S~
+## $ neighbourhood_cleansed       &lt;chr&gt; &quot;Woodlands&quot;, &quot;Bukit Timah&quot;, &quot;Bukit Timah&quot;~
+## $ neighbourhood_group_cleansed &lt;chr&gt; &quot;North Region&quot;, &quot;Central Region&quot;, &quot;Centra~
+## $ latitude                     &lt;dbl&gt; 1.44255, 1.33235, 1.33235, 1.33235, 1.332~
+## $ longitude                    &lt;dbl&gt; 103.7958, 103.7852, 103.7852, 103.7852, 1~
+## $ property_type                &lt;chr&gt; &quot;Private room in apartment&quot;, &quot;Private roo~
+## $ room_type                    &lt;chr&gt; &quot;Private room&quot;, &quot;Private room&quot;, &quot;Private ~
+## $ accommodates                 &lt;dbl&gt; 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,~
+## $ bathrooms                    &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N~
+## $ bathrooms_text               &lt;chr&gt; &quot;1 bath&quot;, &quot;1 bath&quot;, &quot;1 bath&quot;, &quot;1 bath&quot;, &quot;~
+## $ bedrooms                     &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,~
+## $ beds                         &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,~
+## $ amenities                    &lt;chr&gt; &quot;[\&quot;Washer\&quot;, \&quot;Elevator\&quot;, \&quot;Long term s~
+## $ price                        &lt;chr&gt; &quot;$80.00&quot;, &quot;$80.00&quot;, &quot;$80.00&quot;, &quot;$80.00&quot;, &quot;~
+## $ number_of_reviews            &lt;dbl&gt; 1, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18~
+## $ review_scores_rating         &lt;dbl&gt; 94, 91, 91, 91, 91, 91, 91, 91, 91, 91, 9~
+## $ review_scores_accuracy       &lt;dbl&gt; 10, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9~
+## $ review_scores_cleanliness    &lt;dbl&gt; 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1~
+## $ review_scores_checkin        &lt;dbl&gt; 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1~
+## $ review_scores_communication  &lt;dbl&gt; 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1~
+## $ review_scores_location       &lt;dbl&gt; 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,~
+## $ review_scores_value          &lt;dbl&gt; 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,~
+</code></pre>
+<p>glimpse() does not present the data in a tabular format, hence datatable and kable packages were considered.However,</p>
+<ul>
+<li>datatable() does not work well with the extensions of FixedColumns, FixedHeader and Scoller when coupled with Shiny. Hence, these specific functionalities are excluded.</li>
+<li>kable() is not up to date with the current version of R and was not used.</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">dt_reviews &lt;- <span style="color:#447fcf">datatable</span>(reviews)
+</code></pre></div><iframe seamless src="html/dt_reviews.html" width="120%" height="600">
+</iframe>
+<h2 id="exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</h2>
+<p>EDA is conducted briefly to allow a summary of the data’s main characteristics and identify any potential issues that may arise.</p>
+<ul>
+<li><a href="https://ggplot2.tidyverse.org/">ggplot</a> is commonly used to map variables to aesthetics. However, plotting each graph is tedious thus will not be used.</li>
+<li><a href="https://www.rdocumentation.org/packages/DataExplorer/versions/0.8.2">DataExplorer</a> is similar to ProfilerReport() in Python, which automates data handling and visualisation. This allows more time and focus on understanding the underlying data, as well as to study and extract insights.</li>
+</ul>
+<p>To generate a report, run the following code without the hashtag(#)</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#999;font-style:italic">#create_report(data)</span>
+</code></pre></div><p>Missing data profile, univariate distribution and bar chart with frequency can be observed.</p>
+<p><img src="missingdataprofile.png" width="948" /></p>
+<p><img src="univariate.png" width="983" /></p>
+<p><img src="barchart.png" width="931" /></p>
+<h2 id="text-mining">Text Mining</h2>
+<p><em>Testing and prototyping the proposed sub-module in R Markdown. The R Markdown document must be in full working html report format. This link1 and link2 provides useful examples for your reference.</em></p>
+<p>A comparison of various packages are shown below:</p>
+<p><img src="packagescomparison.png" width="595" /></p>
+<h3 id="tidy-text-format">Tidy Text Format</h3>
+<p>For easier and more effective data handling, this section outlines the steps to ensure tidy data i.e. each variable is a column, each observation is a row and each type of observational unit is a table. In other words, tidy text becomes a table with one-token per row.</p>
+<p><em><strong>Data Types</strong></em></p>
+<ul>
+<li>To change host_since into date format, use as.data().</li>
+<li>To change listing_id data type to categorical, use as.character().</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">data$host_since &lt;- <span style="color:#447fcf">as.Date</span>(data$host_since, format = <span style="color:#ed9d13">&#39;%d/%m/%Y&#39;</span>)
+data$listing_id &lt;- <span style="color:#447fcf">as.character</span>(data$listing_id)
+</code></pre></div><p><em><strong>Cleaning</strong></em></p>
+<ul>
+<li>To remove anything but alphabets, use gsub()</li>
+<li>To change all alphabets to lowercase, use tolower()</li>
+<li>To remove dollar sign in price, use str_remove()</li>
+<li>To remove backslash in amenities, use gsub()</li>
+<li>To remove locations not in normalised singapore text, use subset()</li>
+<li>To drop rows</li>
+<li>To remove Non-ASCII characters including Chinese, Japanese, Korean etc, use iconv()</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">data$comments &lt;- <span style="color:#447fcf">gsub</span>(<span style="color:#ed9d13">&#34;^[alpha:][:space:]&#39;\&#34;]&#34;</span>, <span style="color:#ed9d13">&#34; &#34;</span>,data$comments) %&gt;% 
+  <span style="color:#447fcf">tolower</span>()
+data$comments &lt;- <span style="color:#447fcf">iconv</span>(data$comments,to=<span style="color:#ed9d13">&#34;UTF-8&#34;</span>)
+
+
+data$price &lt;- <span style="color:#447fcf">str_remove</span>(string=data$price,pattern=<span style="color:#ed9d13">&#39;\\$&#39;</span>) %&gt;% 
+  <span style="color:#447fcf">as.numeric</span>()
+data$host_response_rate &lt;- <span style="color:#447fcf">gsub</span>(<span style="color:#ed9d13">&#34;%&#34;</span>,<span style="color:#ed9d13">&#34;&#34;</span>,data$host_response_rate) 
+data$amenities &lt;- <span style="color:#447fcf">gsub</span>(<span style="color:#ed9d13">&#39;\&#34;&#39;</span>, <span style="color:#ed9d13">&#34;&#34;</span>, data$amenities, fixed = <span style="color:#6ab825;font-weight:bold">TRUE</span>)
+data &lt;- <span style="color:#447fcf">subset</span>(data,host_location==<span style="color:#ed9d13">&#34;Singapore&#34;</span> | host_location==<span style="color:#ed9d13">&#34;Singapore, Singapore&#34;</span> | host_location==<span style="color:#ed9d13">&#34;SG&#34;</span>)
+</code></pre></div><p><strong>Stop Words</strong>
+Due to the following reasons, additional stop words are added:</p>
+<ul>
+<li>reviews/comments mentioned names consistently, and they are not relevant to analysis</li>
+<li>stop_words is not comprehensive enough</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">new_stopwords &lt;- <span style="color:#447fcf">c</span>(<span style="color:#ed9d13">&#34;michelle&#39;s&#34;</span>,<span style="color:#ed9d13">&#34;elizabeth&#34;</span>,<span style="color:#ed9d13">&#34;yuan&#34;</span>,<span style="color:#ed9d13">&#34;felix&#34;</span>,<span style="color:#ed9d13">&#34;anita&#34;</span>,<span style="color:#ed9d13">&#34;susan&#34;</span>,<span style="color:#ed9d13">&#34;eddie&#34;</span>,<span style="color:#ed9d13">&#34;eddie&#39;s&#34;</span>,<span style="color:#ed9d13">&#34;edwin&#34;</span>,<span style="color:#ed9d13">&#34;belinda&#34;</span>,<span style="color:#ed9d13">&#34;besan&#34;</span>,<span style="color:#ed9d13">&#34;nargis&#34;</span>,<span style="color:#ed9d13">&#34;antonio&#34;</span>,<span style="color:#ed9d13">&#34;sharm&#34;</span>,<span style="color:#ed9d13">&#34;tim&#34;</span>,<span style="color:#ed9d13">&#34;kathleen&#34;</span>,<span style="color:#ed9d13">&#34;stteven&#34;</span>,<span style="color:#ed9d13">&#34;jerome&#34;</span>,<span style="color:#ed9d13">&#34;freddy&#34;</span>,<span style="color:#ed9d13">&#34;eunice&#34;</span>,<span style="color:#ed9d13">&#34;eunice&#39;s&#34;</span>,<span style="color:#ed9d13">&#34;vivian&#34;</span>,<span style="color:#ed9d13">&#34;jerome&#39;s&#34;</span>,<span style="color:#ed9d13">&#34;mi&#39;s&#34;</span>,<span style="color:#ed9d13">&#34;freddy&#39;s&#34;</span>,<span style="color:#ed9d13">&#34;joey&#34;</span>,<span style="color:#ed9d13">&#34;tay&#34;</span>,<span style="color:#ed9d13">&#34;michelle&#34;</span>,<span style="color:#ed9d13">&#34;noor&#34;</span>,<span style="color:#ed9d13">&#34;anthony&#34;</span>,<span style="color:#ed9d13">&#34;tay&#39;s&#34;</span>,<span style="color:#ed9d13">&#34;carrie&#34;</span>,<span style="color:#ed9d13">&#34;jauhara&#34;</span>,<span style="color:#ed9d13">&#34;susan&#34;</span>,<span style="color:#ed9d13">&#34;karen&#34;</span>,<span style="color:#ed9d13">&#34;jenny&#34;</span>,<span style="color:#ed9d13">&#34;lena&#34;</span>,<span style="color:#ed9d13">&#34;leonard&#34;</span>,<span style="color:#ed9d13">&#34;kingsley&#34;</span>,<span style="color:#ed9d13">&#34;freda&#34;</span>,<span style="color:#ed9d13">&#34;jialin&#34;</span>,<span style="color:#ed9d13">&#34;matthew&#34;</span>,<span style="color:#ed9d13">&#34;fran&#34;</span>,<span style="color:#ed9d13">&#34;na&#34;</span>)
+all_stopwords &lt;- <span style="color:#447fcf">c</span>(new_stopwords,stop_words)
+</code></pre></div><p><strong>Unnest tokens</strong></p>
+<ul>
+<li>unnest_token is used to split a column into tokens such that they are flattened into one-token-per row.</li>
+<li>anti_join() removes stop words contained in the reviews/comments.</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">data_comments &lt;- data %&gt;% 
+  dplyr::<span style="color:#447fcf">select</span>(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%&gt;%
+  <span style="color:#447fcf">unnest_tokens</span>(word,comments) %&gt;% 
+  <span style="color:#447fcf">group_by</span>(listing_id) %&gt;% 
+  <span style="color:#447fcf">ungroup</span>() %&gt;% 
+  <span style="color:#447fcf">anti_join</span>(stop_words)
+</code></pre></div><pre><code>## Joining, by = &quot;word&quot;
+</code></pre>
+<p><strong>Frequency</strong>
+count() or n() can find the most common words that occurred in the reviews.</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">data_count &lt;- data_comments %&gt;% 
+  <span style="color:#447fcf">group_by</span>(word) %&gt;% 
+  <span style="color:#447fcf">summarise</span>(frequency=<span style="color:#447fcf">n</span>())
+</code></pre></div><p><strong>Wordcloud</strong>
+Worldcloud provides an easy way to show how frequent a word appears in a corpus. In wordcloud, the size of a word indicates how frequent the word appears in a given text.
+Costs and benefits of wordcloud:</p>
+<p><img src="wordcloudproscons.png" width="592" /></p>
+<ul>
+<li><a href="https://www.rdocumentation.org/packages/wordcloud/versions/2.6">worldcloud</a> was considered. However, there are limitations in terms of flexibility in usage. Additionally, during renderwordcloud seemed to have issue rendering in shiny.</li>
+<li><a href="https://www.rdocumentation.org/packages/wordcloud2/versions/0.2.1/topics/wordcloud2">wordcloud2</a> provides more flexibility through usage of font, colour, rotations etc. renderwordcloud2 works better for rendering. However, in R Markdown, the rendering issue appeared for any information that follows the wordcloud.</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">tidy_wordcloud &lt;- data_count %&gt;% 
+  <span style="color:#447fcf">wordcloud2</span>()
+</code></pre></div><iframe seamless src="html/tidy_wordcloud.html" width="100%" height="500">
+</iframe>
+<p>For more impactful and better visualisation, the following are taken into considerations:</p>
+<ul>
+<li>colour</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#999;font-style:italic">#custom &lt;- wordcloud2(data_cloud,colorPalette = &#34;RdYlBu&#34;)</span>
+</code></pre></div><ul>
+<li>shape and letters</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#999;font-style:italic">#custom_cloud &lt;- wordcloud2(wordcloud,figPath=&#34;airbnb.png&#34;)</span>
+<span style="color:#999;font-style:italic">#letterCloud(wordcloud,word=&#34;AIRBNB&#34;)</span>
+</code></pre></div><ul>
+<li>dictionaries (afinn, bing, nrc)</li>
+</ul>
+<p><strong>AFINN</strong></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">afinn &lt;- <span style="color:#447fcf">get_sentiments</span>(<span style="color:#ed9d13">&#34;afinn&#34;</span>) 
+afinn_sentiments &lt;- data_comments %&gt;% 
+  <span style="color:#447fcf">inner_join</span>(afinn) %&gt;% 
+  <span style="color:#447fcf">count</span>(word,value,sort=<span style="color:#6ab825;font-weight:bold">TRUE</span>) %&gt;% 
+  <span style="color:#447fcf">acast</span>(word~value,value.var=<span style="color:#ed9d13">&#34;n&#34;</span>,fill=<span style="color:#3677a9">0</span>) %&gt;% 
+  <span style="color:#447fcf">comparison.cloud</span>()
+</code></pre></div><pre><code>## Joining, by = &quot;word&quot;
+</code></pre>
+<p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="afinn.png" width="350" /></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">afinn_count &lt;- data_comments %&gt;% 
+  <span style="color:#999;font-style:italic">#group_by(listing_id) %&gt;% </span>
+  <span style="color:#447fcf">inner_join</span>(afinn) %&gt;% 
+  <span style="color:#447fcf">count</span>(word,value) %&gt;% 
+  <span style="color:#447fcf">filter</span>(n&gt;<span style="color:#3677a9">500</span>) %&gt;% 
+  <span style="color:#999;font-style:italic">#mutate(n=ifelse(sentiment==&#34;negative&#34;,-n,n)) %&gt;% </span>
+  <span style="color:#447fcf">mutate</span>(word=<span style="color:#447fcf">reorder</span>(word,n)) %&gt;% 
+  <span style="color:#447fcf">ggplot</span>(<span style="color:#447fcf">aes</span>(word,(n)))+
+  <span style="color:#447fcf">geom_col</span>()+
+  <span style="color:#447fcf">coord_flip</span>()
+</code></pre></div><pre><code>## Joining, by = &quot;word&quot;
+</code></pre>
+<p><img src="afinn_count.png" width="350" /></p>
+<p><strong>BING</strong></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">bing &lt;- <span style="color:#447fcf">get_sentiments</span>(<span style="color:#ed9d13">&#34;bing&#34;</span>)
+bing_sentiments &lt;- data_comments %&gt;% 
+  <span style="color:#447fcf">inner_join</span>(bing) %&gt;% 
+  <span style="color:#447fcf">count</span>(word,sentiment,sort=<span style="color:#6ab825;font-weight:bold">TRUE</span>) %&gt;% 
+  <span style="color:#447fcf">acast</span>(word~sentiment,value.var=<span style="color:#ed9d13">&#34;n&#34;</span>,fill=<span style="color:#3677a9">0</span>) %&gt;% 
+  <span style="color:#447fcf">comparison.cloud</span>(colors = <span style="color:#447fcf">c</span>(<span style="color:#ed9d13">&#34;red&#34;</span>, <span style="color:#ed9d13">&#34;blue&#34;</span>))
+</code></pre></div><pre><code>## Joining, by = &quot;word&quot;
+</code></pre>
+<p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="bing.png" width="350" /></p>
+<p><em>sorry, please self-censor some words</em></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">bing_count &lt;- data_comments %&gt;% 
+  <span style="color:#447fcf">inner_join</span>(bing) %&gt;% 
+  <span style="color:#447fcf">count</span>(word,sentiment) %&gt;% 
+  <span style="color:#447fcf">filter</span>(n&gt;<span style="color:#3677a9">500</span>) %&gt;% 
+  <span style="color:#447fcf">mutate</span>(n=<span style="color:#447fcf">ifelse</span>(sentiment==<span style="color:#ed9d13">&#34;negative&#34;</span>,-n,n)) %&gt;% 
+  <span style="color:#447fcf">mutate</span>(word=<span style="color:#447fcf">reorder</span>(word,n)) %&gt;% 
+  <span style="color:#447fcf">ggplot</span>(<span style="color:#447fcf">aes</span>(word,n,fill=sentiment))+
+  <span style="color:#447fcf">geom_col</span>()+
+  <span style="color:#447fcf">coord_flip</span>()
+</code></pre></div><pre><code>## Joining, by = &quot;word&quot;
+</code></pre>
+<p><img src="bing_count.png" width="350" /></p>
+<p><strong>NRC</strong></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">nrc &lt;- <span style="color:#447fcf">get_sentiments</span>(<span style="color:#ed9d13">&#34;nrc&#34;</span>)
+nrc_sentiments &lt;- data_comments %&gt;% 
+  <span style="color:#447fcf">inner_join</span>(nrc) %&gt;% 
+  <span style="color:#447fcf">count</span>(word,sentiment,sort=<span style="color:#6ab825;font-weight:bold">TRUE</span>) %&gt;% 
+  <span style="color:#447fcf">acast</span>(word~sentiment,value.var=<span style="color:#ed9d13">&#34;n&#34;</span>,fill=<span style="color:#3677a9">0</span>) %&gt;% 
+  <span style="color:#447fcf">comparison.cloud</span>()
+</code></pre></div><pre><code>## Joining, by = &quot;word&quot;
+</code></pre>
+<p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="nrc.png" width="350" /></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">nrc_count &lt;- data_comments %&gt;% 
+  <span style="color:#447fcf">inner_join</span>(nrc) %&gt;% 
+  <span style="color:#447fcf">count</span>(word,sentiment,sort=<span style="color:#6ab825;font-weight:bold">TRUE</span>) %&gt;% 
+  <span style="color:#447fcf">filter</span>(n&gt;<span style="color:#3677a9">1500</span>) %&gt;% 
+  <span style="color:#447fcf">mutate</span>(n=<span style="color:#447fcf">ifelse</span>(sentiment==<span style="color:#ed9d13">&#34;negative&#34;</span>,-n,n)) %&gt;% 
+  <span style="color:#447fcf">mutate</span>(word=<span style="color:#447fcf">reorder</span>(word,n)) %&gt;% 
+  <span style="color:#447fcf">ggplot</span>(<span style="color:#447fcf">aes</span>(word,n))+
+  <span style="color:#447fcf">facet_grid</span>(~sentiment)+
+  <span style="color:#447fcf">geom_col</span>()+
+  <span style="color:#447fcf">coord_flip</span>()
+</code></pre></div><p><img src="nrc_count.png" width="350" /></p>
+<h3 id="tm">tm</h3>
+<p><strong>Create corpus</strong></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">corpus_review &lt;- <span style="color:#447fcf">Corpus</span>(<span style="color:#447fcf">VectorSource</span>(<span style="color:#447fcf">as_tibble</span>(data$comments)))
+</code></pre></div><p><strong>Clean corpus</strong></p>
+<ul>
+<li>Stemming algorithms work by cutting off the end or the beginning of the word, taking into account a list of common prefixes and suffixes that can be found in an inflected word. However, the stemming method changes words such as earlier to earli and checking to checkin as shown above. As such, this process was excluded.</li>
+<li>Lemmatization, on the other hand, takes into consideration the morphological analysis of the words.</li>
+</ul>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">corpus_review &lt;- <span style="color:#447fcf">tm_map</span>(corpus_review,tolower)
+corpus_review=<span style="color:#447fcf">tm_map</span>(corpus_review, removePunctuation)
+corpus_review=<span style="color:#447fcf">tm_map</span>(corpus_review, removeWords, <span style="color:#447fcf">stopwords</span>(<span style="color:#ed9d13">&#34;english&#34;</span>))
+corpus_review=<span style="color:#447fcf">tm_map</span>(corpus_review, removeWords,<span style="color:#447fcf">c</span>(<span style="color:#ed9d13">&#34;also&#34;</span>,<span style="color:#ed9d13">&#34;is&#34;</span>,<span style="color:#ed9d13">&#34;in&#34;</span>,<span style="color:#ed9d13">&#34;to&#34;</span>,<span style="color:#ed9d13">&#34;with&#34;</span>))
+<span style="color:#999;font-style:italic">#corpus_review[[1]][1]</span>
+</code></pre></div><div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">review_tdm &lt;- <span style="color:#447fcf">DocumentTermMatrix</span>(corpus_review)
+review &lt;- <span style="color:#447fcf">as.data.frame</span>(<span style="color:#447fcf">colSums</span>(<span style="color:#447fcf">as.matrix</span>(review_tdm)))
+review &lt;- <span style="color:#447fcf">rownames_to_column</span>(review) 
+<span style="color:#447fcf">colnames</span>(review) &lt;- <span style="color:#447fcf">c</span>(<span style="color:#ed9d13">&#34;term&#34;</span>, <span style="color:#ed9d13">&#34;num&#34;</span>)
+review &lt;- <span style="color:#447fcf">arrange</span>(review, <span style="color:#447fcf">desc</span>(num))
+</code></pre></div><div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#999;font-style:italic">#View the top 10 most common words</span>
+<span style="color:#999;font-style:italic">#review[1:10]</span>
+<span style="color:#999;font-style:italic">#barplot(review[1:20], col = &#34;steel blue&#34;, las = 2)</span>
+</code></pre></div><div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">wordcloud &lt;- <span style="color:#447fcf">wordcloud</span>(review$term, review$num,max.words = <span style="color:#3677a9">50</span>, colors = <span style="color:#ed9d13">&#34;red&#34;</span>)
+</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p><img src="wordcloud.png" width="350" /></p>
+<h3 id="tf-idf">TF-IDF</h3>
+<p>TF-IDF is short for Term Frequency-Inverse Document Frequency. Term Frequency is the number of times word is found within a document. Invest Document Frequency is the inverse number of times word is found in collection of documents. A word which appears frequently within a document but is not frequently found in collection will have high TF IDF score as this word is relevant to the document.</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">review_words &lt;- data_comments %&gt;%
+  <span style="color:#447fcf">group_by</span>(neighbourhood_group_cleansed ,word) %&gt;% 
+  <span style="color:#447fcf">summarise</span>(frequency=<span style="color:#447fcf">n</span>())
+</code></pre></div><pre><code>## `summarise()` has grouped output by 'neighbourhood_group_cleansed'. You can override using the `.groups` argument.
+</code></pre>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">  <span style="color:#999;font-style:italic">#filter(frequency&gt;2000)</span>
+  
+total_words &lt;- review_words %&gt;% 
+  <span style="color:#447fcf">group_by</span>(neighbourhood_group_cleansed) %&gt;% 
+  <span style="color:#447fcf">summarise</span>(total=<span style="color:#447fcf">sum</span>(frequency))
+
+airbnbwords &lt;- <span style="color:#447fcf">left_join</span>(review_words,total_words) %&gt;% 
+  <span style="color:#447fcf">filter</span>(frequency/total&lt;<span style="color:#3677a9">0.01</span>)
+</code></pre></div><pre><code>## Joining, by = &quot;neighbourhood_group_cleansed&quot;
+</code></pre>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">neigh_freq &lt;- <span style="color:#447fcf">ggplot</span>(airbnbwords,<span style="color:#447fcf">aes</span>(frequency/total,fill=neighbourhood_group_cleansed))+
+  <span style="color:#447fcf">geom_histogram</span>() +
+  <span style="color:#447fcf">facet_wrap</span>(~neighbourhood_group_cleansed,scales=<span style="color:#ed9d13">&#34;free_y&#34;</span>)
+</code></pre></div><p><img src="neigh_freq.png" width="350" /></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">airbnbtfidf &lt;- airbnbwords %&gt;% 
+  <span style="color:#447fcf">bind_tf_idf</span>(word,neighbourhood_group_cleansed ,frequency)
+
+airbnbtfidf %&gt;% 
+  <span style="color:#447fcf">group_by</span>(neighbourhood_group_cleansed) %&gt;% 
+  <span style="color:#447fcf">slice_max</span>(tf_idf,n=<span style="color:#3677a9">15</span>) %&gt;% 
+  <span style="color:#447fcf">ungroup</span>() %&gt;% 
+  <span style="color:#447fcf">ggplot</span>(<span style="color:#447fcf">aes</span>(tf_idf,<span style="color:#447fcf">fct_reorder</span>(word,tf_idf),fill=neighbourhood_group_cleansed))+
+  <span style="color:#447fcf">geom_col</span>()+
+  <span style="color:#447fcf">facet_wrap</span>(~neighbourhood_group_cleansed,scales=<span style="color:#ed9d13">&#34;free&#34;</span>)
+</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="airbnbtdidf.png" width="350" /></p>
+<h3 id="topic-modelling-lda">Topic Modelling (LDA)</h3>
+<p>Latent Dirichlet allocation is an example of topic modeling algorithm, based on 2 principles:</p>
+<ol>
+<li>Every document is a mixture of topics.For example, document A is 90% topic on location and 10% on host’s hospitality. Whereas, document B is 30% topic on location and 70% on host’s hospitality.</li>
+<li>Every topic is a mixture of words. For instance, based on Airbnb data, one topic can be cleanliness, and the other topic can on amenities.</li>
+</ol>
+<p>To set the number of topics, set k=x where x is a numerical value.</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">airbnb_lda &lt;- <span style="color:#447fcf">LDA</span>(review_tdm, k = <span style="color:#3677a9">3</span>)
+airbnb_topics &lt;- <span style="color:#447fcf">tidy</span>(airbnb_lda, matrix = <span style="color:#ed9d13">&#34;beta&#34;</span>)
+</code></pre></div><div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">airbnb_top_terms &lt;- airbnb_topics %&gt;%
+  <span style="color:#447fcf">group_by</span>(topic) %&gt;%
+  <span style="color:#447fcf">top_n</span>(<span style="color:#3677a9">10</span>, beta) %&gt;%
+  <span style="color:#447fcf">ungroup</span>() %&gt;%
+  <span style="color:#447fcf">arrange</span>(topic, -beta)
+</code></pre></div><div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">airbnb_top_terms %&gt;%
+  <span style="color:#447fcf">mutate</span>(term = <span style="color:#447fcf">reorder_within</span>(term, beta, topic)) %&gt;%
+  <span style="color:#447fcf">ggplot</span>(<span style="color:#447fcf">aes</span>(beta, term, fill = <span style="color:#447fcf">factor</span>(topic))) +
+  <span style="color:#447fcf">geom_col</span>(show.legend = <span style="color:#6ab825;font-weight:bold">FALSE</span>) +
+  <span style="color:#447fcf">facet_wrap</span>(~ topic, scales = <span style="color:#ed9d13">&#34;free&#34;</span>) +
+  <span style="color:#447fcf">scale_y_reordered</span>()
+</code></pre></div><p><img src="https://ourshinypet.netlify.app/blog/text/index_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<h3 id="geospatial-analysis">Geospatial Analysis</h3>
+<p>shp files are obtained from data.gov <a href="https://data.gov.sg/dataset/region-census-2010">region planning</a> and <a href="https://data.gov.sg/dataset/master-plan-2014-region-boundary-no-sea">region boundary without sea</a></p>
+<p><strong>Data Preparation</strong></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">region_data &lt;-data_comments %&gt;% 
+  <span style="color:#447fcf">group_by</span>(neighbourhood_group_cleansed) %&gt;% 
+  <span style="color:#447fcf">inner_join</span>(afinn) %&gt;% 
+  <span style="color:#447fcf">count</span>(word,value) %&gt;% 
+  <span style="color:#447fcf">mutate</span>(score=value*n) %&gt;%
+  <span style="color:#447fcf">group_by</span>(neighbourhood_group_cleansed) %&gt;% 
+  <span style="color:#447fcf">summarise</span>(mean_score=<span style="color:#447fcf">mean</span>(score))
+</code></pre></div><pre><code>## Joining, by = &quot;word&quot;
+</code></pre>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">region &lt;- <span style="color:#447fcf">datatable</span>(region_data)
+</code></pre></div><iframe seamless src="html/region.html" width="100%" height="500">
+</iframe>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">subregion_data &lt;-data_comments %&gt;% 
+  <span style="color:#447fcf">group_by</span>(neighbourhood_cleansed) %&gt;% 
+  <span style="color:#447fcf">inner_join</span>(afinn) %&gt;% 
+  <span style="color:#447fcf">count</span>(word,value) %&gt;% 
+  <span style="color:#447fcf">mutate</span>(score=value*n) %&gt;%
+  <span style="color:#447fcf">group_by</span>(neighbourhood_cleansed) %&gt;% 
+  <span style="color:#447fcf">summarise</span>(mean_score=<span style="color:#447fcf">mean</span>(score))
+</code></pre></div><pre><code>## Joining, by = &quot;word&quot;
+</code></pre>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">subregion &lt;- <span style="color:#447fcf">datatable</span>(subregion_data)
+</code></pre></div><iframe seamless src="html/subregion.html" width="100%" height="500">
+</iframe>
+<p>** Read Shape File**</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">mpsz &lt;- <span style="color:#447fcf">st_read</span>(dsn = <span style="color:#ed9d13">&#34;data/geospatial&#34;</span>, 
+                layer = <span style="color:#ed9d13">&#34;MP14_SUBZONE_NO_SEA_PL&#34;</span>)%&gt;%
+  <span style="color:#447fcf">group_by</span>(PLN_AREA_N) %&gt;%
+  <span style="color:#447fcf">summarise</span>(geometry = sf::<span style="color:#447fcf">st_union</span>(geometry))
+</code></pre></div><pre><code>## Reading layer `MP14_SUBZONE_NO_SEA_PL' from data source `E:\suyiinang\ourshinyPET\content\english\blog\text\data\geospatial' using driver `ESRI Shapefile'
+## Simple feature collection with 323 features and 15 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 2667.538 ymin: 15748.72 xmax: 56396.44 ymax: 50256.33
+## Projected CRS: SVY21
+</code></pre>
+<p><strong>Join Data</strong></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">airbnb_clean_region &lt;- <span style="color:#447fcf">right_join</span>(mpsz,region_data, <span style="color:#447fcf">c</span>(<span style="color:#ed9d13">&#34;PLN_AREA_N&#34;</span> = <span style="color:#ed9d13">&#34;neighbourhood_group_cleansed&#34;</span> ))
+
+airbnb_clean_subregion &lt;- <span style="color:#447fcf">right_join</span>(mpsz,subregion_data, <span style="color:#447fcf">c</span>(<span style="color:#ed9d13">&#34;PLN_AREA_N&#34;</span> = <span style="color:#ed9d13">&#34;neighbourhood_cleansed&#34;</span> ))
+</code></pre></div><p><strong>Create Map</strong></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">map &lt;- <span style="color:#447fcf">tm_shape</span>(mpsz)+
+  <span style="color:#447fcf">tm_fill</span>(<span style="color:#ed9d13">&#34;PLN_AREA_N&#34;</span>,title=<span style="color:#ed9d13">&#34;Region&#34;</span>,palette = <span style="color:#ed9d13">&#34;Reds&#34;</span>)+
+  <span style="color:#447fcf">tm_borders</span>()+
+  <span style="color:#447fcf">tm_layout</span>(legend.outside=<span style="color:#6ab825;font-weight:bold">TRUE</span>, legend.outside.position=<span style="color:#ed9d13">&#34;right&#34;</span>)
+<span style="color:#447fcf">tmap_mode</span>(<span style="color:#ed9d13">&#34;view&#34;</span>)
+</code></pre></div><pre><code>## tmap mode set to interactive viewing
+</code></pre>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">map &lt;- <span style="color:#447fcf">tmap_leaflet</span>(map) <span style="color:#999;font-style:italic">#blogdown unable to render interactive tmap</span>
+<span style="color:#447fcf">frameWidget</span>(map)
+</code></pre></div><div id="htmlwidget-1" style="width:100%;height:480px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"url":"index_files/figure-html//widgets/widget_unnamed-chunk-51.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+<p>To allow better visualisation, several factors were taken into consideration:</p>
+<ul>
+<li>
+<p>Colour
+RColourBrewer can be used to select a prefered colour palette that suits the theme of the topic. Sequential colour scheme e.g. from red to white by means of the comman brewer.pal can be used.</p>
+</li>
+<li>
+<p>Legend
+To change the default title argument, use tmfill(variable, title=“Region”).
+To reposition the legend, use tm_layout(legend.position=c(“right,”“bottom”)).To set the legend outside, tm_layout(legend.outside=TRUE, legend.outside.position=“right”) can be used.
+To set a title for the map, use tm_layout(“Title”).</p>
+</li>
+</ul>
+<h1 id="storyboard">Storyboard</h1>
+<p><em>Preparing the storyboard for the design of the sub-module.</em></p>
+<p>The shiny app submodule will have tabs for</p>
+<ul>
+<li>Data</li>
+<li>Token Frequency/Wordcloud</li>
+<li>Sentiment Analysis</li>
+<li>Topic Modeling</li>
+<li>Network Analysis</li>
+<li>Geospatial Analysis</li>
+</ul>
+<p><img src="tabs.png" width="906" /></p>
+<h2 id="install-shiny-packages">Install Shiny Packages</h2>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">shinypackages &lt;- <span style="color:#447fcf">c</span>(<span style="color:#ed9d13">&#34;shiny&#34;</span>,<span style="color:#ed9d13">&#34;shinydashboard&#34;</span>,<span style="color:#ed9d13">&#34;DT&#34;</span>)
+
+<span style="color:#447fcf">for </span>(p in shinypackages){
+  <span style="color:#447fcf">if </span>(!<span style="color:#447fcf">require</span>(p,character.only=T)){
+    <span style="color:#447fcf">install.packages</span>(p)
+  }
+  <span style="color:#447fcf">library</span>(p, character.only=T)
+}
+</code></pre></div><pre><code>## Loading required package: shinydashboard
+
+## 
+## Attaching package: 'shinydashboard'
+
+## The following object is masked from 'package:graphics':
+## 
+##     box
+</code></pre>
+<h2 id="buttons">Buttons</h2>
+<p>Various <a href="http://shinyapps.dreamrs.fr/shinyWidgets/">Widgets</a> are considered.</p>
+<h3 id="data-1">Data</h3>
+<p>To allow flexibility, shiny application would allow users to upload files for further visualisation. Steps to upload file:</p>
+<ol>
+<li>Select “Browse..”</li>
+<li>Locate and select merged CSV file to be uploaded</li>
+<li>After uploading, the variables will be autopopulated</li>
+</ol>
+<p>Variables to be shown in datatable can be chosen in 2 ways:</p>
+<ol>
+<li>Typing to search for a variable</li>
+<li>Scroll and select</li>
+</ol>
+<p><img src="datatable.png" width="903" /></p>
+<h3 id="token-frequency">Token Frequency</h3>
+<p>In the second tab, the token frequency would show the word cloud based on the following buttons:</p>
+<ol>
+<li>Number of words: The slider allows input of single values and ranges.</li>
+</ol>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#447fcf">sliderTextInput</span>(
+   inputId=<span style="color:#ed9d13">&#34;Id096&#34;</span>,
+   label=<span style="color:#ed9d13">&#34;Choose a range:&#34;</span>, 
+   choices=<span style="color:#447fcf">c</span>(<span style="color:#3677a9">1</span>, <span style="color:#3677a9">10</span>, <span style="color:#3677a9">100</span>, <span style="color:#3677a9">500</span>, <span style="color:#3677a9">1000</span>),
+   grid=<span style="color:#6ab825;font-weight:bold">TRUE</span>
+)
+</code></pre></div><ol start="2">
+<li>Stopwords: The text input button allows users to decide the stop words they want to add in.</li>
+</ol>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#447fcf">textInput</span>(
+   inputId=<span style="color:#ed9d13">&#34;Id096&#34;</span>,
+   label=<span style="color:#ed9d13">&#34;Input Text:&#34;</span>, 
+   grid=<span style="color:#6ab825;font-weight:bold">TRUE</span>
+)
+</code></pre></div><ol start="3">
+<li>Theme of Wordcloud: Wordcloud2 has functions for creating wordcloud theme.</li>
+</ol>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">tidy_wordcloud+<span style="color:#447fcf">WCtheme</span>(<span style="color:#3677a9">1</span>)
+tidy_wordcloud+<span style="color:#447fcf">WCtheme</span>(<span style="color:#3677a9">2</span>)
+tidy_wordcloud+<span style="color:#447fcf">WCtheme</span>(<span style="color:#3677a9">3</span>)
+tidy_wordcloud+<span style="color:#447fcf">WCtheme</span>(<span style="color:#3677a9">2</span>) + <span style="color:#447fcf">WCtheme</span>(<span style="color:#3677a9">3</span>)
+</code></pre></div><ol start="4">
+<li>N-gram (mono, bi, tri)</li>
+</ol>
+<p><img src="tokenfrequencydraft.png" alt=""></p>
+<p><img src="dictionarydraft.png" alt=""></p>
+<p><img src="topicmodellingdraft.png" alt=""></p>
+<p><img src="networkanalysisdraft.png" alt=""></p>
+<h1 id="annex">Annex</h1>
+<p>Kiatkawsin, K., Sutherland, I., &amp; Kim, J. (2020). A Comparative Automated Text Analysis of Airbnb Reviews in Hong Kong and Singapore Using Latent Dirichlet Allocation. Sustainability (Basel, Switzerland), 12(16), 6673–. <a href="https://doi.org/10.3390/su12166673">https://doi.org/10.3390/su12166673</a></p>
+<p>Zhang, J. (2019). What’s yours is mine: exploring customer voice on Airbnb using text-mining approaches. The Journal of Consumer Marketing, 36(5), 655–665. <a href="https://doi.org/10.1108/JCM-02-2018-2581">https://doi.org/10.1108/JCM-02-2018-2581</a></p>
+<hr>
+<p>Label vector created by freepik - <a href="http://www.freepik.com">www.freepik.com</a></p>
+
+        </div>
+        
+        <div class="mt-5">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  </div><!-- end Contact Area -->
+<footer id="footer" class="section-bg">
+	<div class="container">
+		<div class="row wow fadeInUp" data-wow-duration="500ms">
+			<div class="col-xl-12">
+
+				<!-- Footer Social Links -->
+				<div class="social-icon">
+					<ul class="list-inline">
+						
+						<li class="list-inline-item"><a href="https://github.com/suyiinang/ourshinypet"><i class="ti-github"></i></a></li>
+						
+					</ul>
+				</div>
+
+				<!-- copyright -->
+				<div class="copyright text-center">
+					<a href="https://ourshinypet.netlify.app/">
+						<img src="https://ourshinypet.netlify.app/images/logo.png" alt="Our Shiny PET" height="42" />
+					</a>
+					<br>
+					<p>Copyright © 2020 Designed by <a href="https://themefisher.com">Themefisher</a> &amp; Developed by <a href="https://gethugothemes.com">Gethugothemes</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<!-- /footer -->
+
+<!-- Google Map API -->
+
+
+<!-- JS Plugins -->
+
+<script src="https://ourshinypet.netlify.app/plugins/jquery/jquery.min.js"></script>
+
+<script src="https://ourshinypet.netlify.app/plugins/bootstrap/bootstrap.min.js"></script>
+
+<script src="https://ourshinypet.netlify.app/plugins/slick/slick.min.js"></script>
+
+<script src="https://ourshinypet.netlify.app/plugins/shuffle/shuffle.min.js"></script>
+
+<script src="https://ourshinypet.netlify.app/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+<script src="https://ourshinypet.netlify.app/plugins/lazy-load/lozad.min.js"></script>
+
+<script src="https://ourshinypet.netlify.app/plugins/google-map/map.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://ourshinypet.netlify.app/js/script.min.5db5ae6f88052715e823d7c52f3fa7a832565352b0f76c1d2cee2a3b564a0716fa9d51878a9965389c3d856f2d7c6330.js" integrity="sha384-XbWub4gFJxXoI9fFLz&#43;nqDJWU1Kw92wdLO4qO1ZKBxb6nVGHipllOJw9hW8tfGMw"></script>
+
+
+</body>
+
+</html>
