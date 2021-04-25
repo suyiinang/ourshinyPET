@@ -25,7 +25,7 @@ affiliation:
   - num: 1
     address: Singapore Management University  
 main_findings:
-  - "Making **Exploratory**, **Text** and **Predictive** Analytics Accessible to Everyone"
+  - "Making **Exploratory**, **Text** and **Predictive** Analytics <br /> Accessible to Everyone"
 main_textsize: "80px"
 main_fontfamily: "Roboto"
 # colour
@@ -150,7 +150,7 @@ include_graphics("images/afinnsentiment.png")
 - Topic Modeling help users interpret the topics that has been fit to a corpus of Airbnb data.   
 - The left panel shows a global view of topic model to show the prevalence of each topic, and how topics relate to each other.  
 - The right panel shows horizontal barchar where the length of the bars represent individual terms that are most useful in interpreting the selected topic. This enable users to understand the meaning behind each topic.  
-```{r, echo=FALSE, out.width="115%"}
+```{r, echo=FALSE, out.width="90%"}
 include_graphics("images/topicmodelling.png")
 ```
 
