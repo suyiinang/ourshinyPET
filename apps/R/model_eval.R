@@ -111,7 +111,7 @@ model_evalServer <- function(id, return_train, selected_var, targetvar, trigger_
         fluidPage(
           h4("Best model performance comparison"),
           plotlyOutput(NS(id, "Oplot_metric")) %>%
-            withSpinner(color="#FF5A5F"),
+            withSpinner(color="#FF5A5F", type=6),
           br(),
           fluidRow(
             column(4,

@@ -120,6 +120,11 @@ bigram_data_count <- data %>%
   #ungroup() %>% 
   count(word,sort=TRUE) %>% 
   dplyr::slice(-c(1))
+
+afinn <- get_sentiments("afinn") 
+bing <- get_sentiments("bing")
+nrc <- get_sentiments("nrc")
+
 region_data <-data_comments %>% 
   group_by(neighbourhood_group_cleansed) %>% 
   inner_join(afinn) %>% 
@@ -127,9 +132,6 @@ region_data <-data_comments %>%
   mutate(score=value*n) %>%
   group_by(neighbourhood_group_cleansed) %>% 
   summarise(mean_score=mean(score))
-afinn <- get_sentiments("afinn") 
-bing <- get_sentiments("bing")
-nrc <- get_sentiments("nrc")
 
 subzone <- readOGR(dsn = "data/spatial", layer="MP14_SUBZONE_WEB_PL")
 
@@ -218,8 +220,10 @@ ui <- dashboardPage(
                                    tags$a(href="https://ourshinypet.netlify.app/", 
                                           "website"),
                                    h4('User Guide'),
-                                   p('To optimise your user experience, please refer to our user guide.'),
-                                   actionButton("user_guide", "User Guide")
+                                   p('To optimise your user experience, please refer to our',
+                                     tags$a(href="https://ourshinypet.netlify.app/files/ShinyPET_userguide.pdf/",
+                                            em("User Guide"))
+                                     )
                                  )
                           ),
                           column(width = 6,
@@ -415,7 +419,9 @@ ui <- dashboardPage(
                                      actionButton(inputId = "GoButton", label = "Go",  icon("refresh"))
                            ),
                            mainPanel( 
-                             tabPanel("Topic Visualisation",visOutput('visChart')))
+                             tabPanel("Topic Visualisation",
+                                      withSpinner(visOutput('visChart'),type = 6, color = "#FF5A5F", size = 2))
+                             )
                          )
                 ),
                 tabPanel("Network analysis",
@@ -460,12 +466,6 @@ server <- function(input, output) {
   ###############
   # intro tab
   ##############
-  
-  observeEvent(input$user_guide, {
-    # Absolute path to a pdf
-    browseURL("https://ourshinypet.netlify.app/files/ShinyPET_userguide.pdf/")
-  })
-  
   
   ###############
   # observe tab
@@ -1276,6 +1276,7 @@ server <- function(input, output) {
         #arrange(desc(n))%>% 
         ggplot(aes(x=reorder(word,value),y=value,colour=sentiment,fill=sentiment))+
         geom_col()+
+        xlab("word")+
         coord_flip()
       
       
@@ -1389,9 +1390,7 @@ server <- function(input, output) {
   
   
   #### TOPIC MODEL #### 
-  
-  
-  
+
   Topic_Subset <- reactive({
     
     nTopics <- input$nTopics
@@ -1409,14 +1408,13 @@ server <- function(input, output) {
     lda_model$fit_transform(x = dtm, n_iter = 1000, 
                             convergence_tol = 0.001, n_check_convergence = 25, 
                             progressbar = FALSE)
-    
+
     return(lda_model) # 
   })
-  
+
   output$visChart <- renderVis({
     
-    input$GoButton
-    
+    # input$GoButton
     isolate({
       nterms    <- input$nTerms
       lda_model <- Topic_Subset()
@@ -1427,9 +1425,6 @@ server <- function(input, output) {
     readLines("./results/lda.json")
     
   })
-  
-  
-  
   
   ########### predictive server file ###########
   return_val1 <- data_splittingServer("ds", final_listings)

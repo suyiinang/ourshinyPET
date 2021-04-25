@@ -36,7 +36,7 @@ feat_selectUI <- function(id){
                  )
                  ),
                plotlyOutput(NS(id, "Oplot_corrmat"), height = "auto") %>%
-                 withSpinner(color="#FF5A5F")
+                 withSpinner(color="#FF5A5F", type=6)
                )
              ),
     tabPanel("Feature importance",
@@ -57,9 +57,9 @@ feat_selectUI <- function(id){
                br(),
                fixedRow(
                  column(6, plotlyOutput(NS(id, "Oplot_ftimp_rf"), height = 700) %>%
-                          withSpinner(color="#FF5A5F")),
+                          withSpinner(color="#FF5A5F", type=6)),
                  column(6, plotlyOutput(NS(id, "Oplot_ftimp_b"), height = 700) %>%
-                          withSpinner(color="#FF5A5F"))
+                          withSpinner(color="#FF5A5F", type=6))
                )
              )
              )

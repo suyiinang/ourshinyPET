@@ -50,7 +50,7 @@ model_trainUI <- function(id){
                           tabPanel("Validation",
                                    br(),
                                    plotlyOutput(NS(id, "Oplot_GLMpred")) %>%
-                                     withSpinner(color="#FF5A5F"),
+                                     withSpinner(color="#FF5A5F", type=6),
                                    br(),
                                    tableOutput(NS(id, "Otbl_finalGLM"))
                           )
@@ -70,7 +70,7 @@ model_trainUI <- function(id){
                                    fluidPage(
                                      br(),
                                      plotlyOutput(NS(id, "Oplot_DTpred")) %>%
-                                       withSpinner(color="#FF5A5F"),
+                                       withSpinner(color="#FF5A5F", type=6),
                                      br(),
                                      tableOutput(NS(id, "Otbl_finalDT"))
                                    ) 
@@ -91,7 +91,7 @@ model_trainUI <- function(id){
                                    fluidPage(
                                      br(),
                                      plotlyOutput(NS(id, "Oplot_RFpred")) %>%
-                                       withSpinner(color="#FF5A5F"),
+                                       withSpinner(color="#FF5A5F", type=6),
                                      br(),
                                      tableOutput(NS(id, "Otbl_finalRF"))
                                    ) 
@@ -112,7 +112,7 @@ model_trainUI <- function(id){
                                    fluidPage(
                                      br(),
                                      plotlyOutput(NS(id, "Oplot_BTpred")) %>%
-                                       withSpinner(color="#FF5A5F"),
+                                       withSpinner(color="#FF5A5F", type=6),
                                      br(),
                                      tableOutput(NS(id, "Otbl_finalBT"))
                                    ) 
@@ -286,7 +286,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
           h4("Model fit result"),
           (div(style='height:140px; overflow-x: scroll',
                tableOutput(NS(id, "Otraining_fit")) %>%
-                 withSpinner(color="#FF5A5F"))),
+                 withSpinner(color="#FF5A5F", type=6))),
           br(),
           h4("Coefficient estimate result"),
           fluidRow(
@@ -309,7 +309,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
             )
           ),
           plotlyOutput(NS(id, "Ocoeff_est")) %>%
-            withSpinner(color="#FF5A5F"),
+            withSpinner(color="#FF5A5F", type=6),
           br(),
           actionButton(NS(id, "btn_testLM"), "Validate model")
         )
@@ -398,11 +398,11 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     output$Oui_LMvalidate <- renderUI({
       fluidPage(
         plotlyOutput(NS(id, "OtestRsq")) %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         br(),
         h4("Model validation result"),
         tableOutput(NS(id, "Ovalidation_lm")) %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         br(),
         actionButton(NS(id, "btn_checkError"), "Check prediction error")
       )
@@ -460,7 +460,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
           )
         ),
         plotlyOutput(NS(id, "Opred_error"), height = 'auto') %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         dataTableOutput(NS(id, "Oerror_tbl"))
       )
     })
@@ -693,7 +693,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       fluidPage(
         h4("Hyper-parameter tuning result"),
         plotlyOutput(NS(id, "OplotGLMtrain"), width = 'auto') %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         br(),
         fluidRow(
           column(6,
@@ -755,7 +755,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
     output$Oui_GLMbest <- renderUI({
       fluidPage(
         plotlyOutput(NS(id, "Oplot_GLMcoeff")) %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         br(),
         actionButton(NS(id, "btn_testGLM"), "Validate model")
       )
@@ -904,7 +904,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       fluidPage(
         h4("Hyper-parameter tuning result"),
         plotlyOutput(NS(id, "OplotDTtrain")) %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         br(),
         fluidRow(
           column(6,
@@ -961,7 +961,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       fluidPage(
         h4("Variable importance"),
         plotOutput(NS(id, "Oplot_DTvip")) %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         br(),
         h4("Decision Tree visualisation"),
         visNetworkOutput(NS(id, "Oplot_DT_visN")),
@@ -1118,7 +1118,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       fluidPage(
         h4("Hyper-parameter tuning result"),
         plotlyOutput(NS(id, "OplotRFtrain")) %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         br(),
         fluidRow(
           column(6,
@@ -1175,7 +1175,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       fluidPage(
         h4("Variable importance"),
         plotOutput(NS(id, "Oplot_RFvip")) %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         br(),
         actionButton(NS(id, "btn_testRF"), "Validate model")
       )
@@ -1321,7 +1321,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       fluidPage(
         h4("Hyper-parameter tuning result"),
         plotlyOutput(NS(id, "OplotBTtrain")) %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         br(),
         fluidRow(
           column(6,
@@ -1378,7 +1378,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       fluidPage(
         h4("Variable importance"),
         plotOutput(NS(id, "Oplot_BTvip")) %>%
-          withSpinner(color="#FF5A5F"),
+          withSpinner(color="#FF5A5F", type=6),
         br(),
         actionButton(NS(id, "btn_testBT"), "Validate model")
       )

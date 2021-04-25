@@ -219,10 +219,10 @@ data_transformServer <- function(id, final_listings, return_val1, trigger_reset)
           h4("Train-test split"),
           (div(style='height: 500px; overflow-x: scroll',
                plotlyOutput(NS(id, "Oplot_traintest_dense"), width = "auto") %>%
-                 withSpinner(color="#FF5A5F")
+                 withSpinner(color="#FF5A5F", type=6)
           )),
           plotlyOutput(NS(id, "Oplot_traintest_bar"), width = 'auto') %>%
-            withSpinner(color="#FF5A5F"),
+            withSpinner(color="#FF5A5F", type=6),
           br(),
           pickerInput(
             inputId = NS(id, "Iproc_var"),
@@ -230,7 +230,7 @@ data_transformServer <- function(id, final_listings, return_val1, trigger_reset)
             choices = intersect_vars,
             options = list(size = 10)),
           plotlyOutput(NS(id, "Otransformed_plot"), width = 'auto') %>%
-            withSpinner(color="#FF5A5F")
+            withSpinner(color="#FF5A5F", type=6)
         )
       })
       
