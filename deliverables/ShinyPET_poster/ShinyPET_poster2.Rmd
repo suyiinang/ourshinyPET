@@ -13,7 +13,7 @@ author:
     email: kgalbindo.2019@mitb.smu.edu.sg
     main: true    
 main_findings:
-  - "Making **Exploratory**, **Text** and **Predictive** Analytics assessible to everyone"
+  - "Making **Exploratory**, **Text** and **Predictive** Analytics accessible to everyone"
 # colour
 primary_colour: '#FF5A60'
 secondary_colour: '#FF5A60'
@@ -141,11 +141,44 @@ include_graphics("images/bidirectionalnetwork.png")
 ```
 
 # Predictive
+**Data splitting**  
+- Proportion of training data are customisable with distribution plot between train-test set displayed for awareness of potential bias.  
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/datasplit.PNG")
+```
+
+**Feature selection**  
+- Interactive correlation matrix plot with options for different p-value and correlation method.  
+- Comparison of variable importance from Random Forest and Boruta method.  
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/featselect.PNG")
+```
+
+**Variable selection and transformation**  
+- Multi-input form for variable selection and transformation steps information display.  
+- Pre and post transformation data distribution plot for numerical variables.  
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/varselect.PNG")
+```
+
+**Model training and validation**  
+- A selection of model types to choose for developing predictive model with interactive plots for training and validation results.  
+- Prediction error evaluation by comparing training data distribution and high error cases, with top predictors selected by user.  
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/mdltrain.PNG")
+```
+
+**Model selection**  
+- Comparison of models based on performance metrics with option to select the best model for prediction.  
+- Using the selected model, predictors value can be adjusted to predict the target variable.  
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/mdlselect.PNG")
+```
 
 # Further work
 - Include a data load and wrangling function to accommodate different datasets.
 - Combine text and explore module with coordinated linked views for multi-dimensional exploration.
-- Predictive models currently limited to 5 models, additional models such as neural network can be included to provide user with wider model selection  
+- More predictive model such as neural network and classification workflow can be included to provide user with wider predictive analytics selection.  
 
 
 ```{r, include=FALSE}
