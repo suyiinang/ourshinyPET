@@ -95,7 +95,7 @@ RShiny Application}
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=1\linewidth]{images/intro} 
+{\centering \includegraphics[width=1\linewidth]{images/landing} 
 
 }
 
@@ -130,13 +130,88 @@ maximum entries (i.e 100) to be displayed.
 
 {[}3{]} Search data if necessary.
 
+\hypertarget{map}{%
+\subsubsection{2.2 Map}\label{map}}
+
+This tab allows user to explore the geographic patterns of Airbnb
+listings through 2 thematic maps - point symbol and choropleth.
+
+\hypertarget{point-symbol-map}{%
+\paragraph{2.2.1 Point Symbol map}\label{point-symbol-map}}
+
+Each point on the map is a listing. This allows user to see how
+distributed Airbnbs are throughout Singapore.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/map} 
+
+}
+
+\caption{Point Symbol Map}\label{fig:unnamed-chunk-3}
+\end{figure}
+
+{[}1{]} Select map type. Map will auto update upon selection.
+
+{[}2{]} Select between superhost and room type. This shows the listings
+by selected variables.
+
+{[}3{]} Zoom in and out the map.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/map1} 
+
+}
+
+\caption{View selected listings}\label{fig:unnamed-chunk-4}
+\end{figure}
+
+{[}4{]} User can check and uncheck to view selected listings.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/background} 
+
+}
+
+\caption{3 types of background colour}\label{fig:unnamed-chunk-5}
+\end{figure}
+
+{[}5{]} User can select between different background.
+
+\hypertarget{choropleth-map}{%
+\paragraph{2.2.1 Choropleth map}\label{choropleth-map}}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=1\linewidth]{images/choro} 
+
+}
+
+\caption{Choropleth map}\label{fig:unnamed-chunk-6}
+\end{figure}
+
+{[}1{]} Select between average price and average sentiment score. The
+average sentiment score is calculated based on the positive and negative
+of guests' reviews. For more details on sentiment of reviews, please fer
+to the Text module \textgreater{} Sentiment Analysis tab.
+
+{[}2{]} User can decide whether to view the data by checking /
+unchecking the `Show data table' box.
+
+{[}3{]} Hover over the area to see neighbourhood names.
+
+{[}4{]} User can sort table according to needs.
+
 \hypertarget{explore-and-confirm}{%
-\subsubsection{2.2 Explore and Confirm}\label{explore-and-confirm}}
+\subsubsection{2.3 Explore and Confirm}\label{explore-and-confirm}}
 
 This tab allows users to perform exploratory and confirmatory analysis.
 
 \hypertarget{types-of-chart-available}{%
-\paragraph{Types of chart available}\label{types-of-chart-available}}
+\paragraph{2.3.1 Types of chart
+available}\label{types-of-chart-available}}
 
 User can explore the dataset using different charts.
 
@@ -146,7 +221,7 @@ User can explore the dataset using different charts.
 
 }
 
-\caption{Explore and Confirm tab of Explore module}\label{fig:unnamed-chunk-3}
+\caption{Explore and Confirm tab of Explore module}\label{fig:unnamed-chunk-7}
 \end{figure}
 
 {[}1{]} There are 4 types of chart:
@@ -157,7 +232,7 @@ User can explore the dataset using different charts.
 
 }
 
-\caption{Four types of charts available}\label{fig:unnamed-chunk-4}
+\caption{Four types of charts available}\label{fig:unnamed-chunk-8}
 \end{figure}
 
 \begin{enumerate}
@@ -204,7 +279,7 @@ User can explore the dataset using different charts.
 chart type.
 
 \hypertarget{performing-exploratory-and-confirmatory-analysis}{%
-\paragraph{Performing exploratory and confirmatory
+\paragraph{2.3.2 Performing exploratory and confirmatory
 analysis}\label{performing-exploratory-and-confirmatory-analysis}}
 
 \begin{figure}[H]
@@ -213,7 +288,7 @@ analysis}\label{performing-exploratory-and-confirmatory-analysis}}
 
 }
 
-\caption{Explore and Confirm tab of Explore module}\label{fig:unnamed-chunk-5}
+\caption{Explore and Confirm tab of Explore module}\label{fig:unnamed-chunk-9}
 \end{figure}
 
 {[}1{]} Select chart type.
@@ -232,84 +307,146 @@ the null hypothesis and accept the alternative hypothesis.
 variable, and does not take colour and facet variables into
 consideration.
 
-{[}5{]} User can also hover over chart to view details.
-
-\hypertarget{map}{%
-\subsubsection{2.3 Map}\label{map}}
-
-This tab allows user to explore the geographic patterns of Airbnb
-listings through 2 thematic maps - point symbol and choropleth.
-
-\hypertarget{point-symbol-map}{%
-\paragraph{Point Symbol map}\label{point-symbol-map}}
-
-Each point on the map is a listing. This allows user to see how
-distributed Airbnbs are throughout Singapore.
+{[}5{]} The chart is interactive and users hover to select a single
+object in a plot, highlight selected records by clicking and unclicking
+legend, define a region and download the chart.
 
 \begin{figure}[H]
 
-{\centering \includegraphics[width=1\linewidth]{images/map} 
+{\centering \includegraphics[width=1\linewidth]{images/explore3} 
 
 }
 
-\caption{Point Symbol Map}\label{fig:unnamed-chunk-6}
+\caption{Interactive chart}\label{fig:unnamed-chunk-10}
 \end{figure}
-
-{[}1{]} Select map type. Map will auto update upon selection.
-
-{[}2{]} Select between superhost and room type. This shows the listings
-by selected variables.
-
-{[}3{]} Zoom in and out the map.
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=1\linewidth]{images/map1} 
-
-}
-
-\caption{View selected listings}\label{fig:unnamed-chunk-7}
-\end{figure}
-
-{[}4{]} User can check and uncheck to view selected listings.
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=1\linewidth]{images/background} 
-
-}
-
-\caption{3 types of background colour}\label{fig:unnamed-chunk-8}
-\end{figure}
-
-{[}5{]} User can select between different background.
-
-\hypertarget{choropleth-map}{%
-\paragraph{Choropleth map}\label{choropleth-map}}
-
-\begin{figure}[H]
-
-{\centering \includegraphics[width=1\linewidth]{images/choro} 
-
-}
-
-\caption{Choropleth map}\label{fig:unnamed-chunk-9}
-\end{figure}
-
-{[}1{]} Select between average price and average sentiment score. The
-average sentiment score is calculated based on the positive and negative
-of guests' reviews. For more details on sentiment of reviews, please fer
-to the Text module \textgreater{} Sentiment Analysis tab.
-
-{[}2{]} User can decide whether to view the data by checking /
-unchecking the `Show data table' box.
-
-{[}3{]} Hover over the area to see neighbourhood names.
-
-{[}4{]} User can sort table according to needs.
 
 \hypertarget{text}{%
 \subsection{3. Text}\label{text}}
+
+\hypertarget{word-cloud}{%
+\subsubsection{3.1 Word Cloud}\label{word-cloud}}
+
+There are two charts shown.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.95\linewidth]{images/wordcloud} 
+
+}
+
+\caption{Uni-gram}\label{fig:unnamed-chunk-11}
+\end{figure}
+
+{[}1{]} Word cloud.
+
+{[}2{]} Frequency Bar Chart.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.95\linewidth]{images/wordcloud2} 
+
+}
+
+\caption{Bi-gram}\label{fig:unnamed-chunk-12}
+\end{figure}
+
+{[}1{]} Select chart type - Unigram or Bigram.
+
+{[}2{]} Hover over each word to observe it frequency.
+
+{[}3{]} Scroll up/down to see the occurrence of words in a descending
+order.
+
+\hypertarget{sentiment-analysis}{%
+\subsubsection{3.2 Sentiment Analysis}\label{sentiment-analysis}}
+
+There are two charts shown.
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.95\linewidth]{images/sentimentchart} 
+
+}
+
+\caption{AFINN}\label{fig:unnamed-chunk-13}
+\end{figure}
+
+{[}1{]} Sentiment Polarity Cloud
+
+{[}2{]} Bar Chart/Radial Plot
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.95\linewidth]{images/bingchart} 
+
+}
+
+\caption{BING}\label{fig:unnamed-chunk-14}
+\end{figure}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.95\linewidth]{images/nrcchart} 
+
+}
+
+\caption{NRC}\label{fig:unnamed-chunk-15}
+\end{figure}
+
+{[}1{]} Select lexicon - AFINN, BING or NRC.
+
+{[}2{]} AFINN cloud word cloud with 5 different values in different
+colours and the related bar chart will show the value and frequency of
+occurrence of each word, in a descending order
+
+{[}3{]} BING cloud will show positive and negative sentiments in blue
+and red colour respectively with the related bar chart showing the value
+and frequency of occurrence of each word, in a descending order
+
+{[}4{]} NRC cloud will show words with 8 different emotions and 2
+sentiments. The radial plot illustrates the frequency of words
+appearing.
+
+\hypertarget{topic-modelling}{%
+\subsubsection{3.3 Topic Modelling}\label{topic-modelling}}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.95\linewidth]{images/topicmodelling} 
+
+}
+
+\caption{Topic Modelling}\label{fig:unnamed-chunk-16}
+\end{figure}
+
+{[}1{]} Slide number of topics to display, top terms per topic, then
+press ``Go''.
+
+{[}2{]} After the graph is plotted, type the topic.
+
+{[}3{]} Intertopic Distance Map will be shown.
+
+{[}4{]} Slide to adjust relevance metric.
+
+{[}5{]} Bar chart of top 20 most salient terms will be shown.
+
+{[}6{]} Brief explanation of relevancy and saliency are described in the
+footnote.
+
+\hypertarget{network-analysis}{%
+\subsubsection{3.4 Network Analysis}\label{network-analysis}}
+
+\begin{figure}[H]
+
+{\centering \includegraphics[width=0.95\linewidth]{images/network} 
+
+}
+
+\caption{Network Analysis}\label{fig:unnamed-chunk-17}
+\end{figure}
+
+{[}1{]} Pills button to allow user to observe bi directional or
+correlation network.
 
 \hypertarget{predictive}{%
 \subsection{4. Predictive}\label{predictive}}
@@ -331,7 +468,7 @@ The module starts with the tab which allows user to:
 
 }
 
-\caption{Data split tab of Predictive module}\label{fig:unnamed-chunk-10}
+\caption{Data split tab of Predictive module}\label{fig:unnamed-chunk-18}
 \end{figure}
 
 This will then create density plot for numerical variables {[}4{]} and
@@ -344,7 +481,7 @@ training and test set.
 
 }
 
-\caption{Train-test split distribution plot}\label{fig:unnamed-chunk-11}
+\caption{Train-test split distribution plot}\label{fig:unnamed-chunk-19}
 \end{figure}
 
 \hypertarget{feature-selection}{%
@@ -371,7 +508,7 @@ p-value
 
 }
 
-\caption{Correlation matrix tab of feature selection}\label{fig:unnamed-chunk-12}
+\caption{Correlation matrix tab of feature selection}\label{fig:unnamed-chunk-20}
 \end{figure}
 
 In the next section, user may decide to run the feature selection
@@ -385,7 +522,7 @@ methods will be displayed side by side for comparison.
 
 }
 
-\caption{Feature selection tab comparing 2 different methods}\label{fig:unnamed-chunk-13}
+\caption{Feature selection tab comparing 2 different methods}\label{fig:unnamed-chunk-21}
 \end{figure}
 
 \hypertarget{variables-and-recipe}{%
@@ -408,7 +545,7 @@ the next section.
 
 }
 
-\caption{Variable selection and data transformation tab}\label{fig:unnamed-chunk-14}
+\caption{Variable selection and data transformation tab}\label{fig:unnamed-chunk-22}
 \end{figure}
 
 In this section, user will be able to check the train-test split
@@ -420,7 +557,7 @@ distribution once again after variable selection.
 
 }
 
-\caption{Train-test split distribution after variable selection}\label{fig:unnamed-chunk-15}
+\caption{Train-test split distribution after variable selection}\label{fig:unnamed-chunk-23}
 \end{figure}
 
 The transformed numerical variables are also displayed for comparison,
@@ -432,7 +569,7 @@ with option to select variable of interest {[}5{]}.
 
 }
 
-\caption{Transformed variables before and after comparison}\label{fig:unnamed-chunk-16}
+\caption{Transformed variables before and after comparison}\label{fig:unnamed-chunk-24}
 \end{figure}
 
 \hypertarget{model-training}{%
@@ -462,7 +599,7 @@ button {[}2{]}.
 
 }
 
-\caption{Model information page and training}\label{fig:unnamed-chunk-17}
+\caption{Model information page and training}\label{fig:unnamed-chunk-25}
 \end{figure}
 
 \hypertarget{b.-training-other-models}{%
@@ -484,7 +621,7 @@ model training, user will be required to:
 
 }
 
-\caption{K-fold cross validation preparation}\label{fig:unnamed-chunk-18}
+\caption{K-fold cross validation preparation}\label{fig:unnamed-chunk-26}
 \end{figure}
 
 Once the CV training set is prepared, user can proceed to train the rest
@@ -498,7 +635,7 @@ training is completed.
 
 }
 
-\caption{Training in progress loading page}\label{fig:unnamed-chunk-19}
+\caption{Training in progress loading page}\label{fig:unnamed-chunk-27}
 \end{figure}
 
 \hypertarget{training-result}{%
@@ -522,7 +659,7 @@ clicking on the ``Validate model'' button {[}5{]}.
 
 }
 
-\caption{Training result page of linear model}\label{fig:unnamed-chunk-20}
+\caption{Training result page of linear model}\label{fig:unnamed-chunk-28}
 \end{figure}
 
 \hypertarget{b.-other-models}{%
@@ -549,7 +686,7 @@ based on selected metric.
 
 }
 
-\caption{Training result page for GLM}\label{fig:unnamed-chunk-21}
+\caption{Training result page for GLM}\label{fig:unnamed-chunk-29}
 \end{figure}
 
 Once best model is selected, different information will be displayed
@@ -562,7 +699,7 @@ be plotted and sorted according to the estimate value.
 
 }
 
-\caption{Coefficient estimate plot}\label{fig:unnamed-chunk-22}
+\caption{Coefficient estimate plot}\label{fig:unnamed-chunk-30}
 \end{figure}
 
 Tree based model will have variable importance score displayed, with
@@ -574,7 +711,7 @@ additional tree visualisation for decision tree model.
 
 }
 
-\caption{Variable importance and tree visualisation}\label{fig:unnamed-chunk-23}
+\caption{Variable importance and tree visualisation}\label{fig:unnamed-chunk-31}
 \end{figure}
 
 \hypertarget{validation-result}{%
@@ -590,7 +727,7 @@ performance is also provided below the plot {[}2{]}.
 
 }
 
-\caption{Model validation result page}\label{fig:unnamed-chunk-24}
+\caption{Model validation result page}\label{fig:unnamed-chunk-32}
 \end{figure}
 
 \hypertarget{prediction-error}{%
@@ -621,7 +758,7 @@ value are displayed in a table
 
 }
 
-\caption{Prediction error page for further exploration}\label{fig:unnamed-chunk-25}
+\caption{Prediction error page for further exploration}\label{fig:unnamed-chunk-33}
 \end{figure}
 
 \hypertarget{model-evaluation}{%
@@ -644,7 +781,7 @@ previously.
 
 }
 
-\caption{Model evaluation page}\label{fig:unnamed-chunk-26}
+\caption{Model evaluation page}\label{fig:unnamed-chunk-34}
 \end{figure}
 
 \hypertarget{performance}{%
@@ -665,7 +802,7 @@ will be used for prediction
 
 }
 
-\caption{Model performance comparison page}\label{fig:unnamed-chunk-27}
+\caption{Model performance comparison page}\label{fig:unnamed-chunk-35}
 \end{figure}
 
 \hypertarget{predict}{%
@@ -688,7 +825,7 @@ calculate response variable using the selected model
 
 }
 
-\caption{Prediction page with input variables and predicted value}\label{fig:unnamed-chunk-28}
+\caption{Prediction page with input variables and predicted value}\label{fig:unnamed-chunk-36}
 \end{figure}
 
 \end{document}

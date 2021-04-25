@@ -108,6 +108,38 @@ include_graphics("images/explore3.png")
 
 # Text
 
+**Token Frequency**
+- Word Cloud allows visualiastion of qualitative data by showing the frequency of appearance of a particular word in Airbnb reviews. 
+- Bar chart sorts the frequency of word in descending order. 
+- Unigram/Bigram allow user to understand reviews in various forms.
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/tokenfrequency.png")
+```
+
+**Sentiment Analysis**
+- Word Clouds are based on sentiments leixcons.
+- For AFINN, the mean score and frequency of words are shown in either positive (>0) or negative (<0).
+- For BING, the count of the words are shown.
+- FOR NRC, radial plot to show the tendency of sentiments is shown.
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/afinnsentiment.png")
+```
+
+**Topic Modelling**
+- Topic Modelling help users interpret the topics that has been fit to a corpus of Airbnb data. 
+- The left panel shows a global view of topic model to show the prevalence of each topic, and how topics relat to each other.
+- The right panel shows horizontal barchar where the length of the bars represent individual terms that are most useful in interpreting the selected topic. This enable users to understand the meaning behind each topic.
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/topicmodelling.png")
+```
+
+**Network Analysis**
+- Bidirectional network - Utilising the concept of nodes, edges and text,we can observe the connections between words. To make visualisation interpretable, only the top 100 words are shown.
+- Correlation Network -  Users can observe words that tend to co-occur within particular documents/topics even if they don't exist in the same sentence.
+```{r, echo=FALSE, out.width="100%"}
+include_graphics("images/bidirectionalnetwork.png")
+```
+
 # Predictive
 
 # Further work
