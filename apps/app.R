@@ -14,7 +14,7 @@ library(ggfittext)
 library(tidymodels)
 library(glmnet)
 library(ranger)
-library(xgboost)
+#library(xgboost)
 library(rpart)
 library(visNetwork)
 library(sparkline)
@@ -32,10 +32,10 @@ library(sf)
 library(tmap)
 library(wordcloud2)
 library(NLP)
-library(tm) # text mining
+library(tm) 
 library(stringr)
-library(SnowballC) # text stemming
-library(RColorBrewer) # Color Palettes
+library(SnowballC)
+library(RColorBrewer)
 library(topicmodels)
 library(tidytext)
 library(slam)
@@ -76,29 +76,12 @@ themes <- list('Gray' = theme_gray(),
                'Void' = theme_void(),
                'Test' = theme_test())
 
+data <- read_csv("data/data.csv")
 
-reviews <- read_csv("data/reviews.csv")%>% 
-  dplyr::select(listing_id,comments)
-listings <- read_csv("data/listings.csv")  %>% 
-  rename(listing_id=id) %>% 
-  dplyr::select(-c(listing_url, scrape_id, last_scraped, name, picture_url,host_url, host_about,host_thumbnail_url, host_picture_url, host_listings_count, host_verifications,calendar_updated,first_review,last_review,license,neighborhood_overview,description,host_total_listings_count,host_has_profile_pic,availability_30,availability_60,availability_90,availability_365,calculated_host_listings_count,calculated_host_listings_count_entire_homes,calculated_host_listings_count_private_rooms,calculated_host_listings_count_shared_rooms,reviews_per_month,minimum_nights,maximum_nights,minimum_minimum_nights,maximum_minimum_nights,minimum_maximum_nights,maximum_maximum_nights,number_of_reviews_ltm,number_of_reviews_l30d,minimum_nights_avg_ntm,maximum_nights_avg_ntm,calendar_last_scraped,has_availability,instant_bookable))
-data <- right_join(reviews,listings,by="listing_id")
-data$comments <- gsub("^[alpha:][:space:]'\"]", " ",data$comments) %>% 
-  tolower()
-data$comments <- gsub("[^a-zA-Z]", " ",data$comments)
-data$comments <- iconv(data$comments,to="UTF-8")
-data$comments <- gsub("min", "minute",data$comments)
-data$comments <- gsub("minutes", "minute",data$comments)
-data$comments <- gsub("mins", "minute",data$comments)
-data$comments <- gsub("minuteutes", "minute",data$comments)
-data$comments <- gsub("recommended", "recommend",data$comments)
-data$price <- str_remove(string=data$price,pattern='\\$') %>% 
-  as.numeric()
-data$host_response_rate <- gsub("%","",data$host_response_rate) 
-data$amenities <- gsub('\"', "", data$amenities, fixed = TRUE)
-data <- subset(data,host_location=="Singapore" | host_location=="Singapore, Singapore" | host_location=="SG")
 new_stopwords <- c("NA","michelle's","elizabeth","yuan","felix","anita","susan","eddie","eddie's","edwin","belinda","besan","nargis","antonio","sharm","tim","kathleen","stteven","jerome","freddy","eunice","eunice's","vivian","jerome's","mi's","freddy's","joey","tay","michelle","noor","anthony","tay's","carrie","jauhara","susan","karen","jenny","lena","leonard","kingsley","freda","jialin","matthew","fran","na","joey","swimminuteg","dick","cock","bitch","fran")
 all_stopwords <- c(new_stopwords,stop_words)
+
+
 data_comments <- data %>% 
   dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
   unnest_tokens(word,comments) %>% 
@@ -168,21 +151,6 @@ listing_summary <- right_join(subregion_data,listing_summary, c("neighbourhood_c
 
 airbnb_map <- right_join(mpsz2,listing_summary, c("PLN_AREA_N" = 'neighbourhood_cleansed'))
 
-corpus_review <- Corpus(VectorSource(as_tibble(data_comments$word)))
-review_tdm <- DocumentTermMatrix(corpus_review)
-airbnb_lda <- LDA(review_tdm, k = 10)
-airbnb_topics <- tidy(airbnb_lda, matrix = "beta")
-airbnb_top_terms <- airbnb_topics %>%
-  group_by(topic) %>%
-  top_n(10, beta) %>%
-  ungroup() %>%
-  arrange(topic, -beta)
-airbnb_top_terms %>%
-  mutate(term = reorder_within(term, beta, topic)) %>%
-  ggplot(aes(beta, term, fill = factor(topic))) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~ topic, scales = "free") +
-  scale_y_reordered()
 ########
 
 
