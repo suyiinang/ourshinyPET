@@ -45,6 +45,8 @@ library(ggraph)
 library(highcharter)
 library(wordcloud)
 library(widyr)
+library(LDAvis)
+library(text2vec)
 
 #########
 var_remove <- c("minimum_minimum_nights", "maximum_minimum_nights",
@@ -164,6 +166,21 @@ listing_summary <- right_join(subregion_data,listing_summary, c("neighbourhood_c
 
 airbnb_map <- right_join(mpsz2,listing_summary, c("PLN_AREA_N" = 'neighbourhood_cleansed'))
 
+corpus_review <- Corpus(VectorSource(as_tibble(data_comments$word)))
+review_tdm <- DocumentTermMatrix(corpus_review)
+airbnb_lda <- LDA(review_tdm, k = 10)
+airbnb_topics <- tidy(airbnb_lda, matrix = "beta")
+airbnb_top_terms <- airbnb_topics %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+airbnb_top_terms %>%
+  mutate(term = reorder_within(term, beta, topic)) %>%
+  ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  scale_y_reordered()
 ########
 
 
@@ -241,7 +258,7 @@ ui <- dashboardPage(
                          )
                          
                 ),
-                tabPanel("Explore and confirm",
+                tabPanel("Explore and Confirm",
                          fluidPage(
                            titlePanel("Explore variables"),
                            sidebarLayout(
@@ -351,7 +368,7 @@ ui <- dashboardPage(
                          fluidPage(
                            fluidRow(
                              column(6, id = "col_word_cloud",
-                                    box(width=12, height=550, solidHeader = F, title = strong("The Word Cloud"),
+                                    box(width=12, height=550, solidHeader = F, title = strong("Word Cloud"),
                                         radioButtons("word_cloud_gram",NULL, c("Uni-gram","Bi-gram"), selected = "Uni-gram", inline = T),
                                         #plotOutput("word_cloud_plot",height = "300px")
                                         wordcloud2Output("word_cloud_plot",height = "470px"))
@@ -370,21 +387,36 @@ ui <- dashboardPage(
                          fluidPage(
                            fluidRow(
                              column(6, id = "col_polarity_cloud",
-                                    box(width=12, height=550, solidHeader = F, title = strong("Polarity"),
+                                    box(width=12, height=550, solidHeader = F, title = strong("Polarity Cloud"),
                                         radioButtons("word_polarity_plot",NULL, c("AFINN","BING","NRC"), selected = "BING", inline = T),
                                         #plotOutput("word_cloud_plot",height = "300px")
                                         plotOutput("polarity_cloud_plot",height = "470px"))
                              ),
                              column(6, id = "col_polarity_freq",
-                                    box(width=12, height=550, solidHeader = F, title = strong("Word Frequency"),
+                                    box(width=12, height=550, solidHeader = F, title = strong("Sentiments"),
                                         plotOutput("polarity_freq_plot", height=500)
                                     )
                              )
                            )
                          )
                 ),
-                tabPanel("Topic modeling",
-                         #put ui here
+                tabPanel("Topic Modelling",
+                         fluidPage(
+                           
+                           headerPanel(""),
+                           titlePanel(p(h2("Topic Modelling"))),
+                           
+                           #sidebarPanel(
+                           wellPanel(tags$style(type="text/css", '#leftPanel { width:200px; float:left;}'), style = "background: white",
+                                     id = "leftPanel",
+                                     sliderInput("nTopics", "Number of topics to display", min = 1, max = 20, value = 10, step=5),
+                                     sliderInput("nTerms", "Top terms per topic", min = 10, max = 50, value = 20, step=5),
+                                     tags$hr(),
+                                     actionButton(inputId = "GoButton", label = "Go",  icon("refresh"))
+                           ),
+                           mainPanel( 
+                             tabPanel("Topic Visualisation",visOutput('visChart')))
+                         )
                 ),
                 tabPanel("Network analysis",
                          fluidRow(
@@ -1115,12 +1147,12 @@ server <- function(input, output) {
   
   output$word_freq_plot  <- renderHighchart(
     if(input$word_cloud_gram == "Uni-gram"){
-    hc <- highchart() %>%
-      #hc_title(text = "Incremental Revenue and Total Cost by Offer Group") %>%
-      hc_chart(type = "bar") %>%
-      #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
-      hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
-                 formatter = JS(paste0("function() {
+      hc <- highchart() %>%
+        #hc_title(text = "Incremental Revenue and Total Cost by Offer Group") %>%
+        hc_chart(type = "bar") %>%
+        #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
+        hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
+                   formatter = JS(paste0("function() {
                                        //console.log(this);
                                        //console.log(this.point.y);
                                        var result='';
@@ -1128,21 +1160,21 @@ server <- function(input, output) {
                                        +Math.round(this.point.y.toFixed(0)/100)/10 + 'K' + '</b>';
                                        return result;
       }"))) %>%
-      hc_xAxis(categories = data_count[1:100,]$word,
-               #labels = list(rotation = 0, step=1), title =list(text="Brand")
-               labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
-      )    %>%
-      hc_add_series(name="Word", data = data_count[1:100,]$frequency, type ="column",
-                    #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
-                    color = "#FF5A5F", showInLegend= F)
-    #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
-  } else if(input$word_cloud_gram == "Bi-gram"){
-    hc <- highchart() %>%
-      #hc_title(text = "Incremental Revenue and Total Cost by Offer Group") %>%
-      hc_chart(type = "bar") %>%
-      #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
-      hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
-                 formatter = JS(paste0("function() {
+        hc_xAxis(categories = data_count[1:100,]$word,
+                 #labels = list(rotation = 0, step=1), title =list(text="Brand")
+                 labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
+        )    %>%
+        hc_add_series(name="Word", data = data_count[1:100,]$frequency, type ="column",
+                      #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
+                      color = "#FF5A5F", showInLegend= F)
+      #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
+    } else if(input$word_cloud_gram == "Bi-gram"){
+      hc <- highchart() %>%
+        #hc_title(text = "Incremental Revenue and Total Cost by Offer Group") %>%
+        hc_chart(type = "bar") %>%
+        #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
+        hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
+                   formatter = JS(paste0("function() {
                                        //console.log(this);
                                        //console.log(this.point.y);
                                        var result='';
@@ -1150,16 +1182,16 @@ server <- function(input, output) {
                                        +Math.round(this.point.y.toFixed(0)/100)/10 + 'K' + '</b>';
                                        return result;
       }"))) %>%
-      hc_xAxis(categories = bigram_data_count[1:100,]$word,
-               #labels = list(rotation = 0, step=1), title =list(text="Brand")
-               labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
-      )    %>%
-      hc_add_series(name="Word", data = bigram_data_count[1:100,]$n, type ="column",
-                    #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
-                    color = "#FF5A5F", showInLegend= F)
-    #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
-    
-  })
+        hc_xAxis(categories = bigram_data_count[1:100,]$word,
+                 #labels = list(rotation = 0, step=1), title =list(text="Brand")
+                 labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
+        )    %>%
+        hc_add_series(name="Word", data = bigram_data_count[1:100,]$n, type ="column",
+                      #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
+                      color = "#FF5A5F", showInLegend= F)
+      #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
+      
+    })
   
   
   #### Wordcloud plot ####
@@ -1195,7 +1227,7 @@ server <- function(input, output) {
   output$polarity_cloud_plot <- renderPlot({
     
     if(input$word_polarity_plot == "AFINN"){
-
+      
       
       set.seed(1234)
       afinn <- get_sentiments("afinn") 
@@ -1208,7 +1240,7 @@ server <- function(input, output) {
       
     } else if (input$word_polarity_plot == "BING"){
       
-    
+      
       data_comments %>% 
         inner_join(bing) %>% 
         count(word,sentiment,sort=TRUE) %>% 
@@ -1217,7 +1249,7 @@ server <- function(input, output) {
       
     }
     else if (input$word_polarity_plot == "NRC"){
-
+      
       data_comments %>% 
         inner_join(nrc) %>% 
         count(word,sentiment,sort=TRUE) %>% 
@@ -1234,7 +1266,7 @@ server <- function(input, output) {
     if(input$word_polarity_plot == "AFINN"){
       
       
-    data_comments %>% 
+      data_comments %>% 
         #group_by(listing_id) %>% 
         inner_join(afinn) %>% 
         count(word,value) %>% 
@@ -1243,12 +1275,12 @@ server <- function(input, output) {
         mutate(word=reorder(word,n)) %>% 
         #arrange(desc(n))%>% 
         ggplot(aes(x=reorder(word,value),y=value,colour=sentiment,fill=sentiment))+
-      geom_col()+
-      coord_flip()
+        geom_col()+
+        coord_flip()
       
-
+      
     } else if (input$word_polarity_plot == "BING"){
-
+      
       data_comments %>% 
         inner_join(bing) %>% 
         count(word,sentiment) %>% 
@@ -1257,44 +1289,44 @@ server <- function(input, output) {
         mutate(word=reorder(word,n))%>% 
         arrange(desc(n))%>% 
         ggplot(aes(word,n,fill=sentiment))+
-      geom_col()+
-      coord_flip()
+        geom_col()+
+        coord_flip()
       
     }
-  else if (input$word_polarity_plot == "NRC"){
-    
-    nrc_count <- data_comments %>% 
-      inner_join(nrc) %>% 
-      count(word,sentiment,sort=TRUE) %>% 
-      filter(n>1500) %>% 
-      mutate(n=ifelse(sentiment=="negative",-n,n))%>% 
-      mutate(word=reorder(word,n)) %>% 
-      arrange(desc(n))
-    #%>% 
+    else if (input$word_polarity_plot == "NRC"){
+      
+      nrc_count <- data_comments %>% 
+        inner_join(nrc) %>% 
+        count(word,sentiment,sort=TRUE) %>% 
+        filter(n>1500) %>% 
+        mutate(n=ifelse(sentiment=="negative",-n,n))%>% 
+        mutate(word=reorder(word,n)) %>% 
+        arrange(desc(n))
+      #%>% 
       #ggplot(aes(word,n))+
       #facet_grid(~sentiment)+
       #geom_col()+
       #coord_flip()
-    
-    se <- function(x) sqrt(var(x)/length(x)) 
-    set.seed(9876) 
-    
-    ggplot(nrc_count, aes(sentiment, n, fill = sentiment)) +
-      geom_bar(width = 1, stat = "identity", color = "white") +
-      geom_errorbar(aes(ymin = n - se(nrc_count$n), 
-                        ymax = n + se(nrc_count$n), 
-                        color = sentiment), 
-                    width = .2) + 
-      scale_y_continuous(breaks = 0:nlevels(nrc_count$sentiment)) +
-      theme_minimal()+
-      theme(axis.ticks = element_blank(),
-            axis.text = element_blank(),
-            axis.title = element_blank(),
-            axis.line = element_blank()) +
-      coord_polar() 
-    
-
-  })
+      
+      se <- function(x) sqrt(var(x)/length(x)) 
+      set.seed(9876) 
+      
+      ggplot(nrc_count, aes(sentiment, n, fill = sentiment)) +
+        geom_bar(width = 1, stat = "identity", color = "white") +
+        geom_errorbar(aes(ymin = n - se(nrc_count$n), 
+                          ymax = n + se(nrc_count$n), 
+                          color = sentiment), 
+                      width = .2) + 
+        scale_y_continuous(breaks = 0:nlevels(nrc_count$sentiment)) +
+        theme_minimal()+
+        theme(axis.ticks = element_blank(),
+              axis.text = element_blank(),
+              axis.title = element_blank(),
+              axis.line = element_blank()) +
+        coord_polar() 
+      
+      
+    })
   
   ####  bigram_graph ####
   
@@ -1355,22 +1387,46 @@ server <- function(input, output) {
     
   })
   
-  #### SPATIAL PLOT ####
   
-  output$chart <- renderHighchart({
-    highchart(type = "map") %>% 
-      hc_add_series_map(data=mpsz_nosea, df=region_data(),value = "PLN_AREA_N", joinBy = "mean_score") %>% 
-      hc_colorAxis(stops = color_stops()) %>% 
-      hc_tooltip(useHTML=TRUE,headerFormat='',pointFormat = paste0(subregion_data$mean_score,'  {point.neighbourhood_cleansed} Sales : {point.mean_score} ')) %>% 
-      #hc_title(text = 'Global Sales') %>% 
-      #hc_subtitle(text = paste0('Year: ',input$yearid)) %>% 
-      hc_exporting(enabled = TRUE,filename = 'custom')
-  })   
+  #### TOPIC MODEL #### 
   
   
   
+  Topic_Subset <- reactive({
+    
+    nTopics <- input$nTopics
+    
+    # topic model using text2vec package
+    tokens = data_comments$word %>% 
+      word_tokenizer
+    
+    it = itoken(tokens, progressbar = FALSE)
+    v = create_vocabulary(it,stopwords=tm::stopwords("en")) 
+    vectorizer = vocab_vectorizer(v)
+    dtm = create_dtm(it, vectorizer, type = "dgTMatrix")
+    
+    lda_model = text2vec::LDA$new(n_topics = nTopics, doc_topic_prior = 0.1, topic_word_prior = 0.01)
+    lda_model$fit_transform(x = dtm, n_iter = 1000, 
+                            convergence_tol = 0.001, n_check_convergence = 25, 
+                            progressbar = FALSE)
+    
+    return(lda_model) # 
+  })
   
-  
+  output$visChart <- renderVis({
+    
+    input$GoButton
+    
+    isolate({
+      nterms    <- input$nTerms
+      lda_model <- Topic_Subset()
+    })
+    
+    lda_model$plot(out.dir = "./results", R = nterms, open.browser = FALSE)
+    
+    readLines("./results/lda.json")
+    
+  })
   
   
   
