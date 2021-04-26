@@ -1,0 +1,13 @@
+name: ShinyPET
+title: ShinyPET
+username:
+account: suyiinang
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4029656
+bundleId: 4518196
+url: https://suyiinang.shinyapps.io/ShinyPET/
+when: 1619396355.86994
+lastSyncTime: 1619396355.86994
+asMultiple: FALSE
+asStatic: FALSE

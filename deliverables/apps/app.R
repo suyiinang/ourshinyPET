@@ -14,7 +14,7 @@ library(ggfittext)
 library(tidymodels)
 library(glmnet)
 library(ranger)
-library(xgboost)
+#library(xgboost)
 library(rpart)
 library(visNetwork)
 library(sparkline)
@@ -32,10 +32,10 @@ library(sf)
 library(tmap)
 library(wordcloud2)
 library(NLP)
-library(tm) # text mining
+library(tm) 
 library(stringr)
-library(SnowballC) # text stemming
-library(RColorBrewer) # Color Palettes
+library(SnowballC)
+library(RColorBrewer)
 library(topicmodels)
 library(tidytext)
 library(slam)
@@ -76,29 +76,12 @@ themes <- list('Gray' = theme_gray(),
                'Void' = theme_void(),
                'Test' = theme_test())
 
+data <- read_csv("data/data.csv")
 
-reviews <- read_csv("data/reviews.csv")%>% 
-  dplyr::select(listing_id,comments)
-listings <- read_csv("data/listings.csv")  %>% 
-  rename(listing_id=id) %>% 
-  dplyr::select(-c(listing_url, scrape_id, last_scraped, name, picture_url,host_url, host_about,host_thumbnail_url, host_picture_url, host_listings_count, host_verifications,calendar_updated,first_review,last_review,license,neighborhood_overview,description,host_total_listings_count,host_has_profile_pic,availability_30,availability_60,availability_90,availability_365,calculated_host_listings_count,calculated_host_listings_count_entire_homes,calculated_host_listings_count_private_rooms,calculated_host_listings_count_shared_rooms,reviews_per_month,minimum_nights,maximum_nights,minimum_minimum_nights,maximum_minimum_nights,minimum_maximum_nights,maximum_maximum_nights,number_of_reviews_ltm,number_of_reviews_l30d,minimum_nights_avg_ntm,maximum_nights_avg_ntm,calendar_last_scraped,has_availability,instant_bookable))
-data <- right_join(reviews,listings,by="listing_id")
-data$comments <- gsub("^[alpha:][:space:]'\"]", " ",data$comments) %>% 
-  tolower()
-data$comments <- gsub("[^a-zA-Z]", " ",data$comments)
-data$comments <- iconv(data$comments,to="UTF-8")
-data$comments <- gsub("min", "minute",data$comments)
-data$comments <- gsub("minutes", "minute",data$comments)
-data$comments <- gsub("mins", "minute",data$comments)
-data$comments <- gsub("minuteutes", "minute",data$comments)
-data$comments <- gsub("recommended", "recommend",data$comments)
-data$price <- str_remove(string=data$price,pattern='\\$') %>% 
-  as.numeric()
-data$host_response_rate <- gsub("%","",data$host_response_rate) 
-data$amenities <- gsub('\"', "", data$amenities, fixed = TRUE)
-data <- subset(data,host_location=="Singapore" | host_location=="Singapore, Singapore" | host_location=="SG")
 new_stopwords <- c("NA","michelle's","elizabeth","yuan","felix","anita","susan","eddie","eddie's","edwin","belinda","besan","nargis","antonio","sharm","tim","kathleen","stteven","jerome","freddy","eunice","eunice's","vivian","jerome's","mi's","freddy's","joey","tay","michelle","noor","anthony","tay's","carrie","jauhara","susan","karen","jenny","lena","leonard","kingsley","freda","jialin","matthew","fran","na","joey","swimminuteg","dick","cock","bitch","fran")
 all_stopwords <- c(new_stopwords,stop_words)
+
+
 data_comments <- data %>% 
   dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
   unnest_tokens(word,comments) %>% 
@@ -168,21 +151,6 @@ listing_summary <- right_join(subregion_data,listing_summary, c("neighbourhood_c
 
 airbnb_map <- right_join(mpsz2,listing_summary, c("PLN_AREA_N" = 'neighbourhood_cleansed'))
 
-corpus_review <- Corpus(VectorSource(as_tibble(data_comments$word)))
-review_tdm <- DocumentTermMatrix(corpus_review)
-airbnb_lda <- LDA(review_tdm, k = 10)
-airbnb_topics <- tidy(airbnb_lda, matrix = "beta")
-airbnb_top_terms <- airbnb_topics %>%
-  group_by(topic) %>%
-  top_n(10, beta) %>%
-  ungroup() %>%
-  arrange(topic, -beta)
-airbnb_top_terms %>%
-  mutate(term = reorder_within(term, beta, topic)) %>%
-  ggplot(aes(beta, term, fill = factor(topic))) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~ topic, scales = "free") +
-  scale_y_reordered()
 ########
 
 
@@ -222,8 +190,8 @@ ui <- dashboardPage(
                                    h4('User Guide'),
                                    p('To optimise your user experience, please refer to our',
                                      tags$a(href="https://ourshinypet.netlify.app/files/ShinyPET_userguide.pdf/",
-                                            em("User Guide"))
-                                     )
+                                            em("User Guide"), target = "_blank")
+                                   )
                                  )
                           ),
                           column(width = 6,
@@ -404,26 +372,26 @@ ui <- dashboardPage(
                            )
                          )
                 ),
-                tabPanel("Topic Modelling",
-                         fluidPage(
+                #tabPanel("Topic Modelling",
+                         #fluidPage(
                            
-                           headerPanel(""),
-                           titlePanel(p(h2("Topic Modelling"))),
+                           #headerPanel(""),
+                           #titlePanel(p(h2("Topic Modelling"))),
                            
                            #sidebarPanel(
-                           wellPanel(tags$style(type="text/css", '#leftPanel { width:200px; float:left;}'), style = "background: white",
-                                     id = "leftPanel",
-                                     sliderInput("nTopics", "Number of topics to display", min = 1, max = 20, value = 10, step=5),
-                                     sliderInput("nTerms", "Top terms per topic", min = 10, max = 50, value = 20, step=5),
-                                     tags$hr(),
-                                     actionButton(inputId = "GoButton", label = "Go",  icon("refresh"))
-                           ),
-                           mainPanel( 
-                             tabPanel("Topic Visualisation",
-                                      withSpinner(visOutput('visChart'),type = 6, color = "#FF5A5F", size = 2))
-                             )
-                         )
-                ),
+                           #wellPanel(tags$style(type="text/css", '#leftPanel { width:200px; float:left;}'), style = "background: white",
+                                     #id = "leftPanel",
+                                     #sliderInput("nTopics", "Number of topics to display", min = 1, max = 20, value = 10, step=5),
+                                     #sliderInput("nTerms", "Top terms per topic", min = 10, max = 50, value = 20, step=5),
+                                     #tags$hr(),
+                                     #actionButton(inputId = "GoButton", label = "Go",  icon("refresh"))
+                          # ),
+                           #mainPanel( 
+                            # tabPanel("Topic Visualisation",
+                             #         withSpinner(visOutput('visChart'),type = 6, color = "#FF5A5F", size = 2))
+                           #)
+                         #)
+                #),
                 tabPanel("Network analysis",
                          fluidRow(
                            box(width=12, height=500, solidHeader = F,
@@ -1016,125 +984,133 @@ server <- function(input, output) {
   
   output$leaf_map <- renderLeaflet({
     
-    superhost <- leaflet(airbnb_sf) %>%
-      addTiles() %>%
-      addProviderTiles('OneMapSG.Original', group = 'Original') %>%
-      addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
-      addProviderTiles('OneMapSG.Night', group = 'Night') %>%
-      addCircleMarkers(
-        data = airbnb[airbnb$host_is_superhost == 'TRUE',],
-        lng = ~longitude,
-        lat = ~latitude,
-        color = '#FF5A5F',
-        radius = 2,
-        stroke = FALSE,
-        fillOpacity = 0.75,
-        group = 'Superhost'
-      ) %>%
-      addCircleMarkers(
-        data = airbnb[airbnb$host_is_superhost == 'FALSE',],
-        lng = ~longitude,
-        lat = ~latitude,
-        color = '#00A699',
-        radius = 2,
-        stroke = FALSE,
-        fillOpacity = 0.5,
-        group = 'Regular_host'
-      ) %>%
-      addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
-                       overlayGroups = c('Superhost','Regular_host'),
-                       options = layersControlOptions(collapsed = FALSE))
-    
-    rooms <- leaflet(airbnb_sf) %>%
-      addTiles() %>%
-      addProviderTiles('OneMapSG.Original', group = 'Original') %>%
-      addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
-      addProviderTiles('OneMapSG.Night', group = 'Night') %>%
-      addCircleMarkers(
-        data = airbnb[airbnb$room_type == 'Entire home/apt',],
-        lng = ~longitude,
-        lat = ~latitude,
-        color = '#FF5A5F',
-        radius = 2,
-        stroke = FALSE,
-        fillOpacity = 0.75,
-        group = 'Entire home'
-      ) %>%
-      addCircleMarkers(
-        data = airbnb[airbnb$room_type == 'Hotel room',],
-        lng = ~longitude,
-        lat = ~latitude,
-        color = '#00A699',
-        radius = 2,
-        stroke = FALSE,
-        fillOpacity = 0.75,
-        group = 'Hotel room'
-      ) %>%
-      addCircleMarkers(
-        data = airbnb[airbnb$room_type == 'Private room',],
-        lng = ~longitude,
-        lat = ~latitude,
-        color = '#3182bd',
-        radius = 2,
-        stroke = FALSE,
-        fillOpacity = 0.75,
-        group = 'Private room'
-      ) %>%
-      addCircleMarkers(
-        data = airbnb[airbnb$room_type == 'Shared room',],
-        lng = ~longitude,
-        lat = ~latitude,
-        color = '#756bb1',
-        radius = 2,
-        stroke = FALSE,
-        fillOpacity = 0.75,
-        group = 'Shared room'
-      ) %>%  
-      addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
-                       overlayGroups = c('Entire home','Hotel room', 'Private room','Shared room'),
-                       options = layersControlOptions(collapsed = FALSE))
-    
-    
-    avg_price <- tm_shape(mpsz2)+
-      tm_polygons() +
-      tm_shape(airbnb_map) +
-      tm_fill('avg_price_pp',
-              n = 6,
-              style = 'quantile',
-              palette = 'Reds')+
-      tm_borders(lwd = 0.5, alpha = 1)
-    
-    
-    cho_map <- tmap_leaflet(avg_price) %>%
-      addTiles() %>%
-      addProviderTiles('OneMapSG.Original', group = 'Original') %>%
-      addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
-      addProviderTiles('OneMapSG.Night', group = 'Night') %>%
-      addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
-                       options = layersControlOptions(collapsed = FALSE))
-    
-    sent_map <- tm_shape(mpsz2)+
-      tm_polygons() +
-      tm_shape(airbnb_map) +
-      tm_fill('avg_sentiment_score',
-              n = 6,
-              style = 'pretty',
-              palette = 'Reds')+
-      tm_borders(lwd = 0.5, alpha = 1) 
-    
-    sent_cho_map <- tmap_leaflet(sent_map) %>%
-      addTiles() %>%
-      addProviderTiles('OneMapSG.Original', group = 'Original') %>%
-      addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
-      addProviderTiles('OneMapSG.Night', group = 'Night') %>%
-      addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
-                       options = layersControlOptions(collapsed = FALSE))
-    
-    
-    if(input$filter_point == 'avg_price'){cho_map}
-    else if(input$filter_point == 'avg_sentiment_score'){sent_cho_map}
-    else if(input$filter_point == 'superhost'){superhost}
-    else if (input$filter_point == 'room_type') {rooms}
+    if(input$filter_point == 'avg_price'){
+      
+      avg_price <- tm_shape(mpsz2)+
+        tm_polygons() +
+        tm_shape(airbnb_map) +
+        tm_fill('avg_price_pp',
+                n = 6,
+                style = 'quantile',
+                palette = 'Reds')+
+        tm_borders(lwd = 0.5, alpha = 1)
+      
+      price_map <- tmap_leaflet(avg_price) %>%
+        addTiles() %>%
+        addProviderTiles('OneMapSG.Original', group = 'Original') %>%
+        addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
+        addProviderTiles('OneMapSG.Night', group = 'Night') %>%
+        addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
+                         options = layersControlOptions(collapsed = FALSE))
+      price_map$elementId <-NULL
+      price_map
+    }
+    else if(input$filter_point == 'avg_sentiment_score'){
+      
+      sent_map <- tm_shape(mpsz2)+
+        tm_polygons() +
+        tm_shape(airbnb_map) +
+        tm_fill('avg_sentiment_score',
+                n = 6,
+                style = 'pretty',
+                palette = 'Reds')+
+        tm_borders(lwd = 0.5, alpha = 1) 
+      
+      cho_sent <- tmap_leaflet(sent_map) %>%
+        addTiles() %>%
+        addProviderTiles('OneMapSG.Original', group = 'Original') %>%
+        addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
+        addProviderTiles('OneMapSG.Night', group = 'Night') %>%
+        addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
+                         options = layersControlOptions(collapsed = FALSE))
+      cho_sent$elementId <- NULL
+      cho_sent
+    }
+    else if(input$filter_point == 'superhost'){
+      superhost <- leaflet(airbnb_sf) %>%
+        addTiles() %>%
+        addProviderTiles('OneMapSG.Original', group = 'Original') %>%
+        addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
+        addProviderTiles('OneMapSG.Night', group = 'Night') %>%
+        addCircleMarkers(
+          data = airbnb[airbnb$host_is_superhost == 'TRUE',],
+          lng = ~longitude,
+          lat = ~latitude,
+          color = '#FF5A5F',
+          radius = 2,
+          stroke = FALSE,
+          fillOpacity = 0.75,
+          group = 'Superhost'
+        ) %>%
+        addCircleMarkers(
+          data = airbnb[airbnb$host_is_superhost == 'FALSE',],
+          lng = ~longitude,
+          lat = ~latitude,
+          color = '#00A699',
+          radius = 2,
+          stroke = FALSE,
+          fillOpacity = 0.5,
+          group = 'Regular_host'
+        ) %>%
+        addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
+                         overlayGroups = c('Superhost','Regular_host'),
+                         options = layersControlOptions(collapsed = FALSE))
+      
+      superhost$elementId <- NULL
+      superhost
+    }
+    else if (input$filter_point == 'room_type') {
+      rooms <- leaflet(airbnb_sf) %>%
+        addTiles() %>%
+        addProviderTiles('OneMapSG.Original', group = 'Original') %>%
+        addProviderTiles('OneMapSG.Grey', group = 'Grey') %>%
+        addProviderTiles('OneMapSG.Night', group = 'Night') %>%
+        addCircleMarkers(
+          data = airbnb[airbnb$room_type == 'Entire home/apt',],
+          lng = ~longitude,
+          lat = ~latitude,
+          color = '#FF5A5F',
+          radius = 2,
+          stroke = FALSE,
+          fillOpacity = 0.75,
+          group = 'Entire home'
+        ) %>%
+        addCircleMarkers(
+          data = airbnb[airbnb$room_type == 'Hotel room',],
+          lng = ~longitude,
+          lat = ~latitude,
+          color = '#00A699',
+          radius = 2,
+          stroke = FALSE,
+          fillOpacity = 0.75,
+          group = 'Hotel room'
+        ) %>%
+        addCircleMarkers(
+          data = airbnb[airbnb$room_type == 'Private room',],
+          lng = ~longitude,
+          lat = ~latitude,
+          color = '#3182bd',
+          radius = 2,
+          stroke = FALSE,
+          fillOpacity = 0.75,
+          group = 'Private room'
+        ) %>%
+        addCircleMarkers(
+          data = airbnb[airbnb$room_type == 'Shared room',],
+          lng = ~longitude,
+          lat = ~latitude,
+          color = '#756bb1',
+          radius = 2,
+          stroke = FALSE,
+          fillOpacity = 0.75,
+          group = 'Shared room'
+        ) %>%  
+        addLayersControl(baseGroups = c('Original', 'Grey', 'Night'),
+                         overlayGroups = c('Entire home','Hotel room', 'Private room','Shared room'),
+                         options = layersControlOptions(collapsed = FALSE))
+      rooms$elementId <- NULL
+      rooms
+    }
     
   })
   
@@ -1390,41 +1366,41 @@ server <- function(input, output) {
   
   
   #### TOPIC MODEL #### 
-
-  Topic_Subset <- reactive({
+  
+#  Topic_Subset <- reactive({
     
-    nTopics <- input$nTopics
+#    nTopics <- input$nTopics
     
     # topic model using text2vec package
-    tokens = data_comments$word %>% 
-      word_tokenizer
+#    tokens = data_comments$word %>% 
+#      word_tokenizer
     
-    it = itoken(tokens, progressbar = FALSE)
-    v = create_vocabulary(it,stopwords=tm::stopwords("en")) 
-    vectorizer = vocab_vectorizer(v)
-    dtm = create_dtm(it, vectorizer, type = "dgTMatrix")
+#    it = itoken(tokens, progressbar = FALSE)
+#    v = create_vocabulary(it,stopwords=tm::stopwords("en")) 
+#    vectorizer = vocab_vectorizer(v)
+#    dtm = create_dtm(it, vectorizer, type = "dgTMatrix")
     
-    lda_model = text2vec::LDA$new(n_topics = nTopics, doc_topic_prior = 0.1, topic_word_prior = 0.01)
-    lda_model$fit_transform(x = dtm, n_iter = 1000, 
-                            convergence_tol = 0.001, n_check_convergence = 25, 
-                            progressbar = FALSE)
-
-    return(lda_model) # 
-  })
-
-  output$visChart <- renderVis({
+#    lda_model = text2vec::LDA$new(n_topics = nTopics, doc_topic_prior = 0.1, topic_word_prior = 0.01)
+#   lda_model$fit_transform(x = dtm, n_iter = 1000, 
+#                            convergence_tol = 0.001, n_check_convergence = 25, 
+#                            progressbar = FALSE)
+    
+ #   return(lda_model) # 
+  #})
+  
+#  output$visChart <- renderVis({
     
     # input$GoButton
-    isolate({
-      nterms    <- input$nTerms
-      lda_model <- Topic_Subset()
-    })
+#    isolate({
+#      nterms    <- input$nTerms
+#      lda_model <- Topic_Subset()
+#    })
     
-    lda_model$plot(out.dir = "./results", R = nterms, open.browser = FALSE)
+#    lda_model$plot(out.dir = "./results", R = nterms, open.browser = FALSE)
+#   
+#    readLines("./results/lda.json")
     
-    readLines("./results/lda.json")
-    
-  })
+ # })
   
   ########### predictive server file ###########
   return_val1 <- data_splittingServer("ds", final_listings)
