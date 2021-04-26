@@ -108,14 +108,6 @@ afinn <- get_sentiments("afinn")
 bing <- get_sentiments("bing")
 nrc <- get_sentiments("nrc")
 
-region_data <-data_comments %>% 
-  group_by(neighbourhood_group_cleansed) %>% 
-  inner_join(afinn) %>% 
-  count(word,value) %>% 
-  mutate(score=value*n) %>%
-  group_by(neighbourhood_group_cleansed) %>% 
-  summarise(mean_score=mean(score))
-
 subzone <- readOGR(dsn = "data/spatial", layer="MP14_SUBZONE_WEB_PL")
 
 airbnb <- select(final_listings, host_is_superhost, review_scores_rating, 
