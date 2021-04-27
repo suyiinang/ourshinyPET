@@ -1,0 +1,14 @@
+name: shinyPET
+title: shinyPET
+username:
+account: kgalbindo
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4038667
+bundleId: 4525188
+url: https://kgalbindo.shinyapps.io/shinyPET/
+when: 1619529870.81317
+lastSyncTime: 1619529870.81317
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: results/d3.v3.js|results/index.html|results/lda.css|results/lda.json|results/ldavis.js
