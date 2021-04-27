@@ -1,5 +1,5 @@
 ## Base Configuration
-baseURL = "https://ourshinypet.netlify.app"
+baseURL = ""
 title = "Shiny PET"
 theme = "meghna-hugo"
 themesDir = "themes/"
@@ -115,9 +115,9 @@ copyright = "Copyright &copy; 2020 Designed by [Themefisher](https://themefisher
 icon = "ti-github" # themify icon pack : https://themify.me/themify-icons
 link = "https://github.com/suyiinang/ourshinypet"
 
-icon = "ti-world" # themify icon pack : https://themify.me/themify-icons
+[[params.social]]
+icon = "ti-dribbble" # themify icon pack : https://themify.me/themify-icons
 link = "https://kgalbindo.shinyapps.io/shinyPET/"
-
 
 
 ## Syntax Highlighting
