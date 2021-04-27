@@ -1,6 +1,6 @@
 ## Base Configuration
 baseURL = "https://ourshinypet.netlify.app"
-title = "Our Shiny PET"
+title = "Shiny PET"
 theme = "meghna-hugo"
 themesDir = "themes/"
 
@@ -21,7 +21,7 @@ disableLanguages = []
 [params]
 # Metadata
 logo = "images/logo.png"
-description = "Our Shiny PET"
+description = "Shiny PET"
 author = ""
 
 # Google Analytics
@@ -114,6 +114,9 @@ copyright = "Copyright &copy; 2020 Designed by [Themefisher](https://themefisher
 [[params.social]]
 icon = "ti-github" # themify icon pack : https://themify.me/themify-icons
 link = "https://github.com/suyiinang/ourshinypet"
+
+icon = "ti-world" # themify icon pack : https://themify.me/themify-icons
+link = "https://kgalbindo.shinyapps.io/shinyPET/"
 
 
 
