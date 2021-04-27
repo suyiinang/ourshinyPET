@@ -5,8 +5,8 @@ portfolio:
   portfolio_item :
     # portfolio item loop
     - name : Application
-      image : images/portfolio/app.png
-      image_webp : images/portfolio/app.webp
+      image : images/portfolio/landing.png
+      image_webp : images/portfolio/landing.webp
       categories : ["application"]
       content : Free and user-friendly application for Exploratory, Text and Predictive Analytics.
       link : "https://kgalbindo.shinyapps.io/shinyPET/"
