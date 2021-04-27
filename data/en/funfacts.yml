@@ -1,11 +1,11 @@
 ################################# funfacts ##################################
 funfacts:
   enable : false
-  bg_image : "images/backgrounds/bg-white-wall.jpg"
-  bg_image_webp : "images/backgrounds/bg-white-wall.webp"
+  bg_image : "images/backgrounds/wallpaper.png"
+  bg_image_webp : "images/backgrounds/wallpaper.webp"
   counter_item:
     # counter item loop
-    - title : "Happy Clients"
+    - title : "Shiny PET Application"
       icon : "ti-face-smile" # themify icon pack : https://themify.me/themify-icons
       count : "320"
     
