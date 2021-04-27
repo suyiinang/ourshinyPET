@@ -8,5 +8,5 @@ banner:
   content : "A Predictive, Exploratory and Text R Shiny Application for Airbnb"
   button:
     enable : true
-    label : "Explore Application"
-    link : https://kgalbindo.shinyapps.io/shinyPET/
+    label : "Explore"
+    link : "#feature"

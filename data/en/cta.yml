@@ -1,11 +1,11 @@
 ############################# call to action ##############################
 cta:
-  enable : false
-  bg_image : "images/backgrounds/bg-white-wall.jpg"
-  bg_image_webp : "images/backgrounds/bg-white-wall.webp"
-  title : "Great Design & Incredible Features"
-  content : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis tenetur odio impedit incidunt? Omnis accusantium ea reiciendis, fugit commodi nostrum."
+  enable : true
+  bg_image : "images/backgrounds/wallpaper.png"
+  bg_image_webp : "images/backgrounds/wallpaper.webp"
+  title : "Making Analytics assessible to everyone"
+  content : "Shiny PET was created as a user-friendly application that will enable users to make data-driven decisions without the need to understand programming languages or have extensive statistical knowledge."
   button:
     enable : true
-    label : "Start a project with us"
-    link : "#contact"
+    label : "Explore application"
+    link : "https://kgalbindo.shinyapps.io/shinyPET/"
