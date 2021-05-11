@@ -213,7 +213,17 @@ include_graphics("images/nrcchart.png")
 
 [4] NRC cloud will show words with 8 different emotions and 2 sentiments. The radial plot illustrates the frequency of words appearing. 
 
-### 3.3 Network Analysis
+### 3.3 Topic Modeling
+```{r, echo=FALSE, fig.align='center', fig.cap='Topic modeling',out.width="95%"}
+include_graphics("images/topic.png")
+```
+
+[1] Slide to change number of topics (number of charts).
+
+[2] Slide to chage number of terms (within the chart).
+
+
+### 3.4 Network Analysis
 ```{r, echo=FALSE, fig.align='center', fig.cap='Network Analysis',out.width="95%"}
 include_graphics("images/network.png")
 ```
