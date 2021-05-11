@@ -1120,10 +1120,10 @@ server <- function(input, output) {
                                        +Math.round(this.point.y.toFixed(0)/100)/10 + 'K' + '</b>';
                                        return result;
       }"))) %>%
-        hc_xAxis(categories = data_count[1:100,]$word,
+        hc_xAxis(categories = data_count2[1:100,]$word,
                  labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
         )    %>%
-        hc_add_series(name="Word", data = data_count[1:100,]$frequency, type ="column",
+        hc_add_series(name="Word", data = data_count2[1:100,]$n, type ="column",
                       color = "#FF5A5F", showInLegend= F)
     } else if(input$word_cloud_gram == "Bi-gram"){
       hc <- highchart() %>%
@@ -1312,13 +1312,10 @@ server <- function(input, output) {
     on.exit(progress$close())
     progress$set(message = "Creating Pairwise words", value = 0.4)
     
-    #x <- data.frame(text = sapply(docs(), as.character), stringsAsFactors = FALSE)
-    #x$tweet_nbr <- 1:nrow(x)
-    #tweet_word <- x %>% unnest_tokens(word, text)
-    
-    word_corr <- data_count %>% 
-      filter(frequency >= 300) %>% 
-      pairwise_cor(word, frequency, sort = TRUE)
+
+    word_corr <- data_count2 %>% 
+      filter(n >= 300) %>% 
+      pairwise_cor(word, n, sort = TRUE)
     
     #progress$set(detail = "Plotting..", value = 0.8)
     set.seed(1234)
