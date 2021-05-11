@@ -78,7 +78,7 @@ themes <- list('Gray' = theme_gray(),
 
 data <- read_csv("data/data.csv")
 
-new_stopwords <- c("NA","michelle's","elizabeth","yuan","felix","anita","susan","eddie","eddie's","edwin","belinda","besan","nargis","antonio","sharm","tim","kathleen","stteven","jerome","freddy","eunice","eunice's","vivian","jerome's","mi's","freddy's","joey","tay","michelle","noor","anthony","tay's","carrie","jauhara","susan","karen","jenny","lena","leonard","kingsley","freda","jialin","matthew","fran","na","joey","swimminuteg","dick","cock","bitch","fran")
+new_stopwords <- c("NA","anson","darren","surendran","martin","remy","lily","chris","lionel","de","paul","wei","darrick","gesan","diane","jarwin","bd","df","david","owens","ansons","jo","ong","nanda","fbf","ec","dc","ae","ad","ce","elle","linda","mary","ruth","takico","kendra","nancy","goh","mila","yuki","ba","ef","rahul","kelvin","grace","liz","alex","chi","siang","erin","cc","mi","joyce","ed","eba","ee","ea","fa","eldhi","angelina","felicia","eec","sk","fc","bb","ff","fd","michelle's","elizabeth","yuan","felix","anita","susan","eddie","eddie's","edwin","belinda","besan","nargis","antonio","sharm","tim","kathleen","stteven","jerome","freddy","eunice","eunice's","vivian","jerome's","mi's","freddy's","joey","tay","michelle","noor","anthony","tay's","carrie","jauhara","susan","karen","jenny","lena","leonard","kingsley","freda","jialin","matthew","fran","na","joey","swimminuteg","dick","cock","bitch","fran")
 all_stopwords <- c(new_stopwords,stop_words)
 
 
@@ -90,9 +90,12 @@ data_comments <- data %>%
   anti_join(all_stopwords,copy=TRUE) %>% 
   filter(!word %in% all_stopwords)
 data_count <- data_comments %>% 
+  group_by(listing_id,word) %>% 
+  count(word,sort=TRUE)
+data_count2 <- data_comments %>% 
   group_by(word) %>% 
-  summarise(frequency=n()) %>% 
-  arrange(desc(frequency))
+  count(word,sort=TRUE)
+  
 bigram_data_count <- data %>% 
   dplyr::select(listing_id,comments,review_scores_rating,neighbourhood_cleansed,neighbourhood_group_cleansed)%>%
   unnest_tokens(word,comments,token="ngrams",n=2) %>% 
@@ -334,7 +337,6 @@ ui <- dashboardPage(
                              column(6, id = "col_word_cloud",
                                     box(width=12, height=550, solidHeader = F, title = strong("Word Cloud"),
                                         radioButtons("word_cloud_gram",NULL, c("Uni-gram","Bi-gram"), selected = "Uni-gram", inline = T),
-                                        #plotOutput("word_cloud_plot",height = "300px")
                                         wordcloud2Output("word_cloud_plot",height = "470px"))
                              ),
                              column(6, id = "col_freq",
@@ -364,26 +366,18 @@ ui <- dashboardPage(
                            )
                          )
                 ),
-                #tabPanel("Topic Modelling",
-                         #fluidPage(
-                           
-                           #headerPanel(""),
-                           #titlePanel(p(h2("Topic Modelling"))),
-                           
-                           #sidebarPanel(
-                           #wellPanel(tags$style(type="text/css", '#leftPanel { width:200px; float:left;}'), style = "background: white",
-                                     #id = "leftPanel",
-                                     #sliderInput("nTopics", "Number of topics to display", min = 1, max = 20, value = 10, step=5),
-                                     #sliderInput("nTerms", "Top terms per topic", min = 10, max = 50, value = 20, step=5),
-                                     #tags$hr(),
-                                     #actionButton(inputId = "GoButton", label = "Go",  icon("refresh"))
-                          # ),
-                           #mainPanel( 
-                            # tabPanel("Topic Visualisation",
-                             #         withSpinner(visOutput('visChart'),type = 6, color = "#FF5A5F", size = 2))
-                           #)
-                         #)
-                #),
+                tabPanel("Topic Modelling",
+                         fluidPage(
+                           sidebarPanel(
+                             sliderInput("nTopics", "Number of topics to display", min = 1, max = 10, value = 6, step=1),
+                             sliderInput("nTerms", "Top terms per topic", min = 1, max = 20, value = 6, step=1),
+                           ),
+                           mainPanel( 
+                             tabPanel("Topic Visualisation",
+                                      withSpinner(plotOutput('visChart')))
+                           )
+                         )
+                ),
                 tabPanel("Network analysis",
                          fluidRow(
                            box(width=12, height=500, solidHeader = F,
@@ -1116,9 +1110,7 @@ server <- function(input, output) {
   output$word_freq_plot  <- renderHighchart(
     if(input$word_cloud_gram == "Uni-gram"){
       hc <- highchart() %>%
-        #hc_title(text = "Incremental Revenue and Total Cost by Offer Group") %>%
         hc_chart(type = "bar") %>%
-        #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
         hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
                    formatter = JS(paste0("function() {
                                        //console.log(this);
@@ -1129,18 +1121,13 @@ server <- function(input, output) {
                                        return result;
       }"))) %>%
         hc_xAxis(categories = data_count[1:100,]$word,
-                 #labels = list(rotation = 0, step=1), title =list(text="Brand")
                  labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
         )    %>%
         hc_add_series(name="Word", data = data_count[1:100,]$frequency, type ="column",
-                      #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
                       color = "#FF5A5F", showInLegend= F)
-      #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
     } else if(input$word_cloud_gram == "Bi-gram"){
       hc <- highchart() %>%
-        #hc_title(text = "Incremental Revenue and Total Cost by Offer Group") %>%
         hc_chart(type = "bar") %>%
-        #hc_plotOptions(bar = list(getExtremesFromAll = T)) %>% 
         hc_tooltip(crosshairs = TRUE, shared = FALSE,useHTML=TRUE,
                    formatter = JS(paste0("function() {
                                        //console.log(this);
@@ -1155,10 +1142,8 @@ server <- function(input, output) {
                  labels = list(style = list(fontSize= '11px')), max=20, scrollbar = list(enabled = T)
         )    %>%
         hc_add_series(name="Word", data = bigram_data_count[1:100,]$n, type ="column",
-                      #max=max(d()$freq), tickInterval = max(d()$freq)/4, alignTicks = F,
                       color = "#FF5A5F", showInLegend= F)
-      #hc_legend(layout = "vertical", align = "right", verticalAlign = "top", width=120, itemStyle = list(fontSize= '10px'))
-      
+
     })
   
   
@@ -1168,19 +1153,13 @@ server <- function(input, output) {
     if(input$word_cloud_gram == "Uni-gram"){
       
       set.seed(1234)
-      # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
-      #           max.words=100, random.order=FALSE, rot.per=0.35, 
-      #           colors=brewer.pal(8, "Dark2"))
-      d1 <- (data_count %>% filter(frequency>1) %>% arrange(desc(frequency)))[1:100,]
-      wordcloud2(data = data_count, size=0.8, minSize = 0.0, fontWeight = 'bold', 
+      d1 <- (data_count2 %>% filter(n>1) %>% arrange(desc(n)))[1:100,]
+      wordcloud2(data = data_count2, size=0.8, minSize = 0.0, fontWeight = 'bold', 
                  ellipticity = 0.65)
       
     } else if(input$word_cloud_gram == "Bi-gram"){
       
       set.seed(1234)
-      # wordcloud(words = d()$word, freq = d()$freq, scale = c(3,0.5), min.freq = 3,
-      #           max.words=100, random.order=FALSE, rot.per=0.35, 
-      #           colors=brewer.pal(8, "Dark2"))
       d2 <- (bigram_data_count %>% filter(n>1) %>% arrange(desc(n)))[1:100,]
       wordcloud2(data = bigram_data_count, size=0.8, minSize = 0.0, fontWeight = 'bold', 
                  ellipticity = 0.65)
@@ -1359,40 +1338,29 @@ server <- function(input, output) {
   
   #### TOPIC MODEL #### 
   
-#  Topic_Subset <- reactive({
+  output$visChart <- renderPlot({
+    comments_dtm <- data_count %>%
+      filter(n>50) %>% 
+      cast_dtm(listing_id,word,n)
+    comments_lda <- LDA(comments_dtm,k=input$nTopics)
+    comments_topics <- tidy(comments_lda,matrix="beta") %>% 
+      group_by(term) %>% 
+      filter(beta>0.02) %>% 
+      slice_max(beta,n=input$nTerms) %>% 
+      ungroup() %>% 
+      arrange(topic,-beta) 
+    #%>% 
+      #mutate(term=reorder_within(term,beta,topic))
     
-#    nTopics <- input$nTopics
+    comments_topics %>% mutate(term=reorder_within(term,beta,topic)) %>% 
+      ggplot(aes(beta,term,fill=factor(topic)))+
+      geom_col()+
+      labs(fill = "Topics")+   
+      facet_wrap(~topic,scales="free")+
+      scale_y_reordered()
     
-    # topic model using text2vec package
-#    tokens = data_comments$word %>% 
-#      word_tokenizer
-    
-#    it = itoken(tokens, progressbar = FALSE)
-#    v = create_vocabulary(it,stopwords=tm::stopwords("en")) 
-#    vectorizer = vocab_vectorizer(v)
-#    dtm = create_dtm(it, vectorizer, type = "dgTMatrix")
-    
-#    lda_model = text2vec::LDA$new(n_topics = nTopics, doc_topic_prior = 0.1, topic_word_prior = 0.01)
-#   lda_model$fit_transform(x = dtm, n_iter = 1000, 
-#                            convergence_tol = 0.001, n_check_convergence = 25, 
-#                            progressbar = FALSE)
-    
- #   return(lda_model) # 
-  #})
+  })
   
-#  output$visChart <- renderVis({
-    
-    # input$GoButton
-#    isolate({
-#      nterms    <- input$nTerms
-#      lda_model <- Topic_Subset()
-#    })
-    
-#    lda_model$plot(out.dir = "./results", R = nterms, open.browser = FALSE)
-#   
-#    readLines("./results/lda.json")
-    
- # })
   
   ########### predictive server file ###########
   return_val1 <- data_splittingServer("ds", final_listings)
