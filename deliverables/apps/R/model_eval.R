@@ -248,7 +248,7 @@ model_evalServer <- function(id, return_train, selected_var, targetvar, trigger_
         }else if (input$Imodel=="XGBoost"){
           tune_result <- return_train$xgb_result()
           model_wf <- return_train$xgb_wf()
-          pred_val <- get_prediction(return_train$final_xgboost(), datasplit, newinput)
+          pred_val <- get_prediction(return_train$final_xgb(), datasplit, newinput)
           
         }
         
