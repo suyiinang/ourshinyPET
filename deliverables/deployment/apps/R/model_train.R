@@ -1,4 +1,4 @@
-#' Data transformation
+#' Model train
 #'
 #' @param id, character used to specify namespace, see \code{shiny::\link[shiny]{NS}}
 #'
@@ -268,7 +268,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
         add_recipe(rcpTransform1)
       
       listing_fit <- listing_wflow %>%
-        fit(data = listing_train)
+        parsnip::fit(data = listing_train)
       
       output$Otraining_fit <- renderTable({
         glance(listing_fit)
@@ -734,7 +734,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       finalize_workflow(best_glm_model)
     Rfinal_glm_wf(final_glm_wf)
     final_glm <- final_glm_wf %>%
-      fit(data = listing_train)
+      parsnip::fit(data = listing_train)
     Rfinal_glm(final_glm)
     glm_p <- final_glm %>%
       pull_workflow_fit() %>%
@@ -945,7 +945,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       finalize_workflow(best_tree_model)
     Rfinal_tree_wf(final_tree_wf)
     final_tree <- final_tree_wf %>%
-      fit(data = listing_train)
+      parsnip::fit(data = listing_train)
     Rfinal_tree(final_tree)
     
     output$Oplot_DTvip <- renderPlot({
@@ -1159,7 +1159,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       finalize_workflow(best_randomf_model)
     Rfinal_randomf_wf(final_randomf_wf)
     final_randomf <- final_randomf_wf %>%
-      fit(data = listing_train)
+      parsnip::fit(data = listing_train)
     Rfinal_randomf(final_randomf)
     
     output$Oplot_RFvip <- renderPlot({
@@ -1362,7 +1362,7 @@ model_trainServer <- function(id, return_trf, target_var, trigger_reset){
       finalize_workflow(best_xgboost_model)
     Rfinal_xgboost_wf(final_xgboost_wf)
     final_xgboost <- final_xgboost_wf %>%
-      fit(data = listing_train)
+      parsnip::fit(data = listing_train)
     Rfinal_xgboost(final_xgboost)
     
     output$Oplot_BTvip <- renderPlot({
